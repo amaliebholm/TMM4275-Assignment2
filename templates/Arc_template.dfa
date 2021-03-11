@@ -1,0 +1,8 @@
+(Child) arc_<INDEX>: {
+  class, ug_arc;
+  radius, <RADIUS>;
+  start_angle, <ANGLE1>;
+  end_angle, <ANGLE2>;
+  center, point(<XCENTER>,<YCENTER>,<ZCENTER>);
+  Y_Axis, Vector(0,0,1); #Trenger å ha med axis?
+};
