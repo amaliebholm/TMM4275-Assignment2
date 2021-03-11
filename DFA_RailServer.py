@@ -59,6 +59,25 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<br><br><input type="submit" value="Render"></form><p> Click "Render" to make the preview grid</p>', "utf-8"))
             
             s.wfile.write(bytes('<h4>Add variales in the room:</h4>', "utf-8"))
+
+            s.wfile.write(bytes('<style>.button {border: none; color: white; padding: 16px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 12px; margin: 1px 2px; transition-duration: 0.4s; cursor: pointer;}', "utf-8"))
+            s.wfile.write(bytes('.button1 {background-color: white; color: black; border: 2px solid #008000;} ', "utf-8"))
+            s.wfile.write(bytes('.button1:hover {background-color: #008000; color: white;} ', "utf-8"))
+
+            s.wfile.write(bytes('.button2 {background-color: white; color: black; border: 2px solid #FF0000;} ', "utf-8"))
+            s.wfile.write(bytes('.button2:hover {background-color: #FF0000; color: white;} ', "utf-8"))
+
+            s.wfile.write(bytes('.button3 {background-color: white; color: black; border: 2px solid #000000;} ', "utf-8"))
+            s.wfile.write(bytes('.button3:hover {background-color: #000000; color: white;} ', "utf-8"))
+
+            s.wfile.write(bytes('.button4 {background-color: white; color: black; border: 2px solid #0000FF;} ', "utf-8"))
+            s.wfile.write(bytes('.button4:hover {background-color: #0000FF; color: white;} </style>', "utf-8"))
+
+            s.wfile.write(bytes('<button class="button button1">Click here to add an attachment point for the rails in the ceiling </button>', "utf-8"))
+            s.wfile.write(bytes('<button class="button button2">Click here to add locations the cart should visit </button>', "utf-8"))
+            s.wfile.write(bytes('<button class="button button3">Click here to add an obstacle in the room, the feeder can not pass through these points </button>', "utf-8"))
+            s.wfile.write(bytes('<button class="button button4">Click here the feeding location for the cart </button>', "utf-8"))
+
             s.wfile.write(bytes('<h4>Grid of the room:</h4>', "utf-8"))
             s.wfile.write(bytes('<head><style> table {width:50%;} table, th, td {border: 1px solid black; border-collapse: collapse;} th, td {padding: 10px;} </style></head>', "utf-8"))
             table = ""
@@ -114,6 +133,25 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<br><br><input type="submit" value="Render"></form><p> Click "Render" to make the preview grid</p>', "utf-8"))
             
             s.wfile.write(bytes('<h4>Add variales in the room:</h4>', "utf-8"))
+
+            s.wfile.write(bytes('<style>.button {border: none; color: white; padding: 16px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 12px; margin: 1px 2px; transition-duration: 0.4s; cursor: pointer;}', "utf-8"))
+            s.wfile.write(bytes('.button1 {background-color: white; color: black; border: 2px solid #008000;} ', "utf-8"))
+            s.wfile.write(bytes('.button1:hover {background-color: #008000; color: white;} ', "utf-8"))
+
+            s.wfile.write(bytes('.button2 {background-color: white; color: black; border: 2px solid #FF0000;} ', "utf-8"))
+            s.wfile.write(bytes('.button2:hover {background-color: #FF0000; color: white;} ', "utf-8"))
+
+            s.wfile.write(bytes('.button3 {background-color: white; color: black; border: 2px solid #000000;} ', "utf-8"))
+            s.wfile.write(bytes('.button3:hover {background-color: #000000; color: white;} ', "utf-8"))
+
+            s.wfile.write(bytes('.button4 {background-color: white; color: black; border: 2px solid #0000FF;} ', "utf-8"))
+            s.wfile.write(bytes('.button4:hover {background-color: #0000FF; color: white;} </style>', "utf-8"))
+
+            s.wfile.write(bytes('<button class="button button1">Click here to add an attachment point for the rails in the ceiling </button>', "utf-8"))
+            s.wfile.write(bytes('<button class="button button2">Click here to add locations the cart should visit </button>', "utf-8"))
+            s.wfile.write(bytes('<button class="button button3">Click here to add an obstacle in the room, the feeder can not pass through these points </button>', "utf-8"))
+            s.wfile.write(bytes('<button class="button button4">Click here the feeding location for the cart </button>', "utf-8"))
+
             s.wfile.write(bytes('<h4>Grid of the room:</h4>', "utf-8"))
             s.wfile.write(bytes('<head><style> table {width:50%;} table, th, td {border: 1px solid black; border-collapse: collapse;} th, td {padding: 10px;} </style></head>', "utf-8"))
             table = ""
@@ -124,7 +162,7 @@ class MyHandler(BaseHTTPRequestHandler):
             for l in range(room_length):
                 table += "<tr>" + cols + "</tr>"
             s.wfile.write(bytes('<table>' + table + '</table>', "utf-8"))
-            
+
             s.wfile.write(bytes('<br><br><input type="submit" value="Submit"></form><p> Click "Submit" to send order.</p></body></html>', "utf-8"))
 
             return room_height, room_length, room_width
