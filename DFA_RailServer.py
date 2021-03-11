@@ -61,13 +61,18 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<h4>Add variales in the room:</h4>', "utf-8"))
 
             s.wfile.write(bytes('<style>.button {border: none; color: white; padding: 16px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 12px; margin: 1px 2px; transition-duration: 0.4s; cursor: pointer;}', "utf-8"))
+            #s.wfile.write(bytes('<script> changeColor(button, color){count = 1; property = document.getElementById(button); if(count==0){property.style.backgroundColor = "white"}; count = 1;} else{property.style.backgroundColor = color; count = 0;}}</script>', "utf-8"))
+            #s.wfile.write(bytes('<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>', "utf-8"))
+            #s.wfile.write(bytes('<script> $(() => {"use strict"; $("button").click(function() {$(this).toggleClass("pressed");});})</script>', "utf-8"))
+
             s.wfile.write(bytes('.button1 {background-color: white; color: black; border: 2px solid #008000;} ', "utf-8"))
             s.wfile.write(bytes('.button1:hover {background-color: #008000; color: white;} ', "utf-8"))
+            #s.wfile.write(bytes('.button1.pressed {background-color: #008000; color: white;} ', "utf-8"))
 
             s.wfile.write(bytes('.button2 {background-color: white; color: black; border: 2px solid #FF0000;} ', "utf-8"))
             s.wfile.write(bytes('.button2:hover {background-color: #FF0000; color: white;} ', "utf-8"))
 
-            s.wfile.write(bytes('.button3 {background-color: white; color: black; border: 2px solid #000000;} ', "utf-8"))
+            s.wfile.write(bytes('.button3 {background-color: white; color: black; border: 2px solid #000000; } ', "utf-8"))
             s.wfile.write(bytes('.button3:hover {background-color: #000000; color: white;} ', "utf-8"))
 
             s.wfile.write(bytes('.button4 {background-color: white; color: black; border: 2px solid #0000FF;} ', "utf-8"))
@@ -133,10 +138,14 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<br><br><input type="submit" value="Render"></form><p> Click "Render" to make the preview grid</p>', "utf-8"))
             
             s.wfile.write(bytes('<h4>Add variales in the room:</h4>', "utf-8"))
-
             s.wfile.write(bytes('<style>.button {border: none; color: white; padding: 16px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 12px; margin: 1px 2px; transition-duration: 0.4s; cursor: pointer;}', "utf-8"))
+            #s.wfile.write(bytes('<script> changeColor(button, color){count = 1; property = document.getElementById(button); if(count==0){property.style.backgroundColor = "white"}; count = 1;} else{property.style.backgroundColor = color; count = 0;}}</script>', "utf-8"))
+            #s.wfile.write(bytes('<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>', "utf-8"))
+            #s.wfile.write(bytes('<script> $(() => {"use strict"; $("button").click(function() {$(this).toggleClass("pressed");});})</script>', "utf-8"))
+
             s.wfile.write(bytes('.button1 {background-color: white; color: black; border: 2px solid #008000;} ', "utf-8"))
             s.wfile.write(bytes('.button1:hover {background-color: #008000; color: white;} ', "utf-8"))
+            #s.wfile.write(bytes('.button1.pressed {background-color: #008000; color: white;} ', "utf-8"))
 
             s.wfile.write(bytes('.button2 {background-color: white; color: black; border: 2px solid #FF0000;} ', "utf-8"))
             s.wfile.write(bytes('.button2:hover {background-color: #FF0000; color: white;} ', "utf-8"))
