@@ -139,7 +139,7 @@ class MyHandler(BaseHTTPRequestHandler):
             
             s.wfile.write(bytes('<h4>Add variales in the room:</h4>', "utf-8"))
             s.wfile.write(bytes('<style>.button {border: none; color: white; padding: 16px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 12px; margin: 1px 2px; transition-duration: 0.4s; cursor: pointer;}', "utf-8"))
-            s.wfile.write(bytes('<script> changeColor(button, color){count = 1; property = document.getElementById(button); if(count==0){property.style.backgroundColor = "white"}; count = 1;} else{property.style.backgroundColor = color; count = 0;}}</script>', "utf-8"))
+            #s.wfile.write(bytes('<script> changeColor(button, color){count = 1; property = document.getElementById(button); if(count==0){property.style.backgroundColor = "white"}; count = 1;} else{property.style.backgroundColor = color; count = 0;}}</script>', "utf-8"))
             #s.wfile.write(bytes('<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>', "utf-8"))
             #s.wfile.write(bytes('<script> $(() => {"use strict"; $("button").click(function() {$(this).toggleClass("pressed");});})</script>', "utf-8"))
 
@@ -156,7 +156,7 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('.button4 {background-color: white; color: black; border: 2px solid #0000FF;} ', "utf-8"))
             s.wfile.write(bytes('.button4:hover {background-color: #0000FF; color: white;} </style>', "utf-8"))
 
-            s.wfile.write(bytes('<button onclick=changColor(button1,#008000) type=button class="button button1">Click here to add an attachment point for the rails in the ceiling </button>', "utf-8"))
+            s.wfile.write(bytes('<button class="button button1">Click here to add an attachment point for the rails in the ceiling </button>', "utf-8"))
             s.wfile.write(bytes('<button class="button button2">Click here to add locations the cart should visit </button>', "utf-8"))
             s.wfile.write(bytes('<button class="button button3">Click here to add an obstacle in the room, the feeder can not pass through these points </button>', "utf-8"))
             s.wfile.write(bytes('<button class="button button4">Click here the feeding location for the cart </button>', "utf-8"))
@@ -170,7 +170,7 @@ class MyHandler(BaseHTTPRequestHandler):
 
             for l in range(room_length):
                 for w in range(room_width):
-                    cols += '<td><button class="button buttonCell' + str(l) + '.' + str(w) + '"></button></td>' #buttonCell row.column
+                    cols += '<td><button name="cell"'+ str(l) + '"."' + str(w) + '" type="button" onclick="alert("Hello world!")"></button></td>' #buttonCell row.column
                 table += "<tr>" + cols + "</tr>"
             
             s.wfile.write(bytes('<table>' + table + '</table>', "utf-8"))
