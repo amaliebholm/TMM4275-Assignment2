@@ -168,6 +168,10 @@ class MyHandler(BaseHTTPRequestHandler):
             table = ""
             cols = ""
 
+            # Lage knapper i alle cellene, slik at man fargelegger ved "onclick" på knappene
+            # fargen er bestemt av hvilken av de store knappene man har trykket på
+            # lar det være en verdi, slik at knappene da får en verdi og man kan hente ut den informasjonen
+
             for l in range(room_length):
                 for w in range(room_width):
                     cols += '<td><button name="cell"'+ str(l) + '"."' + str(w) + '" type="button" onclick="alert("Hello world!")"></button></td>' #buttonCell row.column
