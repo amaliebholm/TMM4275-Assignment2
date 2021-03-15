@@ -1,3 +1,4 @@
+import math as m
 #Creates a costume rail from the user-inputs adjusting and pasting the templates
 #for lines and curves into the rail template
 
@@ -30,13 +31,16 @@ rail = rail.replace("<STARTZ>", str(startz))
 
 
 
-def add_arc(index,radius,angle1,angle2,x,y,z,string):
+def add_arc(index,radius,angle1,angle2,x,y,z,string,left):
     new_arc = arc_temp
-    new_arc = new_arc.replace("<INDEX>", str(index))
+    new_arc = new_arc.replace("<arc_temp>", "element_" + str(index))
     new_arc = new_arc.replace("<RADIUS>", str(radius))
     new_arc = new_arc.replace("<ANGLE1>", str(angle1))
     new_arc = new_arc.replace("<ANGLE2>", str(angle2))
-    new_arc = new_arc.replace("<XCENTER>", str(x))
+    if left == True:
+        new_arc = new_arc.replace("<XCENTER>", str(x - radius))
+    if left == False:
+        new_arc = new_arc.replace("<XCENTER>", str(x + radius))
     new_arc = new_arc.replace("<YCENTER>", str(y))
     new_arc = new_arc.replace("<ZCENTER>", str(z))
 
@@ -45,7 +49,7 @@ def add_arc(index,radius,angle1,angle2,x,y,z,string):
 
 def add_line(index,x1,y1,z1,x2,y2,z2,string):
     new_line = line_temp
-    new_line = new_line.replace("<INDEX>", str(index))
+    new_line = new_line.replace("<line_temp>", "element_" + str(index))
     new_line = new_line.replace("<X1>", str(x1))
     new_line = new_line.replace("<X2>", str(x2))
     new_line = new_line.replace("<Y1>", str(y1))
@@ -56,11 +60,30 @@ def add_line(index,x1,y1,z1,x2,y2,z2,string):
     string = string + new_line
     return string
 
-rail = add_line(1,0,0,0,0,10000,0,rail)
+def get_center(radius, xstart,ystart, xend,yend, dir):
+    y = yend - ystart
+    x = xend - xstart
+    theta = m.atan2(y, x)
+    print("Theta:", theta)
+
+    theta += dir * m.pi / 2
+
+    xPlus = radius * m.cos(theta)
+    yPlus = radius * m.sin(theta)
+
+    ret = (pointB[0] + xPlus, pointB[1] + yPlus)
+    print("Arc center:", ret)
+    return ret
+#index,radius,angle1,angle2,x,y,z,string,left
+rail = add_line(1,0,0,0,2,2,0,rail)
+rail = add_arc(2,4,0,110,0,2,0,rail,False)
+#rail = add_arc(2,4,100,170,4,10,0,rail,False)
+
+
 rail = rail + the_end
 
-rail = rail.replace("<ALL_ELEMENTS>", "line_1:")
-
+rail = rail.replace("<ALL_ELEMENTS>", "element_1:")
+print(rail)
 f = open(dfaPath + "Rail_Order.dfa", "w") #Saves the customers chair as a new DFA file with the name My_Chair_Order.dfa
 f.write(rail)
 f.close()

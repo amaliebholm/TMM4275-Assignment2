@@ -1,5 +1,5 @@
 #! NX/KF 4.0
-DefClass: rail_template (ug_base_part);
+DefClass: rail_test (ug_base_part);
     #Parameters for the rails cross section
     (number parameter) height: 291; #Heigth of web
     (number parameter) flange: 167; #Length of flange
@@ -89,4 +89,13 @@ DefClass: rail_template (ug_base_part);
     class, ug_curve_join;
     profile, {profile1:,profile2:,profile3:,profile4:,profile5:,profile6:,profile7:,profile8:,profile9:,profile10:,profile11:,profile12:};
     };
+
+(child) curve_1: { 
+  class, ug_arc;
+  radius, 40;
+  start_angle, 0;
+  end_angle, 180;
+  center, point(20,40,60);
+};
+
 

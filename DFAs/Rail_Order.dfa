@@ -1,10 +1,10 @@
 #! NX/KF 4.0
 DefClass: Rail_Order (ug_base_part);
     #Parameters for the rails cross section
-    (number parameter) height: 291; #Heigth of web
-    (number parameter) flange: 167; #Length of flange
-    (number parameter) web_thick: 6.604; #Thickness of web
-    (number parameter) f_thick: 11.167; #Thickness of flange
+    (number parameter) height: 0.291; #Heigth of web
+    (number parameter) flange: 0.167; #Length of flange
+    (number parameter) web_thick: 0.006604; #Thickness of web
+    (number parameter) f_thick: 0.011167; #Thickness of flange
 
     (number parameter) startx: 0;
     (number parameter) starty: 0;
@@ -90,23 +90,33 @@ DefClass: Rail_Order (ug_base_part);
     profile, {profile1:,profile2:,profile3:,profile4:,profile5:,profile6:,profile7:,profile8:,profile9:,profile10:,profile11:,profile12:};
     };
 
-(Child) line_1: {
+(Child) element_1: {
     class, ug_line;
     start_Point, Point(0,0,0);
-    end_Point,   Point(0,10000,0);
+    end_Point,   Point(2,2,0);
 };
 
+(Child) element_2: {
+    class, ug_arc;
+    radius, 2;
+    start_angle, 45;
+    end_angle, 110;
+    center, point(2,0,0);
+    x_axis, vector(-1,0,0);
+};
+
+
 (Child) the_path: {
-  Class, ug_curve_join;
-  profile, {line_1:};
+    Class, ug_curve_join;
+    profile, {element_1:};
 };
 
 (Child) the_full_rail: {
-  class, ug_swept;
-  guide, {{forward, the_path:}};
-  section, {{forward, the_profile:}};
-  scaling, {scale_constant, 1};
-  alignment_init, parameter;
-  orientation, {orientation_fixed};
-  tolerances, {0, 0, 0};
+    class, ug_swept;
+    guide, {{forward, the_path:}};
+    section, {{forward, the_profile:}};
+    scaling, {scale_constant, 1};
+    alignment_init, parameter;
+    orientation, {orientation_fixed};
+    tolerances, {0, 0, 0};
 };
