@@ -85,6 +85,7 @@ class MyHandler(BaseHTTPRequestHandler):
 
             s.wfile.write(bytes('<h4>Grid of the room:</h4>', "utf-8"))
             s.wfile.write(bytes('<head><style> table {width:50%;} table, th, td {border: 1px solid black; border-collapse: collapse;} th, td {padding: 10px;} </style></head>', "utf-8"))
+            # 1x1 meter cells in the grid
             table = ""
             cols = ""
             for w in range(room_width):

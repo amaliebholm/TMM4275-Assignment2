@@ -1,4 +1,5 @@
-from http.server import BaseHTTPRequestHandler, HTTPServer
+from http.server 
+import BaseHTTPRequestHandler, HTTPServer
 import requests
 
 room_height = 0
@@ -49,6 +50,8 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes("<body><p>Let's order a chair</p>", "utf-8"))
             s.wfile.write(bytes('</body></html>', "utf-8"))
         elif path.find("/orderRail") != -1: #The webpage path to order a chair
+            s.path = 'railServer.html'
+            return httpd = HTTPServer((HOST_NAME, PORT_NUMBER), MyHandler)
             s.wfile.write(bytes('<html><body><h2>Determine rail specifications for your K2 EasyFeed:</h2>', "utf-8"))
             s.wfile.write(bytes('<form action="/orderRail" method="post">', 'utf-8')) #Create a form to take in values
             
@@ -72,12 +75,27 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('.button3:hover {background-color: #000000; color: white;} ', "utf-8"))
 
             s.wfile.write(bytes('.button4 {background-color: white; color: black; border: 2px solid #0000FF;} ', "utf-8"))
-            s.wfile.write(bytes('.button4:hover {background-color: #0000FF; color: white;} </style>', "utf-8"))
+            s.wfile.write(bytes('.button4:hover {background-color: #0000FF; color: white;}', "utf-8"))
+
+            s.wfile.write(bytes('#grids {margin: 4px; padding: 5px; background: #FFFFFF; min-height: 500px;}', "utf-8"))
+            s.wfile.write(bytes('.row {display: flex; flow-direction: row;}', "utf-8"))
+            s.wfile.write(bytes('.grid {background: #FFFFFF; color:#000000; border: 1px slid #000000; border-radius:3px}', "utf-8"))
+            s.wfile.write(bytes('.grid:hover {border-color: #696969; color: #FFFAF0; cursor: pointer:}</style>', "utf-8"))
+
+            s.wfile.write(bytes('$function()', "utf-8"))
+            s.wfile.write(bytes('', "utf-8"))
+            s.wfile.write(bytes('', "utf-8"))
+            s.wfile.write(bytes('', "utf-8"))
 
             s.wfile.write(bytes('<button class="button button1">Click here to add an attachment point for the rails in the ceiling </button>', "utf-8"))
             s.wfile.write(bytes('<button class="button button2">Click here to add locations the cart should visit </button>', "utf-8"))
             s.wfile.write(bytes('<button class="button button3">Click here to add an obstacle in the room, the feeder can not pass through these points </button>', "utf-8"))
             s.wfile.write(bytes('<button class="button button4">Click here the feeding location for the cart </button>', "utf-8"))
+
+            s.wfile.write(bytes('', "utf-8"))
+            s.wfile.write(bytes('', "utf-8"))
+            s.wfile.write(bytes('', "utf-8"))
+            s.wfile.write(bytes('', "utf-8"))
 
             s.wfile.write(bytes('<h4>Grid of the room:</h4>', "utf-8"))
             s.wfile.write(bytes('<head><style> table {width:50%;} table, th, td {border: 1px solid black; border-collapse: collapse;} th, td {padding: 10px;} </style></head>', "utf-8"))
