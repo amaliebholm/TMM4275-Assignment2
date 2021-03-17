@@ -50,8 +50,6 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes("<body><p>Let's order a chair</p>", "utf-8"))
             s.wfile.write(bytes('</body></html>', "utf-8"))
         elif path.find("/orderRail") != -1: #The webpage path to order a chair
-            s.path = 'railServer.html'
-            return httpd = HTTPServer((HOST_NAME, PORT_NUMBER), MyHandler)
             s.wfile.write(bytes('<html><body><h2>Determine rail specifications for your K2 EasyFeed:</h2>', "utf-8"))
             s.wfile.write(bytes('<form action="/orderRail" method="post">', 'utf-8')) #Create a form to take in values
             
@@ -82,8 +80,8 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('.grid {background: #FFFFFF; color:#000000; border: 1px slid #000000; border-radius:3px}', "utf-8"))
             s.wfile.write(bytes('.grid:hover {border-color: #696969; color: #FFFAF0; cursor: pointer:}</style>', "utf-8"))
 
-            s.wfile.write(bytes('$function()', "utf-8"))
-            s.wfile.write(bytes('', "utf-8"))
+            s.wfile.write(bytes('<script> (function(){color_green(); color_red(); color_black(); color_blue();})', "utf-8"))
+            s.wfile.write(bytes('function color_green(){$("#grids").on("click", ".grid", function(){var}}', "utf-8"))
             s.wfile.write(bytes('', "utf-8"))
             s.wfile.write(bytes('', "utf-8"))
 
