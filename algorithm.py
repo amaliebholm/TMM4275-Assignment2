@@ -26,7 +26,7 @@ def astar(input_matrix):
     def heuristic(i, j): return abs(i_goal - i) + abs(j_goal - j)
     def comp(state): return state[2] + state[3]  # get the total cost
 
-    # small variation for easier code, state is (coord_tuple, previous, path_cost, heuristic_cost)
+    # Initializing the search lists
     fringe = [((i_start, j_start), list(), 0, heuristic(i_start, j_start))]
 
     visited = {}  # empty dictionary of nodes who have been visited
