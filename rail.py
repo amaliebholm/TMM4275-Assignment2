@@ -71,7 +71,7 @@ def get_center(radius, xstart,ystart, xend,yend, dir):
     xPlus = radius * m.cos(theta)
     yPlus = radius * m.sin(theta)
 
-    ret = (pointB[0] + xPlus, pointB[1] + yPlus)
+    ret = [xend + xPlus, yend + yPlus]
     print("Arc center:", ret)
     return ret
 #index,radius,angle1,angle2,x,y,z,string,left
