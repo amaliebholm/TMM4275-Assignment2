@@ -49,11 +49,11 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes("<body><p>Let's order a chair</p>", "utf-8"))
             s.wfile.write(bytes('</body></html>', "utf-8"))
         elif path.find("/orderRail") != -1: #The webpage path to order a chair
-            s.path = '//Users//eier//Documents//GitHub//TMM4275-Assignment2//railServer.html'
-            s.wfile.write(
-                bytes('<html><head><title>Cool interface.</title></head>', 'utf-8'))
-            s.wfile.write(
-                bytes("<body><p>Current path: " + path + "</p>", "utf-8"))
+            s.path = '/railServer.html'
+            file_to_read = open('/railServer.html'[1:]).read()
+            s.end_headers()
+            s.wfile.write(bytes(file_to_read),'utf-8')
+            
         else:
             s.wfile.write(bytes('<html><head><title>Cool interface.</title></head>', 'utf-8'))
             s.wfile.write(bytes("<body><p>The path: " + path + "</p>", "utf-8"))
