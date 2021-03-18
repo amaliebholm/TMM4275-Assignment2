@@ -43,8 +43,9 @@ def astar(input_matrix):
             return path
         # Setting the cost
         visited[(i, j)] = current_state[2]
+        # check for if the path has a viable turn, (has to be able to turn with a radius of 2m).
+        # The neighbor nodes needs to form a freespace kvadrat for a turn.
 
-        # check for if the path has a viable turn, (has to be able to turn with a radius of 2m). The neighbor nodes needs to form a freespace kvadrat for a turn.
         # exploring neighbors:
         neighbors = list()
         if i > 0 and input_matrix[i-1][j] > 0:
@@ -79,6 +80,15 @@ dummy_matrix = [[0, 0, 0, 0, 0, 0, 1, 0],
                 [0, 1, 2, 0, 1, 1, 1, 0],
                 [0, 1, 0, 0, 0, 0, 0, 0]]
 
+dummy_matrix2 = [[0, 2, 0, 0, 0, 0, 1, 0],
+                 [0, 1, 0, 1, 1, 1, 1, 0],
+                 [0, 1, 1, 1, 0, 1, 0, 0],
+                 [0, 1, 0, 0, 0, 0, 0, 0],
+                 [0, 1, 1, 0, 5, 5, 0, 0],
+                 [0, 0, 5, 5, 5, 0, 0, 0],
+                 [0, 1, 1, 0, 1, 1, 1, 0],
+                 [0, 1, 0, 0, 0, 3, 0, 0]]
 
 if __name__ == "__main__":
     astar(dummy_matrix)
+    astar(dummy_matrix2)
