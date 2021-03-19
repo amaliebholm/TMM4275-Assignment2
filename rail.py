@@ -1,4 +1,5 @@
 import math as m
+import numpy as np
 #Creates a costume rail from the user-inputs adjusting and pasting the templates
 #for lines and curves into the rail template
 
@@ -70,10 +71,40 @@ def get_center(radius, xstart,ystart, xend,yend, dir):
 
     xPlus = radius * m.cos(theta)
     yPlus = radius * m.sin(theta)
+    d = np.sqrt((xstart-xend)**2 + (ystart-yend)**2)
+    katet = np.sqrt(radius**2 - d*0.5)
+    print("xs",xstart)
+    print("xe",xend)
+    print("xplus",0.5*d*np.cos(theta) + katet*np.sin(theta -1.57))
+    print("ys",ystart)
+    print("ye",yend)
+    print("sin", np.sin(theta))
+    print(d*np.cos(theta))
+    xres = xstart - d*np.cos(theta)
 
-    ret = [xend + xPlus, yend + yPlus]
+    ret = [xstart - d*np.cos(theta), np.round(yend - 2*np.sin(theta),6)]
+
     print("Arc center:", ret)
     return ret
+
+def gcenter(radius, xstart,ystart, xend,yend, dir):
+    xa = 0.5*(xend-xstart) #https://math.stackexchange.com/questions/1781438/finding-the-center-of-a-circle-given-two-points-and-a-radius-algebraically
+    ya = 0.5*(yend-ystart)
+    a = np.sqrt(xa**2 + ya**2)
+    b = np.sqrt(radius**2-a**2)
+    xmid = xstart + xa
+    ymid = ystart + ya
+
+    xcenter1 = xmid + b*ya/a
+    ycenter1 = ymid - b*xa/a
+    xcenter2 = xmid - b*ya/a
+    ycenter2 = ymid + b*xa/a
+    print("xcenter1: " + str(xcenter1))
+    print("ycenter1: " + str(ycenter1))
+    print("xcenter2: " + str(xcenter2))
+    print("ycenter2: " + str(ycenter2))
+
+
 #index,radius,angle1,angle2,x,y,z,string,left
 rail = add_line(1,0,0,0,2,2,0,rail)
 rail = add_arc(2,4,0,110,0,2,0,rail,False)
@@ -87,3 +118,6 @@ print(rail)
 f = open(dfaPath + "Rail_Order.dfa", "w") #Saves the customers chair as a new DFA file with the name My_Chair_Order.dfa
 f.write(rail)
 f.close()
+
+#get_center(2, 2,2, 4,4, 1)
+gcenter(2, 2,2, 0,0, 1)

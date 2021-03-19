@@ -93,16 +93,21 @@ DefClass: Rail_Order (ug_base_part);
 (Child) element_1: {
     class, ug_line;
     start_Point, Point(0,0,0);
-    end_Point,   Point(2,2,0);
+    end_Point,   Point(0,10,0);
 };
 
 (Child) element_2: {
     class, ug_arc;
     radius, 2;
-    start_angle, 45;
-    end_angle, 110;
-    center, point(2,0,0);
-    x_axis, vector(-1,0,0);
+    start_angle, 270;
+    end_angle, 340;
+    center, point(2,10,0);
+};
+
+(Child) element_3: {
+    class, ug_line;
+    start_Point, Point(2,12,0);
+    end_Point,   Point(10,12,0);
 };
 
 
