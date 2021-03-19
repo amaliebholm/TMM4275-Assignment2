@@ -56,7 +56,7 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<br>Room hight:<br><input type="text" name="room_hight" value="0">', "utf-8"))
             s.wfile.write(bytes('<br>Room length:<br><input type="text" name="room_length" value="0">', "utf-8"))
             s.wfile.write(bytes('<br>Room width:<br><input type="text" name="room_width" value="0">', "utf-8"))
-            s.wfile.write(bytes('<br><br><input type="submit" value="Render"></form><p> Click "Render" to make the preview grid</p>', "utf-8"))
+            s.wfile.write(bytes('<br><br> <button id="renderButton"> Render </button> </form><p> Click "Render" to make the preview grid</p>', "utf-8"))
             
             s.wfile.write(bytes('<h4>Add variales in the room:</h4>', "utf-8"))
 
@@ -131,7 +131,7 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<br>Room hight:<br><input type="text" name="room_height" value="' + str(room_height) + '">', "utf-8"))
             s.wfile.write(bytes('<br>Room length:<br><input type="text" name="room_length" value="' + str(room_length) + '">', "utf-8"))
             s.wfile.write(bytes('<br>Room width:<br><input type="text" name="room_width" value="' + str(room_width) + '">', "utf-8"))
-            s.wfile.write(bytes('<br><br><input type="submit" value="Render"></form><p> Click "Render" to make the preview grid</p>', "utf-8"))
+            s.wfile.write(bytes('<br><br> <button id="renderButton"> Render </button> </form><p> Click "Render" to make the preview grid</p>', "utf-8"))
             
             s.wfile.write(bytes('<h4>Add variales in the room:</h4>', "utf-8"))
             
