@@ -171,6 +171,7 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<script>function hello() {alert("Hello");}</script>', "utf-8"))
             s.wfile.write(bytes('<script> btn1.btn.addEventListener("touchstart",function(){btn.classList.add("active");});;</script>', "utf-8"))
 
+
             s.wfile.write(bytes('<button class="button button1" type="button" id="btn1" onclick="color("btn1", "#008000")">Click here to add an attachment point for the rails in the ceiling </button>', "utf-8"))
             s.wfile.write(bytes('<button id="btn2" class="button button2">Click here to add locations the cart should visit </button>', "utf-8"))
             s.wfile.write(bytes('<button id="btn3" class="button button3">Click here to add an obstacle in the room, the feeder can not pass through these points </button>', "utf-8"))
