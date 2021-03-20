@@ -1,14 +1,14 @@
 #! NX/KF 4.0
-DefClass: Rail_template (ug_base_part);
+DefClass: profile_NX_warmup (ug_base_part);
     #Parameters for the rails cross section
-    (number parameter) height: 291; #Heigth of web
-    (number parameter) flange: 167; #Length of flange
-    (number parameter) web_thick: 6.604; #Thickness of web
-    (number parameter) f_thick: 11.167; #Thickness of flange
+    (number parameter) height: 0.291; #Heigth of web
+    (number parameter) flange: 0.167; #Length of flange
+    (number parameter) web_thick: 0.006604; #Thickness of web
+    (number parameter) f_thick: 0.011167; #Thickness of flange
 
-    (number parameter) startx: <STARTX>;
-    (number parameter) starty: <STARTY>;
-    (number parameter) startz: <STARTZ>;
+    (number parameter) startx: 0;
+    (number parameter) starty: 0;
+    (number parameter) startz: 0;
 
 
     #First we set up the profile for the beam, by defining its sides going clockwise
@@ -87,6 +87,5 @@ DefClass: Rail_template (ug_base_part);
 
 (Child) the_profile: {
     class, ug_curve_join;
-    profile, {profile1:,profile2:,profile3:,profile4:,profile5:,profile6:,profile7:,profile8:,profile9:,profile10:,profile11:,profile12:};
+    profile, {profile1:};
     };
-

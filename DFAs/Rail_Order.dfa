@@ -1,10 +1,10 @@
 #! NX/KF 4.0
 DefClass: Rail_Order (ug_base_part);
     #Parameters for the rails cross section
-    (number parameter) height: 0.291; #Heigth of web
-    (number parameter) flange: 0.167; #Length of flange
-    (number parameter) web_thick: 0.006604; #Thickness of web
-    (number parameter) f_thick: 0.011167; #Thickness of flange
+    (number parameter) height: 291; #Heigth of web
+    (number parameter) flange: 167; #Length of flange
+    (number parameter) web_thick: 6.604; #Thickness of web
+    (number parameter) f_thick: 11.167; #Thickness of flange
 
     (number parameter) startx: 0;
     (number parameter) starty: 0;
@@ -93,35 +93,35 @@ DefClass: Rail_Order (ug_base_part);
 (Child) element_0: {
     class, ug_line;
     start_Point, Point(0.0,0.0,0.0);
-    end_Point,   Point(0.0,10.0,0.0);
+    end_Point,   Point(0.0,10000.0,0.0);
 };
 
 (Child) element_1: {
     class, ug_arc;
-    radius, 2;
+    radius, 2000;
     start_angle, 0.0;
     end_angle, 90.0;
-    center, point(-2.0,10.0,0.0);
+    center, point(-2000.0,10000.0,0);
 };
 
 (Child) element_2: {
     class, ug_line;
-    start_Point, Point(-2.0,12.0,0.0);
-    end_Point,   Point(-10.0,12.0,0.0);
+    start_Point, Point(-2000.0,12000.0,0.0);
+    end_Point,   Point(-10000.0,12000.0,0.0);
 };
 
 (Child) element_3: {
     class, ug_arc;
-    radius, 2;
+    radius, 2000;
     start_angle, 90.0;
     end_angle, 135.0;
-    center, point(-10.0,10.0,0.0);
+    center, point(-9999.9999953,10000.0,0);
 };
 
 (Child) element_4: {
     class, ug_line;
-    start_Point, Point(-11.41421356,11.41421356,0.0);
-    end_Point,   Point(-13.41421356,9.41421356,0.0);
+    start_Point, Point(-11414.21356,11414.21356,0.0);
+    end_Point,   Point(-13414.21356,9414.21356,0.0);
 };
 
 

@@ -65,7 +65,8 @@ def add_line(index,x1,y1,z1,x2,y2,z2,string):
 #pointlist = np.array([[0,20],[0,10],[2,8]]) #ned sving mot høyre(refrenceframe), dvs venstre for linjens perspektiv
 #pointlist = np.array([[-1,20],[0,10],[-2,8]]) #ned sving mot venstre(refrenceframe)
 #pointlist = np.array([[0,0],[0,10],[2,12],[10,12],[11,13],[12,16]])
-pointlist = np.array([[0,0,0],[0,10,0],[-2,12,0],[-10,12,0],[-11.41421356,11.41421356,0],[-13.41421356,9.41421356,0]])
+#pointlist = np.array([[0,0,0],[0,10,0],[-2,12,0],[-10,12,0],[-11.41421356,11.41421356,0],[-13.41421356,9.41421356,0]])
+pointlist = np.array([[0,0,0],[0,10000,0],[-2000,12000,0],[-10000,12000,0],[-11414.21356,11414.21356,0],[-13414.21356,9414.21356,0]])
 
 
 
@@ -74,7 +75,7 @@ pointlist = np.array([[0,0,0],[0,10,0],[-2,12,0],[-10,12,0],[-11.41421356,11.414
 
 
 #The feeder can only make turns with radius of 2m
-r = 2
+r = 2000
 element_string=" "
 prev_line_start = np.array(pointlist[0]) #variable for the start of the line that came before the arc, this variable will be change whenever a new line is implemented
 next_line_end = np.array(pointlist[3]) #variable for the end of the line that comes after the arc, this variable will be change whenever a new line is implemented
@@ -128,7 +129,7 @@ for i in range(len(pointlist)-1):
 
         print("---Center---")
 
-        if (dir != 0): #Should actually have an if statement that surely dont calculate lines
+        if (dir != 0):
             xa = 0.5*(xe-xs) #https://math.stackexchange.com/questions/1781438/finding-the-center-of-a-circle-given-two-points-and-a-radius-algebraically
             ya = 0.5*(ye-ys)
             a = np.sqrt(xa**2 + ya**2)
@@ -191,10 +192,11 @@ for i in range(len(pointlist)-1):
         going_right = xe- xprev_line_start
         turn_right_refframe = xe-xs
         turn_up_refframe = ye-ys
+        """
         print("right",going_right)
         print("up",going_up)
         print("turnright",turn_right_refframe)
-        print("turnup", turn_up_refframe)
+        print("turnup", turn_up_refframe)"""
         
         if dir!=0: #Here we change the angles from the reference frame to the arc angles in the dfa file
             if abs(going_up/going_right) >= 1 and ye-ys>0:  #Here the curve is mostly going vertically contra sideways on entry  
@@ -263,15 +265,12 @@ for i in range(len(pointlist)-1):
             print("Angle out: " + str(angle_out))
         rail = add_arc(i,r,angle_in,angle_out,xcenter,ycenter,0,rail) # Temp set to 0 if this is correct, thinking maybe z = pointlist[i][2] is for the roof mounting
     else:
-        print("Neither arc or line?")
-
-    print((len(pointlist)-2))    
+        print("Neither arc or line?")   
 
     if i != (len(pointlist)-2): #Making the string that says what parts to curve_join
         element_string = element_string + "element_" + str(i) + ":, "
     else:
         element_string = element_string + "element_" + str(i) + ":"
-
 
 
 
