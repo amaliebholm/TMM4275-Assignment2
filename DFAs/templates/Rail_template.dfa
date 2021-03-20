@@ -11,7 +11,7 @@ DefClass: Rail_template (ug_base_part);
     (number parameter) startz: <STARTZ>;
 
 
-    #First we set up the profile for the beem, by defining its sides going clockwise
+    #First we set up the profile for the beam, by defining its sides going clockwise
 
 (Child) profile1: {
     class, ug_line; 
