@@ -151,6 +151,7 @@ class MyHandler(BaseHTTPRequestHandler):
 
             s.wfile.write(bytes('.button2 {background-color: white; color: black; border: 2px solid #FF0000;} ', "utf-8"))
             s.wfile.write(bytes('.button2:hover {background-color: #FF0000; color: white;} ', "utf-8"))
+            s.wfile.write(bytes('.button2:focus {background-color: #FF0000; color: white;} ', "utf-8"))
 
             s.wfile.write(bytes('.button3 {background-color: white; color: black; border: 2px solid #000000; } ', "utf-8"))
             s.wfile.write(bytes('.button3:hover {background-color: #000000; color: white;} ', "utf-8"))
@@ -170,7 +171,6 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<script>var count = 1; function setColor(btn, color) {var property = document.getElementById(btn); if (count == 0) {property.style.backgroundColor = "#FFFFFF" count = 1;} else {property.style.backgroundColor = color count = 0;}}</script>', "utf-8")) 
             s.wfile.write(bytes('<script>function hello() {alert("Hello");}</script>', "utf-8"))
             s.wfile.write(bytes('<script> btn1.btn.addEventListener("touchstart",function(){btn.classList.add("active");});;</script>', "utf-8"))
-
 
             s.wfile.write(bytes('<button class="button button1" type="button" id="btn1" onclick="color("btn1", "#008000")">Click here to add an attachment point for the rails in the ceiling </button>', "utf-8"))
             s.wfile.write(bytes('<button id="btn2" class="button button2">Click here to add locations the cart should visit </button>', "utf-8"))

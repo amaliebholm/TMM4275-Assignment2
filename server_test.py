@@ -63,6 +63,7 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<style>.button {border: none; color: white; padding: 16px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 12px; margin: 1px 2px; transition-duration: 0.4s; cursor: pointer;}', "utf-8"))
             s.wfile.write(bytes('.button1 {background-color: white; color: black; border: 2px solid #008000;} ', "utf-8"))
             s.wfile.write(bytes('.button1:hover {background-color: #008000; color: white;} ', "utf-8"))
+            
            
 
             s.wfile.write(bytes('.button2 {background-color: white; color: black; border: 2px solid #FF0000;} ', "utf-8"))
