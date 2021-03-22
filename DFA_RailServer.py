@@ -5,9 +5,9 @@ room_height = 0
 room_length = 0
 room_width = 0 
 attachement_points = [] 
+feeding_location = []
 visit_locations = []
 obstacles = []
-feeding_location = []
 
 HOST_NAME = '127.0.0.1'  # locathost - http://127.0.0.1
 #complete address would be: http://127.0.0.1:1234
@@ -56,7 +56,7 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<br>Room hight:<br><input type="text" name="room_hight" value="0">', "utf-8"))
             s.wfile.write(bytes('<br>Room length:<br><input type="text" name="room_length" value="0">', "utf-8"))
             s.wfile.write(bytes('<br>Room width:<br><input type="text" name="room_width" value="0">', "utf-8"))
-            s.wfile.write(bytes('<br><br> <button id = "renderButton"> Render </button> </form><p> Click "Render" to make the preview grid</p>', "utf-8"))
+            s.wfile.write(bytes('<br><br> <button id = "renderButton"> Render </button> </form><p>Click "Render" to set the room size and add varaibles</p>', "utf-8"))
 
             s.wfile.write(bytes('<h4>Add variales in the room:</h4>', "utf-8"))
 
@@ -99,18 +99,29 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<br>Room hight:<br><input type="text" name="room_height" value="' + str(room_height) + '">', "utf-8"))
             s.wfile.write(bytes('<br>Room length:<br><input type="text" name="room_length" value="' + str(room_length) + '">', "utf-8"))
             s.wfile.write(bytes('<br>Room width:<br><input type="text" name="room_width" value="' + str(room_width) + '">', "utf-8"))
-            s.wfile.write(bytes('<br><br> <button id="renderButton"> Render </button> </form><p> Click "Render" to make the preview grid</p>', "utf-8"))
+            s.wfile.write(bytes('<br><br> <button id="renderButton"> Render </button> </form><p>Click "Render" to set the room size and add varaibles</p>', "utf-8"))
 
             s.wfile.write(bytes('<h4>Add variales in the room:</h4>', "utf-8"))
+            s.wfile.write(bytes('<p>Different varialbes you can add:</p>', "utf-8"))
+            s.wfile.write(bytes('<p>1. An attachment point for the rail in the ceiling</p>', "utf-8"))
+            s.wfile.write(bytes('<p>2. Feeding location for the cart</p>', "utf-8"))
+            s.wfile.write(bytes('<p>3. Locations the cart should visit</p>', "utf-8"))
+            s.wfile.write(bytes('<p>4. An obstacle in the room, the feeder can not pass through these points</p>', "utf-8"))
+
+            s.wfile.write(bytes('<h5>Seen from above, where are the variables located in the room? give the coordinates below</h5>', "utf-8"))
+            s.wfile.write(bytes('<br>Start point in the width direction:<br><input type="text" name="x_start" value="0">', "utf-8"))
+            s.wfile.write(bytes('<br>End point in the width direction:<br><input type="text" name="x_end" value="0">', "utf-8"))
+            s.wfile.write(bytes('<br>Start point in the length direction:<br><input type="text" name="y_start" value="0">', "utf-8"))
+            s.wfile.write(bytes('<br>End point in the length direction:<br><input type="text" name="y_end" value="0">', "utf-8"))
+
+            s.wfile.write(bytes('<br>Type of variable:<br><select name="chair_colour" id="chair_colour"><option value="ATTACH_POINT">1. An attachment point for the rail in the ceiling</option><option value="FEED_LOC">2. Feeding location for the cart</option><option value="VISIT_LOC">3. Locations the cart should visit</option><option value="OBSTACLE">4. An obstacle in the room, the feeder can not pass through these points</option></select>', "utf-8"))
             
             s.wfile.write(bytes('<p onclick="myFunction(this)">Click me to change my text color.</p>', "utf-8"))      
             s.wfile.write(bytes('<button onclick="hello();">Hello</button>', "utf-8"))   
- 
 
-            s.wfile.write(bytes('<button class="button button1">Click here to add an attachment point for the rails in the ceiling </button>', "utf-8"))
-            s.wfile.write(bytes('<button class="button button2">Click here to add locations the cart should visit </button>', "utf-8"))
-            s.wfile.write(bytes('<button class="button button3">Click here to add an obstacle in the room, the feeder can not pass through these points </button>', "utf-8"))
-            s.wfile.write(bytes('<button class="button button4">Click here the feeding location for the cart </button>', "utf-8"))
+            # make an add button 
+            # make a list of already made points, so the client kan view them (and delete?)
+ 
 
 
             s.wfile.write(bytes('<br><br><input type="submit" value="Submit"></form><p> Click "Submit" to send order.</p></body></html>', "utf-8"))
