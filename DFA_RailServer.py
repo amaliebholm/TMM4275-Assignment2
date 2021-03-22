@@ -70,7 +70,7 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<br>Room length:<br><input type="text" name="room_length" value="0">', "utf-8"))
             s.wfile.write(bytes('<br>Height from floor to railing:<br><input type="text" name="rail_height" value="0">', "utf-8"))
 
-            s.wfile.write(bytes('<br><br><button type="submit" >Set size</button><p>Click "Set size" to set the room size</p>', "utf-8"))
+            s.wfile.write(bytes('<br><br><button type="submit">Set size</button><p>Click "Set size" to set the room size</p>', "utf-8"))
             s.wfile.write(bytes('<button type="submit" formaction="/setVariables">Continue</button><p>Click "Continue" to continue to add varialbes</p></form>', "utf-8"))
 
             s.wfile.write(bytes('<img src="https://raw.githubusercontent.com/amaliebholm/TMM4275-Assignment2/main/3D-2D.jpeg" alt="Image illustrating 3D and 2D perspective" width="650" height="400">', "utf-8"))
@@ -96,21 +96,19 @@ class MyHandler(BaseHTTPRequestHandler):
 
             
             # Adding the coordinates of the variable 
-
-            s.wfile.write(bytes('<h4>Seen from above, where are the variables located in the room? Give the coordinates below<:/h4>', "utf-8"))
+            s.wfile.write(bytes('<h4>Seen from above, where are the variables located in the room? Give the coordinates below:</h4>', "utf-8"))
             s.wfile.write(bytes('<br>Start point in the width direction:<br><input type="text" name="x_start" value="0">', "utf-8"))
             s.wfile.write(bytes('<br>End point in the width direction:<br><input type="text" name="x_end" value="0">', "utf-8"))
             s.wfile.write(bytes('<br>Start point in the length direction:<br><input type="text" name="y_start" value="0">', "utf-8"))
             s.wfile.write(bytes('<br>End point in the length direction:<br><input type="text" name="y_end" value="0">', "utf-8"))
             s.wfile.write(bytes('<br>In case of 5. Specific ceiling height:<br><input type="text" name="spes_height" value="0">', "utf-8"))
-
             # Adding type of variable 
             s.wfile.write(bytes('<br>Type of variable:<br><select name="var_type" id="var_type"><option value="ATTACH_POINT">1. Attachment point</option><option value="FEED_LOC">2. Feeding location</option><option value="VISIT_LOC">3. Locations the cart should visit</option><option value="OBSTACLE">4. Obstacle </option><option value="HIGHT">5. Specific hight of ceiling </option></select>', "utf-8"))
            
-            s.wfile.write(bytes('<script> document.getElementById("add").onclick  = function() {var node = document.createElement("Li"); var text = document.getElementById("user_input").value; var textnode=document.createTextNode(text); node.appendChild(textnode); document.getElementById("list_item").appendChild(node);}</script>', "utf-8"))
-            s.wfile.write(bytes('<input type="submit" value="Add variable" onclick="function();"">', "utf-8"))
+            s.wfile.write(bytes('<button type="submit">Add variable</button>', "utf-8"))
 
-            s.wfile.write(bytes('<br><br><input type="submit" name="varButton" value="Submit"></form><p> Click "Submit" to send order of your rail.</p>', "utf-8"))
+            s.wfile.write(bytes('<br><br><input type="submit" value="Submit"></form><p> Click "Submit" to send order of your rail.</p>', "utf-8"))
+            
             s.wfile.write(bytes('</body></html>', "utf-8"))
         else:
             s.wfile.write(bytes('<html><head><title>Cool interface.</title></head>', 'utf-8'))
@@ -161,13 +159,31 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<br>Room length:<br><input type="text" name="room_length" value="' + str(room_length) + '">', "utf-8"))
             s.wfile.write(bytes('<br>Height from floor to railing:<br><input type="text" name="rail_height" value="' + str(rail_height) + '">', "utf-8"))
 
-            s.wfile.write(bytes('<br><br> <button type="submit" >Set size</button><p>Click "Set size" to set the room size</p>', "utf-8"))
+            s.wfile.write(bytes('<br><br> <button type="submit">Set size</button><p>Click "Set size" to set the room size</p>', "utf-8"))
             s.wfile.write(bytes('<button type="submit" formaction="/setVariables">Continue</button><p>Click "Continue" to continue to add varialbes</p></form>', "utf-8"))
 
             s.wfile.write(bytes('<img src="https://raw.githubusercontent.com/amaliebholm/TMM4275-Assignment2/main/3D-2D.jpeg" alt="Image illustrating 3D and 2D perspective" width="650" height="400">', "utf-8"))
             s.wfile.write(bytes('</body></html>', "utf-8"))
 
         elif path.find("/setVariables") != -1:
+            content_len = int(s.headers.get('Content-Length')) #Gets the string with the rail values
+            post_body = s.rfile.read(content_len)
+            param_line = post_body.decode()
+            print("Body: ", param_line)
+
+            splitString = param_line.split("&") #Splits string so that the values can be set for each variable
+            newSplit = []
+            for i in splitString:
+                newSplit.append(i.split("="))
+
+            x_start = int(newSplit[0][1])
+            x_end = int(newSplit[1][1])
+            y_start = int(newSplit[2][1])
+            y_end = int(newSplit[3][1])
+            spes_height = int(newSplit[4][1])
+            var_type = newSplit[5][1]
+            #Every variable has been given their value from the string
+
             s.wfile.write(bytes('<html><body><h2>Determine rail specifications for your K2 EasyFeed:</h2>', "utf-8"))
             s.wfile.write(bytes('<form action="/setVariables" method="post">', 'utf-8')) #Create a form to add variables
             s.wfile.write(bytes('<p>You have set the room size (m): room height: ' + str(room_height)+ ', room width: '+ str(room_width) + ', room length: '+ str(room_length)+ ', rail hight: '+ str(rail_height) + '.</p>', 'utf-8'))
@@ -196,24 +212,22 @@ class MyHandler(BaseHTTPRequestHandler):
 
             # Adding type of variable 
             s.wfile.write(bytes('<br>Type of variable:<br><select name="var_type" id="var_type"><option value="ATTACH_POINT">1. Attachment point</option><option value="FEED_LOC">2. Feeding location</option><option value="VISIT_LOC">3. Locations the cart should visit</option><option value="OBSTACLE">4. Obstacle </option><option value="HIGHT">5. Specific hight of ceiling </option></select>', "utf-8"))
-           
-            list_el = var_type + 'from width ' + str(x_start) + ' to ' + str(x_end) + ' and from length ' + str(y_start) + ' to ' + str(y_end)
 
-            s.wfile.write(bytes('<script> document.getElementById("add").onclick = function() {var text = document.getElementById("'+ list_el +'").value; var li = "<li>" + text + "</li>"; document.getElementById("list").appendChild(li); </script>', "utf-8"))
-            s.wfile.write(bytes('<input type="submit" name="varButton" value="Add variable">', "utf-8"))
-            s.wfile.write(bytes('<ul id="list"> </ul>',"utf-8"))
+            s.wfile.write(bytes('<button type="submit">Add variable</button>', "utf-8")) 
+            
+            list_el = var_type + 'from width ' + str(x_start) + ' to ' + str(x_end) + ' and from length ' + str(y_start) + ' to ' + str(y_end)
+            s.wfile.write(bytes('<br><label>'+ list_el + '. </label>', "utf-8"))
+            
             # make a list of already made points, so the client kan view them (and delete?)
 
             # Adding the variable to the matrix 
 
-
-            s.wfile.write(bytes('<label>'+ var_type + 'from width ' + str(x_start) + ' to ' + str(x_end) + ' and from length ' + str(y_start) + ' to ' + str(y_end) + '. </label>', "utf-8"))
             
             # make a list of already made points, so the client kan view them (and delete?)
 
-            s.wfile.write(bytes('<label for="Thanks">Thank you for your order!</label><br>', 'utf-8'))
             s.wfile.write(bytes('<br><br><input type="submit" value="Submit"></form><p> Click "Submit" to send order of your rail.</p></body></html>', "utf-8"))
             s.wfile.write(bytes('</body></html>', "utf-8"))
+        
             return print(np.matrix(matrix_room))
 
 
