@@ -207,21 +207,44 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<br>Start point in the width direction:<br><input type="text" name="x_start" value="' + str(x_start) + '">', "utf-8"))
             s.wfile.write(bytes('<br>End point in the width direction:<br><input type="text" name="x_end" value="' + str(x_end) + '">', "utf-8"))
             s.wfile.write(bytes('<br>Start point in the length direction:<br><input type="text" name="y_start" value="' + str(y_start) + '">', "utf-8"))
-            s.wfile.write(bytes('<br>End point in the length direction:<br><input type="text" name="y_end" value="' + str(y_start) + '">', "utf-8"))
+            s.wfile.write(bytes('<br>End point in the length direction:<br><input type="text" name="y_end" value="' + str(y_end) + '">', "utf-8"))
             s.wfile.write(bytes('<br>In case of 5. Specific ceiling height:<br><input type="text" name="spes_height" value="' + str(spes_height) + '">', "utf-8"))
 
             # Adding type of variable 
             s.wfile.write(bytes('<br>Type of variable:<br><select name="var_type" id="var_type"><option value="ATTACH_POINT">1. Attachment point</option><option value="FEED_LOC">2. Feeding location</option><option value="VISIT_LOC">3. Locations the cart should visit</option><option value="OBSTACLE">4. Obstacle </option><option value="HIGHT">5. Specific hight of ceiling </option></select>', "utf-8"))
 
             s.wfile.write(bytes('<button type="submit">Add variable</button>', "utf-8")) 
-            
-            list_el = var_type + 'from width ' + str(x_start) + ' to ' + str(x_end) + ' and from length ' + str(y_start) + ' to ' + str(y_end)
+
+            list_el = var_type + ' from width ' + str(x_start) + ' to ' + str(x_end) + ' and from length ' + str(y_start) + ' to ' + str(y_end)
             s.wfile.write(bytes('<br><label>'+ list_el + '. </label>', "utf-8"))
             
             # make a list of already made points, so the client kan view them (and delete?)
-
+            
+            if var_type == "ATTACH_POINT":
+                weight = 1
+            elif var_type == "FEED_LOC":
+                weight = 2
+            elif var_type == "VISIT_LOC":
+                weight = 3
+            elif var_type == "OBSTACLE":
+                weight = 4
+            elif var_type == "HIGHT":
+                weight = 5
+            print("weight:")
+            print(weight)
+            
+            # Length = number of rows
+            # Width = number of columns
             # Adding the variable to the matrix 
+            print(np.matrix(matrix_room))
 
+            r = room_length - y_start - 1 
+            c = x_start - 1 
+            while (r >= (y_end - 1) & (r > 0)):
+                while (c <= (x_end - 1) & (c > 0)):
+                    matrix_room[r][c] = weight
+                    c += 1
+                r-= 1
             
             # make a list of already made points, so the client kan view them (and delete?)
 
