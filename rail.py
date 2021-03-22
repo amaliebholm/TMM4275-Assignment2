@@ -17,11 +17,15 @@ f = open(dfaPath + "templates\\Line_template.dfa", "r")
 line_temp = f.read()
 f.close() #Opens and reads the line DFA template so that straight lines can be added to the rail
 
+f = open(dfaPath + "templates\\Roof_mount_template.dfa", "r") 
+mount_temp = f.read()
+f.close() #Opens and reads the line DFA template so that straight lines can be added to the rail
+
 f = open(dfaPath + "templates\\path_and_combine.dfa", "r") 
 the_end = f.read()
 f.close() #Opens and reads the DFA file that contains the the joining and coloring
 
-startx = 0#added by user input?
+startx = 0 #added by user input?
 starty = 0
 startz = 0
 
@@ -58,10 +62,24 @@ def add_line(index,x1,y1,z1,x2,y2,z2,string):
     string = string + new_line
     return string
 
+def add_roof_mount(index,x,y,z,roof,string): #In this case z is the coordinate of the lowest point of the rail_profile
+    new_mount = mount_temp
+    new_mount = new_mount.replace("<roofmount_temp>", "mount_" + str(index))
+    new_mount = new_mount.replace("<X>", str(x))
+    new_mount = new_mount.replace("<Y>", str(y))
+    new_mount = new_mount.replace("<Z>", str(z+313.334))
+    new_mount = new_mount.replace("<height>", str(roof-z-313.334))
+
+    string = string + new_mount
+    return string
+
+
+#festepunkt liste
+mount_list = np.array([[0,0,0,2000],[0,10000,0,5000]])
 
 #Vi får inn en liste med start og slutt punkter for hvert element
 #pointlist = np.array([[0,0],[0,10],[-2,12]]) #opp,sving venstre
-#pointlist = np.array([[0,0],[0,10],[2,12]]) #opp sving høyre
+#pointlist = np.array([[0,0,0],[0,10000,0],[2000,12000,0],[12000,12000,0]]) #opp sving høyre
 #pointlist = np.array([[0,20],[0,10],[2,8]]) #ned sving mot høyre(refrenceframe), dvs venstre for linjens perspektiv
 #pointlist = np.array([[-1,20],[0,10],[-2,8]]) #ned sving mot venstre(refrenceframe)
 #pointlist = np.array([[0,0],[0,10],[2,12],[10,12],[11,13],[12,16]])
@@ -272,7 +290,9 @@ for i in range(len(pointlist)-1):
     else:
         element_string = element_string + "element_" + str(i) + ":"
 
-
+#For-loop to insert all the roof mounts############################# antar listen ser slik ut [[x,y,z,høyde],[samme-annen mount]]
+for i in range(len(mount_list)):
+    rail = add_roof_mount(i,mount_list[i][0],mount_list[i][1],mount_list[i][2],mount_list[i][3],rail)
 
 rail = rail + the_end
 
@@ -282,3 +302,5 @@ rail = rail.replace("<ALL_ELEMENTS>", element_string)
 f = open(dfaPath + "Rail_Order.dfa", "w") #Saves the customers chair as a new DFA file with the name My_Chair_Order.dfa
 f.write(rail)
 f.close()
+
+

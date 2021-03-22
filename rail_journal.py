@@ -2,14 +2,6 @@
 # Journal created by Kasper on Sat Mar 20 18:05:04 2021 Vest-Europa (normaltid)
 #
 import math
-import sys
-import clr
-
-# Managed NXOpen DLL's goes also in this directory
-sys.path.append("C:\\Program Files\\Siemens\\NX1953\\NXBIN\\python")
-
-clr.AddReference('NXOpen')
-
 import NXOpen
 import NXOpen.Gateway
 def main() : 

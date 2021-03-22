@@ -125,6 +125,22 @@ DefClass: Rail_Order (ug_base_part);
 };
 
 
+(child) mount_0:{
+        class, ug_cylinder;
+        diameter, 100;
+        height, 4686.666;
+        Origin, Point(0,0,313.334);
+        Direction, Vector(0,0,1);
+    };
+
+(child) mount_1:{
+        class, ug_cylinder;
+        diameter, 100;
+        height, 1686.666;
+        Origin, Point(0,10000,313.334);
+        Direction, Vector(0,0,1);
+    };
+
 (Child) the_path: {
     Class, ug_curve_join;
     profile, { element_0:, element_1:, element_2:, element_3:, element_4:};

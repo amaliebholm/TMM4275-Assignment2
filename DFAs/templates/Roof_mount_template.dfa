@@ -1,0 +1,8 @@
+
+(child) <roofmount_temp>:{
+        class, ug_cylinder;
+        diameter, 100;
+        height, <height>;
+        Origin, Point(<X>,<Y>,<Z>);
+        Direction, Vector(0,0,1);
+    };
