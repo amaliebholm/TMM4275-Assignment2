@@ -1,9 +1,12 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import requests
+import numpy as np
 
 room_height = 0
 room_length = 0
 room_width = 0 
+matrix_room = []
+
 attachement_points = [] 
 feeding_location = []
 visit_locations = []
@@ -53,7 +56,7 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<form action="/orderRail" method="post">', 'utf-8')) #Create a form to take in values
             
             s.wfile.write(bytes('<h4>Set room size (m):</h4>', "utf-8"))
-            s.wfile.write(bytes('<br>Room hight:<br><input type="text" name="room_hight" value="0">', "utf-8"))
+            s.wfile.write(bytes('<br>Room height:<br><input type="text" name="room_height" value="0">', "utf-8"))
             s.wfile.write(bytes('<br>Room length:<br><input type="text" name="room_length" value="0">', "utf-8"))
             s.wfile.write(bytes('<br>Room width:<br><input type="text" name="room_width" value="0">', "utf-8"))
             s.wfile.write(bytes('<br><br> <button id = "renderButton"> Render </button> </form><p>Click "Render" to set the room size and add varaibles</p>', "utf-8"))
@@ -96,10 +99,15 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<form action="/orderRail" method="post">', 'utf-8')) #Create a form to take in values
             
             s.wfile.write(bytes('<h4>Your room size (m):</h4>', "utf-8"))
-            s.wfile.write(bytes('<br>Room hight:<br><input type="text" name="room_height" value="' + str(room_height) + '">', "utf-8"))
+            s.wfile.write(bytes('<br>Room height:<br><input type="text" name="room_height" value="' + str(room_height) + '">', "utf-8"))
             s.wfile.write(bytes('<br>Room length:<br><input type="text" name="room_length" value="' + str(room_length) + '">', "utf-8"))
             s.wfile.write(bytes('<br>Room width:<br><input type="text" name="room_width" value="' + str(room_width) + '">', "utf-8"))
             s.wfile.write(bytes('<br><br> <button id="renderButton"> Render </button> </form><p>Click "Render" to set the room size and add varaibles</p>', "utf-8"))
+
+            # Matrix representing the room: 
+            # Length = number of rows
+            # Width = number of columns
+            matrix_room = [[0 for w in range(room_width)]for l in range(room_length)]
 
             s.wfile.write(bytes('<h4>Add variales in the room:</h4>', "utf-8"))
             s.wfile.write(bytes('<p>Different varialbes you can add:</p>', "utf-8"))
@@ -107,26 +115,42 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<p>2. Feeding location for the cart</p>', "utf-8"))
             s.wfile.write(bytes('<p>3. Locations the cart should visit</p>', "utf-8"))
             s.wfile.write(bytes('<p>4. An obstacle in the room, the feeder can not pass through these points</p>', "utf-8"))
+            s.wfile.write(bytes('<p>5. Specific area with different hight of ceiling</p>', "utf-8"))
 
-            s.wfile.write(bytes('<h5>Seen from above, where are the variables located in the room? give the coordinates below</h5>', "utf-8"))
+            # Image illustrating 3D and 2D perspective 
+            s.wfile.write(bytes('<img src="https://raw.githubusercontent.com/amaliebholm/TMM4275-Assignment2/main/3D-2D.jpeg" alt="Image illustrating 3D and 2D perspective" width="650" height="400">', "utf-8"))
+
+            # Adding the coordinates of the variable 
+            var_type = ""
+            x_start = 0
+            x_end = 0 
+            y_start = 0
+            y_end = 0 
+            spes_height = 0 
+
+            s.wfile.write(bytes('<h4>Seen from above, where are the variables located in the room? give the coordinates below</h4>', "utf-8"))
             s.wfile.write(bytes('<br>Start point in the width direction:<br><input type="text" name="x_start" value="0">', "utf-8"))
             s.wfile.write(bytes('<br>End point in the width direction:<br><input type="text" name="x_end" value="0">', "utf-8"))
             s.wfile.write(bytes('<br>Start point in the length direction:<br><input type="text" name="y_start" value="0">', "utf-8"))
             s.wfile.write(bytes('<br>End point in the length direction:<br><input type="text" name="y_end" value="0">', "utf-8"))
+            s.wfile.write(bytes('<br>In case of 5. Specific ceiling height:<br><input type="text" name="spes_height" value="0">', "utf-8"))
 
-            s.wfile.write(bytes('<br>Type of variable:<br><select name="chair_colour" id="chair_colour"><option value="ATTACH_POINT">1. An attachment point for the rail in the ceiling</option><option value="FEED_LOC">2. Feeding location for the cart</option><option value="VISIT_LOC">3. Locations the cart should visit</option><option value="OBSTACLE">4. An obstacle in the room, the feeder can not pass through these points</option></select>', "utf-8"))
+
+            # Adding type of variable 
+            s.wfile.write(bytes('<br>Type of variable:<br><select name="var_type" id="var_type"><option value="ATTACH_POINT">1. Attachment point</option><option value="FEED_LOC">2. Feeding location</option><option value="VISIT_LOC">3. Locations the cart should visit</option><option value="OBSTACLE">4. Obstacle </option><option value="HIGHT">5. Specific hight of ceiling </option></select>', "utf-8"))
+           
+            s.wfile.write(bytes('<script>function hello() {alert("Variable");}</script>', "utf-8"))    
+            s.wfile.write(bytes('<button onclick="hello();">Add variable</button>', "utf-8")) 
+
+             # make a list of already made points, so the client kan view them (and delete?)
+             
+            s.wfile.write(bytes('<p>'+ var_type + 'from width ' + str(x_start) + ' to ' + str(x_end) + ' and from length ' + str(y_start) + ' to ' + str(y_end) + '. </p>', "utf-8"))
             
-            s.wfile.write(bytes('<p onclick="myFunction(this)">Click me to change my text color.</p>', "utf-8"))      
-            s.wfile.write(bytes('<button onclick="hello();">Hello</button>', "utf-8"))   
-
-            # make an add button 
             # make a list of already made points, so the client kan view them (and delete?)
- 
 
+            s.wfile.write(bytes('<br><br><input type="submit" value="Submit"></form><p> Click "Submit" to send order of your rail.</p></body></html>', "utf-8"))
 
-            s.wfile.write(bytes('<br><br><input type="submit" value="Submit"></form><p> Click "Submit" to send order.</p></body></html>', "utf-8"))
-
-            return room_height, room_length, room_width
+            return room_height, room_length, room_width, matrix_room, print(np.matrix(matrix_room))
 
 
 
