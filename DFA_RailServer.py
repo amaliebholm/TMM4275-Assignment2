@@ -70,16 +70,18 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<br>Room length:<br><input type="text" name="room_length" value="0">', "utf-8"))
             s.wfile.write(bytes('<br>Height from floor to railing:<br><input type="text" name="rail_height" value="0">', "utf-8"))
 
-            s.wfile.write(bytes('<button type="submit" formaction="/setVariables">Render</button><p>Click "Render" to set the room size and continue to add varialbes</p></form>', "utf-8"))
+            s.wfile.write(bytes('<br><br><button type="submit" >Set size</button><p>Click "Set size" to set the room size</p>', "utf-8"))
+            s.wfile.write(bytes('<button type="submit" formaction="/setVariables">Continue</button><p>Click "Continue" to continue to add varialbes</p></form>', "utf-8"))
 
             s.wfile.write(bytes('<img src="https://raw.githubusercontent.com/amaliebholm/TMM4275-Assignment2/main/3D-2D.jpeg" alt="Image illustrating 3D and 2D perspective" width="650" height="400">', "utf-8"))
             s.wfile.write(bytes('</body></html>', "utf-8"))
 
         elif path.find("/setVariables") != -1:
-            s.wfile.write(bytes('<html><body>', "utf-8"))
+            s.wfile.write(bytes('<html><body><h2>Determine rail specifications for your K2 EasyFeed:</h2>', "utf-8"))
+            s.wfile.write(bytes('<form action="/setVariables" method="post">', 'utf-8')) #Create a form to add variables
             s.wfile.write(bytes('<p>You have set the room size: room height: '+ str(room_height) + ', room width: '+ str(room_width) + ', room length: '+ str(room_length)+ ', rail hight: '+ str(rail_height) + '.</p>', 'utf-8'))
             
-            s.wfile.write(bytes('<button type="submit" formaction="/setSize">Change</button><p>Click "Change" to set the new rrom size</p>', "utf-8"))
+            s.wfile.write(bytes('<button type="submit" formaction="/setSize">Change</button><p>Click "Change" to set the new room size</p>', "utf-8"))
 
             s.wfile.write(bytes('<h4>Add variales in the room:</h4>', "utf-8"))
             s.wfile.write(bytes('<p>Different varialbes you can add:</p>', "utf-8"))
@@ -94,9 +96,8 @@ class MyHandler(BaseHTTPRequestHandler):
 
             
             # Adding the coordinates of the variable 
-            s.wfile.write(bytes('<form action="/setVariables" method="post">', 'utf-8')) #Create a form to add variables
 
-            s.wfile.write(bytes('<h4>Seen from above, where are the variables located in the room? Give the coordinates below</h4>', "utf-8"))
+            s.wfile.write(bytes('<h4>Seen from above, where are the variables located in the room? Give the coordinates below<:/h4>', "utf-8"))
             s.wfile.write(bytes('<br>Start point in the width direction:<br><input type="text" name="x_start" value="0">', "utf-8"))
             s.wfile.write(bytes('<br>End point in the width direction:<br><input type="text" name="x_end" value="0">', "utf-8"))
             s.wfile.write(bytes('<br>Start point in the length direction:<br><input type="text" name="y_start" value="0">', "utf-8"))
@@ -150,13 +151,28 @@ class MyHandler(BaseHTTPRequestHandler):
             # Width = number of columns
             matrix_room = [[0 for w in range(room_width)]for l in range(room_length)]
             print(np.matrix(matrix_room))
+
+            s.wfile.write(bytes('<html><body><h2>Determine rail specifications for your K2 EasyFeed:</h2>', "utf-8"))
+            s.wfile.write(bytes('<form action="/setSize" method="post">', 'utf-8')) #Create a form to add variables
+
+            s.wfile.write(bytes('<h4>Your room size is set to (m):</h4>', "utf-8"))
+            s.wfile.write(bytes('<br>Room height:<br><input type="text" name="room_height" value="' + str(room_height) + '">', "utf-8"))
+            s.wfile.write(bytes('<br>Room width:<br><input type="text" name="room_width" value="' + str(room_width) + '">', "utf-8"))
+            s.wfile.write(bytes('<br>Room length:<br><input type="text" name="room_length" value="' + str(room_length) + '">', "utf-8"))
+            s.wfile.write(bytes('<br>Height from floor to railing:<br><input type="text" name="rail_height" value="' + str(rail_height) + '">', "utf-8"))
+
+            s.wfile.write(bytes('<br><br> <button type="submit" >Set size</button><p>Click "Set size" to set the room size</p>', "utf-8"))
+            s.wfile.write(bytes('<button type="submit" formaction="/setVariables">Continue</button><p>Click "Continue" to continue to add varialbes</p></form>', "utf-8"))
+
+            s.wfile.write(bytes('<img src="https://raw.githubusercontent.com/amaliebholm/TMM4275-Assignment2/main/3D-2D.jpeg" alt="Image illustrating 3D and 2D perspective" width="650" height="400">', "utf-8"))
             s.wfile.write(bytes('</body></html>', "utf-8"))
 
         elif path.find("/setVariables") != -1:
-            s.wfile.write(bytes('<html><body>', "utf-8"))
-            s.wfile.write(bytes('<p>You have set the room size: room height: ' + str(room_height)+ ', room width: '+ str(room_width) + ', room length: '+ str(room_length)+ ', rail hight: '+ str(rail_height) + '.</p>', 'utf-8'))
+            s.wfile.write(bytes('<html><body><h2>Determine rail specifications for your K2 EasyFeed:</h2>', "utf-8"))
+            s.wfile.write(bytes('<form action="/setVariables" method="post">', 'utf-8')) #Create a form to add variables
+            s.wfile.write(bytes('<p>You have set the room size (m): room height: ' + str(room_height)+ ', room width: '+ str(room_width) + ', room length: '+ str(room_length)+ ', rail hight: '+ str(rail_height) + '.</p>', 'utf-8'))
             
-            s.wfile.write(bytes('<button type="submit" formaction="/setSize">Change</button><p>Click "Change" to set the new rom size</p>', "utf-8"))
+            s.wfile.write(bytes('<button type="submit" formaction="/setSize">Change</button><p>Click "Change" to set the new room size</p>', "utf-8"))
             
             s.wfile.write(bytes('<h4>Add variales in the room:</h4>', "utf-8"))
             s.wfile.write(bytes('<p>Different varialbes you can add:</p>', "utf-8"))
@@ -170,9 +186,8 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<img src="https://raw.githubusercontent.com/amaliebholm/TMM4275-Assignment2/main/3D-2D.jpeg" alt="Image illustrating 3D and 2D perspective" width="650" height="400">', "utf-8"))
             
             # Adding the coordinates of the variable 
-            s.wfile.write(bytes('<form id="variableForm" action="/orderRail" method="post">', 'utf-8')) #Create a form to add variables
                    
-            s.wfile.write(bytes('<h4>Seen from above, where are the variables located in the room? Give the coordinates below</h4>', "utf-8"))
+            s.wfile.write(bytes('<h4>Seen from above, where are the variables located in the room? Give the coordinates below:</h4>', "utf-8"))
             s.wfile.write(bytes('<br>Start point in the width direction:<br><input type="text" name="x_start" value="' + str(x_start) + '">', "utf-8"))
             s.wfile.write(bytes('<br>End point in the width direction:<br><input type="text" name="x_end" value="' + str(x_end) + '">', "utf-8"))
             s.wfile.write(bytes('<br>Start point in the length direction:<br><input type="text" name="y_start" value="' + str(y_start) + '">', "utf-8"))
