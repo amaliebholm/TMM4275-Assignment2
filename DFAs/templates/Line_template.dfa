@@ -1,0 +1,6 @@
+(Child) <line_temp>: {
+    class, ug_line;
+    start_Point, Point(<X1>,<Y1>,<Z1>);
+    end_Point,   Point(<X2>,<Y2>,<Z2>);
+};
+

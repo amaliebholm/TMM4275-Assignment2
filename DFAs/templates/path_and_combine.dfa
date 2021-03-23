@@ -1,0 +1,15 @@
+
+(Child) the_path: {
+    Class, ug_curve_join;
+    profile, {<ALL_ELEMENTS>};
+};
+
+(Child) the_full_rail: {
+    class, ug_swept;
+    guide, {{forward, the_path:}};
+    section, {{forward, the_profile:}};
+    scaling, {scale_constant, 1};
+    alignment_init, parameter;
+    orientation, {orientation_fixed};
+    tolerances, {0, 0, 0};
+};

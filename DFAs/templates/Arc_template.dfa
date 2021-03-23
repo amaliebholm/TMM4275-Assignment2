@@ -1,0 +1,8 @@
+(Child) <arc_temp>: {
+    class, ug_arc;
+    radius, <RADIUS>;
+    start_angle, <ANGLE1>;
+    end_angle, <ANGLE2>;
+    center, point(<XCENTER>,<YCENTER>,<ZCENTER>);
+};
+
