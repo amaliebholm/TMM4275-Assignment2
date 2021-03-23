@@ -233,13 +233,13 @@ class MyHandler(BaseHTTPRequestHandler):
             # Adding the variable to the matrix 
             print(np.matrix(matrix_room))
 
-            r = room_length - y_start - 1 
+            r = y_start - 1 
             c = x_start - 1 
-            while (r >= (y_end - 1) & (r > 0)):
-                while (c <= (x_end - 1) & (c > 0)):
+            while (r <= (y_end - 1)):
+                while (c <= (x_end - 1)):
                     matrix_room[r][c] = weight
                     c += 1
-                r-= 1
+                r+= 1
             
             # make a list of already made points, so the client kan view them (and delete?)
 
