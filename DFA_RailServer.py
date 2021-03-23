@@ -15,10 +15,9 @@ obstacles = []
 #each element on form: [(x_start, y_start), (x_end, y_end), spes_height]
 
 # Initial values of variables
-x_start = 0
-x_end = 0 
-y_start = 0
-y_end = 0 
+x = 0
+y = 0 
+obs_string = ""
 spes_height = 0 
 var_type = ""
 weight = 0 
@@ -43,7 +42,7 @@ class MyHandler(BaseHTTPRequestHandler):
         s.end_headers()
 
     def do_GET(s):
-        global room_height, room_width, room_length, matrix_room, matrix_height, rail_height, x_start, x_end, y_start, y_start, spes_height, var_type, weight
+        global room_height, room_width, room_length, matrix_room, matrix_height, rail_height, x, y, obs_string, spes_height, var_type
         """Respond to a GET request."""
         s.send_response(200)
         s.send_header("Content-type", "text/html")
@@ -79,39 +78,6 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<img src="https://raw.githubusercontent.com/amaliebholm/TMM4275-Assignment2/main/sketch_room.jpeg" alt="Image illustrating 3D and 2D perspective" width="650" height="400">', "utf-8"))
             s.wfile.write(bytes('</body></html>', "utf-8"))
 
-        elif path.find("/setVariables") != -1:
-            s.wfile.write(bytes('<html><body><h2>Determine rail specifications for your K2 EasyFeed:</h2>', "utf-8"))
-            s.wfile.write(bytes('<form action="/setVariables" method="post">', 'utf-8')) #Create a form to add variables
-            s.wfile.write(bytes('<p>You have set the room size: room height: '+ str(room_height) + ', room width: '+ str(room_width) + ', room length: '+ str(room_length)+ ', rail hight: '+ str(rail_height) + '.</p>', 'utf-8'))
-            
-            s.wfile.write(bytes('<button type="submit" formaction="/setSize">Change</button><p>Click "Change" to set the new room size</p>', "utf-8"))
-
-            s.wfile.write(bytes('<h4>Add variales in the room:</h4>', "utf-8"))
-            s.wfile.write(bytes('<p>Different varialbes you can add:</p>', "utf-8"))
-            s.wfile.write(bytes('<p>1. An attachment point for the rail in the ceiling</p>', "utf-8"))
-            s.wfile.write(bytes('<p>2. Feeding location for the cart</p>', "utf-8"))
-            s.wfile.write(bytes('<p>3. Locations the cart should visit</p>', "utf-8"))
-            s.wfile.write(bytes('<p>4. An obstacle in the room, the feeder can not pass through these points</p>', "utf-8"))
-            s.wfile.write(bytes('<p>5. Specific area with different hight of ceiling</p>', "utf-8"))
-
-            # Image illustrating 3D and 2D perspective 
-            s.wfile.write(bytes('<img src="https://raw.githubusercontent.com/amaliebholm/TMM4275-Assignment2/main/sketch_room.jpeg" alt="Image illustrating 3D and 2D perspective" width="650" height="400">', "utf-8"))
-
-            # Adding the coordinates of the variable 
-            s.wfile.write(bytes('<h4>Seen from above, where are the variables located in the room? Give the coordinates below:</h4>', "utf-8"))
-            s.wfile.write(bytes('<br>Start point in the width direction:<br><input type="text" name="x_start" value="0">', "utf-8"))
-            s.wfile.write(bytes('<br>End point in the width direction:<br><input type="text" name="x_end" value="0">', "utf-8"))
-            s.wfile.write(bytes('<br><br>Start point in the length direction:<br><input type="text" name="y_start" value="0">', "utf-8"))
-            s.wfile.write(bytes('<br>End point in the length direction:<br><input type="text" name="y_end" value="0">', "utf-8"))
-            s.wfile.write(bytes('<br>Ceiling height in this area (change if it differs form gnereal height):<br><input type="text" name="spes_height" value="' + str(room_height) + '">', "utf-8"))
-            # Adding type of variable 
-            s.wfile.write(bytes('<br>Type of variable:<br><select name="var_type" id="var_type"><option value="ATTACH_POINT">1. Attachment point</option><option value="FEED_LOC">2. Feeding location</option><option value="VISIT_LOC">3. Locations the cart should visit</option><option value="OBSTACLE">4. Obstacle </option><option value="HIGHT">5. Specific hight of ceiling </option></select>', "utf-8"))
-           
-            s.wfile.write(bytes('<button type="submit">Add variable</button>', "utf-8"))
-
-            s.wfile.write(bytes('<br><br><input type="submit" value="Submit"></form><p> Click "Submit" to send order of your rail.</p>', "utf-8"))
-            
-            s.wfile.write(bytes('</body></html>', "utf-8"))
 
         else:
             s.wfile.write(bytes('<html><head><title>Cool interface.</title></head>', 'utf-8'))
@@ -119,7 +85,7 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('</body></html>', "utf-8"))
 
     def do_POST(s):
-        global room_height, room_width, room_length, matrix_room, matrix_height, rail_height, x_start, x_end, y_start, y_start, spes_height, var_type, weight
+        global room_height, room_width, room_length, matrix_room, matrix_height, rail_height, x, y, obs_string, spes_height, var_type
         s.send_response(200)
         s.send_header("Content-type", "text/html")
         s.end_headers()
@@ -191,10 +157,9 @@ class MyHandler(BaseHTTPRequestHandler):
                 newSplit.append(i.split("="))
 
             try:
-                x_start = int(newSplit[0][1])
-                x_end = int(newSplit[1][1])
-                y_start = int(newSplit[2][1])
-                y_end = int(newSplit[3][1])
+                x = int(newSplit[0][1])
+                x = int(newSplit[1][1])
+                obs_string = newSplit[3][1]
                 spes_height = int(newSplit[4][1])
                 var_type = newSplit[5][1]
                 #Every variable has been given their value from the string 
@@ -204,13 +169,11 @@ class MyHandler(BaseHTTPRequestHandler):
             within_constraints = False
 
             # Checking if the koordinates are within the room size
-            if x_start >= 0 and  x_start < room_width:
-                if x_end > x_start and x_end < room_width:
-                     if x_start >= 0 and  x_start < room_width:
-                        if x_end > x_start and x_end < room_width:
-                            if spes_height > 0: 
-                                print("Params OK")
-                                within_constraints = True
+            if x <= room_width and x >= 0:
+                if y < room_length and y >= 0:
+                    if spes_height > 0: 
+                        print("Params OK")
+                        within_constraints = True
                                 
             else: 
                 within_constraints = False
@@ -227,21 +190,20 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<p>2. Feeding location for the cart</p>', "utf-8"))
             s.wfile.write(bytes('<p>3. Locations the cart should visit</p>', "utf-8"))
             s.wfile.write(bytes('<p>4. An obstacle in the room, the feeder can not pass through these points</p>', "utf-8"))
-            s.wfile.write(bytes('<p>5. Specific area with different hight of ceiling</p>', "utf-8"))
 
             # Image illustrating 3D and 2D perspective 
             s.wfile.write(bytes('<img src="https://raw.githubusercontent.com/amaliebholm/TMM4275-Assignment2/main/sketch_room.jpeg" alt="Image illustrating 3D and 2D perspective" width="650" height="400">', "utf-8"))
             
             # Adding the coordinates of the variable       
             s.wfile.write(bytes('<h4>Seen from above, where are the variables located in the room? Give the coordinates below:</h4>', "utf-8"))
-            s.wfile.write(bytes('<br>Start point in the width direction:<br><input type="text" name="x_start" value="' + str(0) + '">', "utf-8"))
-            s.wfile.write(bytes('<br>End point in the width direction:<br><input type="text" name="x_end" value="' + str(0) + '">', "utf-8"))
-            s.wfile.write(bytes('<br><br>Start point in the length direction:<br><input type="text" name="y_start" value="' + str(0) + '">', "utf-8"))
-            s.wfile.write(bytes('<br>End point in the length direction:<br><input type="text" name="y_end" value="' + str(0) + '">', "utf-8"))
+            s.wfile.write(bytes('<p>Go through the room chronologically and add variables as the appear in the room.</p>', "utf-8"))
+            s.wfile.write(bytes('<br>Point in the width direction:<br><input type="text" name="x" value="0">', "utf-8"))
+            s.wfile.write(bytes('<br>Point in the length direction:<br><input type="text" name="y" value="0">', "utf-8"))
+            s.wfile.write(bytes('<br><br> If the varaible is an obstacle add three more points, marking off the area the obstacle obtain in the room, filling the points [point in width, point in length]:<br><input type="text" name="obs_string" value="[0, 0], [0, 0], [0, 0]">', "utf-8"))
             s.wfile.write(bytes('<br>Ceiling height in this area (change if it differs form gnereal height):<br><input type="text" name="spes_height" value="' + str(room_height) + '">', "utf-8"))
 
             # Adding type of variable 
-            s.wfile.write(bytes('<br>Type of variable:<br><select name="var_type" id="var_type"><option value="ATTACH_POINT">1. Attachment point</option><option value="FEED_LOC">2. Feeding location</option><option value="VISIT_LOC">3. Locations the cart should visit</option><option value="OBSTACLE">4. Obstacle </option><option value="HEIGHT">5. Specific hight of ceiling </option></select>', "utf-8"))
+            s.wfile.write(bytes('<br>Type of variable:<br><select name="var_type" id="var_type"><option value="ATTACH_POINT">1. Attachment point</option><option value="FEED_LOC">2. Feeding location</option><option value="VISIT_LOC">3. Locations the cart should visit</option><option value="OBSTACLE">4. Obstacle </option></select>', "utf-8"))
 
             if within_constraints == True:
                 s.wfile.write(bytes('<button type="submit">Add variable</button>', "utf-8")) 
@@ -249,17 +211,17 @@ class MyHandler(BaseHTTPRequestHandler):
                 if var_type == "RESET":
                     var_type_str = "Reset area"
                 elif var_type == "ATTACH_POINT":
-                    attachement_points.append([(x_start, y_start), (x_end, y_end), spes_height])
+                    attachement_points.append([[x, y], spes_height])
                     var_type_str = "Attachment point"
                 elif var_type == "FEED_LOC":
-                    visit_locations.insert(0, [(x_start, y_start), (x_end, y_end), spes_height])
+                    attachement_points.append([[x, y], spes_height])
                     # Feeding location inserted at start of the visit_location list
                     var_type_str = "Feeding location"
                 elif var_type == "VISIT_LOC":
-                    visit_locations.append([(x_start, y_start), (x_end, y_end), spes_height])
+                    attachement_points.append([[x, y], spes_height])
                     var_type_str = "Location to visit"
                 elif var_type == "OBSTACLE":
-                    obstacles.append([(x_start, y_start), (x_end, y_end), spes_height])
+                    attachement_points.append([x, y], obs_string)
                     var_type_str = "Obstacle"
             elif within_constraints == False:
                 s.wfile.write(bytes('<script>function alert(){alert("The location must be within the room size!");} </script>', "utf-8"))
@@ -276,7 +238,7 @@ class MyHandler(BaseHTTPRequestHandler):
             list_att = ""
             for li in attachement_points:
                 list_att += "<li>" + str(li) + "</li>"
-            s.wfile.write(bytes('<br><p>List of attachement points: [(start width, end wifth), (start length, end length), ceiling height]:</p>', "utf-8"))
+            s.wfile.write(bytes('<br><p>List of attachement points: [(point in width, poing in length), ceiling height]:</p>', "utf-8"))
             s.wfile.write(bytes('<ul>' + list_att + '</ul>', "utf-8"))
             
             list_visit = ""
