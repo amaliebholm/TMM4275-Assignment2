@@ -2,23 +2,20 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import requests
 import numpy as np
 
+# Initial valies of room
 room_height = 0
 room_length = 0
 room_width = 0
 rail_height = 0 
 matrix_room = []
 
-var_type = ""
+# Initial values of variables
 x_start = 0
 x_end = 0 
 y_start = 0
 y_end = 0 
 spes_height = 0 
-
-attachement_points = [] 
-feeding_location = []
-visit_locations = []
-obstacles = []
+var_type = ""
 
 HOST_NAME = '127.0.0.1'  # locathost - http://127.0.0.1
 #complete address would be: http://127.0.0.1:1234
@@ -212,14 +209,12 @@ class MyHandler(BaseHTTPRequestHandler):
 
             # Adding type of variable 
             s.wfile.write(bytes('<br>Type of variable:<br><select name="var_type" id="var_type"><option value="ATTACH_POINT">1. Attachment point</option><option value="FEED_LOC">2. Feeding location</option><option value="VISIT_LOC">3. Locations the cart should visit</option><option value="OBSTACLE">4. Obstacle </option><option value="HIGHT">5. Specific hight of ceiling </option></select>', "utf-8"))
-
             s.wfile.write(bytes('<button type="submit">Add variable</button>', "utf-8")) 
 
+            # Printing the variable 
             list_el = var_type + ' from width ' + str(x_start) + ' to ' + str(x_end) + ' and from length ' + str(y_start) + ' to ' + str(y_end)
-            s.wfile.write(bytes('<br><label>'+ list_el + '. </label>', "utf-8"))
-            
-            # make a list of already made points, so the client kan view them (and delete?)
-            
+            s.wfile.write(bytes('<br><br><label>'+ list_el + '. </label>', "utf-8"))
+                        
             if var_type == "ATTACH_POINT":
                 weight = 1
             elif var_type == "FEED_LOC":
