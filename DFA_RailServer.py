@@ -146,6 +146,18 @@ class MyHandler(BaseHTTPRequestHandler):
             rail_height = int(newSplit[3][1])
             #Every variable has been given their value from the string
 
+            room_constraint = False
+
+            if rail_height < room_height:
+                if room_height > 0:
+                    if room_length > 0:
+                        if room_width > 0:
+                            print("Params OK")
+                            room_constraint = True
+            else:
+                room_constraint = False
+            
+
             s.wfile.write(bytes('<html><body><h2>Determine rail specifications for your K2 EasyFeed:</h2>', "utf-8"))
             s.wfile.write(bytes('<form action="/setSize" method="post">', 'utf-8')) #Create a form to add variables
 
@@ -155,11 +167,17 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<br>Room length:<br><input type="text" name="room_length" value="' + str(room_length) + '">', "utf-8"))
             s.wfile.write(bytes('<br>Height from floor to railing:<br><input type="text" name="rail_height" value="' + str(rail_height) + '">', "utf-8"))
 
-            s.wfile.write(bytes('<br><br> <button type="submit">Set size</button><p>Click "Set size" to set the room size</p>', "utf-8"))
-            s.wfile.write(bytes('<button type="submit" formaction="/setVariables">Continue</button><p>Click "Continue" to continue to add varialbes</p></form>', "utf-8"))
+            if room_constraint == True: 
+                s.wfile.write(bytes('<br><br> <button type="submit">Set size</button><p>Click "Set size" to set the room size</p>', "utf-8"))
+                s.wfile.write(bytes('<button type="submit" formaction="/setVariables">Continue</button><p>Click "Continue" to continue to add varialbes</p>', "utf-8"))
+            elif room_constraint == False:
+                s.wfile.write(bytes('<script>function alert(){alert("The room height, length and width must be more than zero, and rail height must be lower than room height!");} </script>', "utf-8"))
+                s.wfile.write(bytes('<br><br><button type="submit" onclick="alert();">Set size</button> <p>Click "Set size" to set the room size</p>', "utf-8"))
+                s.wfile.write(bytes('<button type="submit" formaction="/setVariables">Continue</button> <p>Click "Continue" to continue to add varialbes</p>', "utf-8"))
+
 
             s.wfile.write(bytes('<img src="https://raw.githubusercontent.com/amaliebholm/TMM4275-Assignment2/main/sketch_room.jpeg" alt="Image illustrating 3D and 2D perspective" width="650" height="400">', "utf-8"))
-            s.wfile.write(bytes('</body></html>', "utf-8"))
+            s.wfile.write(bytes('</form></body></html>', "utf-8"))
 
         elif path.find("/setVariables") != -1:
             content_len = int(s.headers.get('Content-Length')) #Gets the string with the rail values
@@ -245,7 +263,7 @@ class MyHandler(BaseHTTPRequestHandler):
                     var_type_str = "Obstacle"
             elif within_constraints == False:
                 s.wfile.write(bytes('<script>function alert(){alert("The location must be within the room size!");} </script>', "utf-8"))
-                s.wfile.write(bytes('<button type="submit" onclick="alert()">Add variable</button>', "utf-8")) 
+                s.wfile.write(bytes('<button type="submit" onclick="alert();">Add variable</button>', "utf-8")) 
 
             print("Attachment points:")
             print(attachement_points)
@@ -278,7 +296,7 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('</body></html>', "utf-8"))
         
             return attachement_points, visit_locations, obstacles
-
+        
         elif path.find("/sendOrder") != -1:
             s.wfile.write(bytes('<html><body><h2>Rail specifications for your K2 EasyFeed:</h2>', "utf-8"))
             s.wfile.write(bytes('<form action="/sendOrder" method="post">', 'utf-8'))
