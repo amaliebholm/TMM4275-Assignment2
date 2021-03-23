@@ -22,8 +22,6 @@ y_end = 0
 spes_height = 0 
 var_type = ""
 weight = 0 
-var_list = []
-list_html = ""
 
 HOST_NAME = '127.0.0.1'  # locathost - http://127.0.0.1
 #complete address would be: http://127.0.0.1:1234
@@ -103,7 +101,7 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<h4>Seen from above, where are the variables located in the room? Give the coordinates below:</h4>', "utf-8"))
             s.wfile.write(bytes('<br>Start point in the width direction:<br><input type="text" name="x_start" value="0">', "utf-8"))
             s.wfile.write(bytes('<br>End point in the width direction:<br><input type="text" name="x_end" value="0">', "utf-8"))
-            s.wfile.write(bytes('<br>Start point in the length direction:<br><input type="text" name="y_start" value="0">', "utf-8"))
+            s.wfile.write(bytes('<br><br>Start point in the length direction:<br><input type="text" name="y_start" value="0">', "utf-8"))
             s.wfile.write(bytes('<br>End point in the length direction:<br><input type="text" name="y_end" value="0">', "utf-8"))
             s.wfile.write(bytes('<br>Ceiling height in this area (change if it differs form gnereal height):<br><input type="text" name="spes_height" value="' + str(room_height) + '">', "utf-8"))
             # Adding type of variable 
@@ -114,20 +112,6 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<br><br><input type="submit" value="Submit"></form><p> Click "Submit" to send order of your rail.</p>', "utf-8"))
             
             s.wfile.write(bytes('</body></html>', "utf-8"))
-        
-        elif path.find("/sendOrder") != -1:
-            s.wfile.write(bytes('<html><body><h2>Rail specifications for your K2 EasyFeed:</h2>', "utf-8"))
-            s.wfile.write(bytes('<form action="/sendOrder" method="post">', 'utf-8'))
-            s.wfile.write(bytes('<label for="Thanks">Thank you for your order!</label><br>', 'utf-8'))
-
-            s.wfile.write(bytes('<br><p>You have order a rail for the room size (m): room height: ' + str(room_height)+ ', room width: '+ str(room_width) + ', room length: '+ str(room_length)+ ', rail hight: '+ str(rail_height) + '.</p>', 'utf-8'))
-
-            s.wfile.write(bytes('<br><p>With the following varialbes: </p>', "utf-8"))
-            s.wfile.write(bytes('<br><ul>' + list_html + '</ul>', "utf-8"))
-            s.wfile.write(bytes('<br><button type="submit" formaction="/setSize">Reset room</button><p>Click "Reset room" to reset the while room size and the while rail order</p>', "utf-8"))
-            s.wfile.write(bytes('<br><button type="submit" formaction="/setVariables">Reset variables</button><p>Click "Reset variables" to reset the variables in the room</p>', "utf-8"))
-            s.wfile.write(bytes('<br><button type="submit">Submit</button><<p>Click "Submit" to send the order of your rail</p>', "utf-8")) 
-            s.wfile.write(bytes('</form></body></html>', "utf-8"))
 
         else:
             s.wfile.write(bytes('<html><head><title>Cool interface.</title></head>', 'utf-8'))
@@ -188,13 +172,30 @@ class MyHandler(BaseHTTPRequestHandler):
             for i in splitString:
                 newSplit.append(i.split("="))
 
-            x_start = int(newSplit[0][1])
-            x_end = int(newSplit[1][1])
-            y_start = int(newSplit[2][1])
-            y_end = int(newSplit[3][1])
-            spes_height = int(newSplit[4][1])
-            var_type = newSplit[5][1]
-            #Every variable has been given their value from the string
+            try:
+                x_start = int(newSplit[0][1])
+                x_end = int(newSplit[1][1])
+                y_start = int(newSplit[2][1])
+                y_end = int(newSplit[3][1])
+                spes_height = int(newSplit[4][1])
+                var_type = newSplit[5][1]
+                #Every variable has been given their value from the string 
+            except:
+                pass
+
+            within_constraints = False
+
+            # Checking if the koordinates are within the room size
+            if x_start >= 0 and  x_start < room_width:
+                if x_end > x_start and x_end < room_width:
+                     if x_start >= 0 and  x_start < room_width:
+                        if x_end > x_start and x_end < room_width:
+                            if spes_height > 0: 
+                                print("Params OK")
+                                within_constraints = True
+                                
+            else: 
+                within_constraints = False
 
             s.wfile.write(bytes('<html><body><h2>Determine rail specifications for your K2 EasyFeed:</h2>', "utf-8"))
             s.wfile.write(bytes('<form action="/setVariables" method="post">', 'utf-8')) #Create a form to add variables
@@ -215,59 +216,68 @@ class MyHandler(BaseHTTPRequestHandler):
             
             # Adding the coordinates of the variable       
             s.wfile.write(bytes('<h4>Seen from above, where are the variables located in the room? Give the coordinates below:</h4>', "utf-8"))
-            s.wfile.write(bytes('<br>Start point in the width direction:<br><input type="text" name="x_start" value="' + str(x_start) + '">', "utf-8"))
-            s.wfile.write(bytes('<br>End point in the width direction:<br><input type="text" name="x_end" value="' + str(x_end) + '">', "utf-8"))
-            s.wfile.write(bytes('<br>Start point in the length direction:<br><input type="text" name="y_start" value="' + str(y_start) + '">', "utf-8"))
-            s.wfile.write(bytes('<br>End point in the length direction:<br><input type="text" name="y_end" value="' + str(y_end) + '">', "utf-8"))
-            s.wfile.write(bytes('<br>Ceiling height in this area (change if it differs form gnereal height):<br><input type="text" name="spes_height" value="' + str(spes_height) + '">', "utf-8"))
+            s.wfile.write(bytes('<br>Start point in the width direction:<br><input type="text" name="x_start" value="' + str(0) + '">', "utf-8"))
+            s.wfile.write(bytes('<br>End point in the width direction:<br><input type="text" name="x_end" value="' + str(0) + '">', "utf-8"))
+            s.wfile.write(bytes('<br><br>Start point in the length direction:<br><input type="text" name="y_start" value="' + str(0) + '">', "utf-8"))
+            s.wfile.write(bytes('<br>End point in the length direction:<br><input type="text" name="y_end" value="' + str(0) + '">', "utf-8"))
+            s.wfile.write(bytes('<br>Ceiling height in this area (change if it differs form gnereal height):<br><input type="text" name="spes_height" value="' + str(room_height) + '">', "utf-8"))
 
             # Adding type of variable 
-            s.wfile.write(bytes('<br>Type of variable:<br><select name="var_type" id="var_type"><option value="ATTACH_POINT">1. Attachment point</option><option value="FEED_LOC">2. Feeding location</option><option value="VISIT_LOC">3. Locations the cart should visit</option><option value="OBSTACLE">4. Obstacle </option><option value="HEIGHT">5. Specific hight of ceiling </option><option value="RESET">6. Reset this area</option></select>', "utf-8"))
-            s.wfile.write(bytes('<button type="submit">Add variable</button>', "utf-8")) 
+            s.wfile.write(bytes('<br>Type of variable:<br><select name="var_type" id="var_type"><option value="ATTACH_POINT">1. Attachment point</option><option value="FEED_LOC">2. Feeding location</option><option value="VISIT_LOC">3. Locations the cart should visit</option><option value="OBSTACLE">4. Obstacle </option><option value="HEIGHT">5. Specific hight of ceiling </option></select>', "utf-8"))
 
-            s.wfile.write(bytes('<br><br><p> To remove objects form an area, specify the area an choose option 6. reset area. </p>', "utf-8"))
+            if within_constraints == True:
+                s.wfile.write(bytes('<button type="submit">Add variable</button>', "utf-8")) 
 
-            if var_type == "RESET":
-                var_type_str = "Reset area"
-            elif var_type == "ATTACH_POINT":
-                attachement_points.append([(x_start, y_start), (x_end, y_end), spes_height])
-                var_type_str = "Attachment point"
-            elif var_type == "FEED_LOC":
-                visit_locations.insert(0, [(x_start, y_start), (x_end, y_end), spes_height])
-                # Feeding location inserted at start of the visit_location list
-                var_type_str = "Feeding location"
-            elif var_type == "VISIT_LOC":
-                visit_locations.append([(x_start, y_start), (x_end, y_end), spes_height])
-                var_type_str = "Location to visit"
-            elif var_type == "OBSTACLE":
-                obstacles.append([(x_start, y_start), (x_end, y_end), spes_height])
-                var_type_str = "Obstacle"
+                if var_type == "RESET":
+                    var_type_str = "Reset area"
+                elif var_type == "ATTACH_POINT":
+                    attachement_points.append([(x_start, y_start), (x_end, y_end), spes_height])
+                    var_type_str = "Attachment point"
+                elif var_type == "FEED_LOC":
+                    visit_locations.insert(0, [(x_start, y_start), (x_end, y_end), spes_height])
+                    # Feeding location inserted at start of the visit_location list
+                    var_type_str = "Feeding location"
+                elif var_type == "VISIT_LOC":
+                    visit_locations.append([(x_start, y_start), (x_end, y_end), spes_height])
+                    var_type_str = "Location to visit"
+                elif var_type == "OBSTACLE":
+                    obstacles.append([(x_start, y_start), (x_end, y_end), spes_height])
+                    var_type_str = "Obstacle"
+            elif within_constraints == False:
+                s.wfile.write(bytes('<script>function alert(){alert("The location must be within the room size!");} </script>', "utf-8"))
+                s.wfile.write(bytes('<button type="submit" onclick="alert()">Add variable</button>', "utf-8")) 
+
             print("Attachment points:")
             print(attachement_points)
             print("Visiting locations:")
             print(visit_locations)
             print("Obstacles")
             print(obstacles)
+
+            # Write the points as lists on the webpage
+            list_att = ""
+            for li in attachement_points:
+                list_att += "<li>" + str(li) + "</li>"
+            s.wfile.write(bytes('<br><p>List of attachement points: [(start width, end wifth), (start length, end length), ceiling height]:</p>', "utf-8"))
+            s.wfile.write(bytes('<ul>' + list_att + '</ul>', "utf-8"))
             
+            list_visit = ""
+            for li in visit_locations:
+                list_visit += "<li>" + str(li) + "</li>"
+            s.wfile.write(bytes('<p>List of locations to visit:</p>', "utf-8"))
+            s.wfile.write(bytes('<ul>' + list_visit + '</ul>', "utf-8"))
 
-
-            # Writing the variable to a string
-            #list_el = var_type_str + ' from width ' + str(x_start) + ' to ' + str(x_end) + ' and from length ' + str(y_start) + ' to ' + str(y_end)
-            # Adding this string to the list of varialbes
-            #var_list.append(list_el)
-            #print(var_list)
-
-            # Writing each element in the variable list to a html list element
-            #for li in var_list:
-                #list_html += "<li>" + li + "</li>"
-
-            #s.wfile.write(bytes('<br><ul>' + list_html + '</ul>', "utf-8"))
+            list_obs = ""
+            for li in obstacles:
+                list_obs += "<li>" + str(li) + "</li>"
+            s.wfile.write(bytes('<p>List of obstacles:</p>', "utf-8"))
+            s.wfile.write(bytes('<ul>' + list_obs + '</ul>', "utf-8"))
 
             #sending submit to a new page? Now it acts ass "Add variable"
             s.wfile.write(bytes('<button type="submit" formaction="/sendOrder">Submit</button><p>Click "Submit" to send the order of your rail</p></form>', "utf-8"))
             s.wfile.write(bytes('</body></html>', "utf-8"))
         
-            return print(np.matrix(matrix_room)), attachement_points, visit_locations, obstacles
+            return attachement_points, visit_locations, obstacles
 
         elif path.find("/sendOrder") != -1:
             s.wfile.write(bytes('<html><body><h2>Rail specifications for your K2 EasyFeed:</h2>', "utf-8"))
@@ -277,13 +287,32 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<br><p>You have order a rail for the room size (m): room height: ' + str(room_height)+ ', room width: '+ str(room_width) + ', room length: '+ str(room_length)+ ', rail hight: '+ str(rail_height) + '.</p>', 'utf-8'))
 
             s.wfile.write(bytes('<br><p>With the following varialbes: </p>', "utf-8"))
-            s.wfile.write(bytes('<br><ul>' + list_html + '</ul>', "utf-8"))
+            
+            # Write the points as lists on the webpage
+            list_att = ""
+            for li in attachement_points:
+                list_att += "<li>" + str(li) + "</li>"
+            s.wfile.write(bytes('<br><p>List of attachement points: [(start width, end wifth), (start length, end length), ceiling height]:</p>', "utf-8"))
+            s.wfile.write(bytes('<ul>' + list_att + '</ul>', "utf-8"))
+            
+            list_visit = ""
+            for li in visit_locations:
+                list_visit += "<li>" + str(li) + "</li>"
+            s.wfile.write(bytes('<p>List of locations to visit:</p>', "utf-8"))
+            s.wfile.write(bytes('<ul>' + list_visit + '</ul>', "utf-8"))
+
+            list_obs = ""
+            for li in obstacles:
+                list_obs += "<li>" + str(li) + "</li>"
+            s.wfile.write(bytes('<p>List of obstacles:</p>', "utf-8"))
+            s.wfile.write(bytes('<ul>' + list_obs + '</ul>', "utf-8"))
+
             s.wfile.write(bytes('<br><button type="submit" formaction="/setSize">Reset room</button><p>Click "Reset room" to reset the while room size and the while rail order</p>', "utf-8"))
             s.wfile.write(bytes('<br><button type="submit" formaction="/setVariables">Reset variables</button><p>Click "Reset variables" to reset the variables in the room</p>', "utf-8"))
             s.wfile.write(bytes('<br><button type="submit">Submit</button><p>Click "Submit" to send the order of your rail</p>', "utf-8")) 
             s.wfile.write(bytes('</form></body></html>', "utf-8"))
 
-            # Write to dfa file 
+            return room_height, room_width, room_length, rail_height, attachement_points, visit_locations, obstacles
 
 
 if __name__ == '__main__':
