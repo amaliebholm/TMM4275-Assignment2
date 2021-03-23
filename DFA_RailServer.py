@@ -78,7 +78,6 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<img src="https://raw.githubusercontent.com/amaliebholm/TMM4275-Assignment2/main/sketch_room.jpeg" alt="Image illustrating 3D and 2D perspective" width="650" height="400">', "utf-8"))
             s.wfile.write(bytes('</body></html>', "utf-8"))
 
-
         else:
             s.wfile.write(bytes('<html><head><title>Cool interface.</title></head>', 'utf-8'))
             s.wfile.write(bytes("<body><p>The path: " + path + "</p>", "utf-8"))
@@ -199,9 +198,9 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<p>Go through the room chronologically and add variables as the appear in the room.</p>', "utf-8"))
             s.wfile.write(bytes('<br>Point in the width direction:<br><input type="text" name="x" value="0">', "utf-8"))
             s.wfile.write(bytes('<br>Point in the length direction:<br><input type="text" name="y" value="0">', "utf-8"))
-            s.wfile.write(bytes('<br><br> If the varaible is an obstacle add three more points, marking off the area the obstacle obtain in the room, filling the points [point in width, point in length]:<br><input type="text" name="obs_string" value="[0, 0], [0, 0], [0, 0]">', "utf-8"))
             s.wfile.write(bytes('<br>Ceiling height in this area (change if it differs form gnereal height):<br><input type="text" name="spes_height" value="' + str(room_height) + '">', "utf-8"))
-
+            s.wfile.write(bytes('<br><br> If the varaible is an obstacle add three more points, marking off the area the obstacle obtain in the room, filling the points [point in width, point in length]:<br><input type="text" name="obs_string" value="[0, 0], [0, 0], [0, 0]">', "utf-8"))
+        
             # Adding type of variable 
             s.wfile.write(bytes('<br>Type of variable:<br><select name="var_type" id="var_type"><option value="ATTACH_POINT">1. Attachment point</option><option value="FEED_LOC">2. Feeding location</option><option value="VISIT_LOC">3. Locations the cart should visit</option><option value="OBSTACLE">4. Obstacle </option></select>', "utf-8"))
 
@@ -272,7 +271,7 @@ class MyHandler(BaseHTTPRequestHandler):
             list_att = ""
             for li in attachement_points:
                 list_att += "<li>" + str(li) + "</li>"
-            s.wfile.write(bytes('<br><p>List of attachement points: [(start width, end wifth), (start length, end length), ceiling height]:</p>', "utf-8"))
+            s.wfile.write(bytes('<br><p>List of attachement points: [[point in width, poing in length], ceiling height]:</p>', "utf-8"))
             s.wfile.write(bytes('<ul>' + list_att + '</ul>', "utf-8"))
             
             list_visit = ""
@@ -286,6 +285,7 @@ class MyHandler(BaseHTTPRequestHandler):
                 list_obs += "<li>" + str(li) + "</li>"
             s.wfile.write(bytes('<p>List of obstacles:</p>', "utf-8"))
             s.wfile.write(bytes('<ul>' + list_obs + '</ul>', "utf-8"))
+
 
             s.wfile.write(bytes('<br><button type="submit" formaction="/setSize">Reset room</button><p>Click "Reset room" to reset the while room size and the while rail order</p>', "utf-8"))
             s.wfile.write(bytes('<br><button type="submit" formaction="/setVariables">Reset variables</button><p>Click "Reset variables" to reset the variables in the room</p>', "utf-8"))
