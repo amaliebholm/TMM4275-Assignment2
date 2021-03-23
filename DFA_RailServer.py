@@ -17,6 +17,8 @@ y_start = 0
 y_end = 0 
 spes_height = 0 
 var_type = ""
+weight = 0 
+
 var_list = []
 list_html = ""
 
@@ -40,7 +42,7 @@ class MyHandler(BaseHTTPRequestHandler):
         s.end_headers()
 
     def do_GET(s):
-        global room_height, room_width, room_length, matrix_room, matrix_height, rail_height, x_start, x_end, y_start, y_start, spes_height, var_type, var_list, list_html
+        global room_height, room_width, room_length, matrix_room, matrix_height, rail_height, x_start, x_end, y_start, y_start, spes_height, var_type, weight, var_list, list_html
         """Respond to a GET request."""
         s.send_response(200)
         s.send_header("Content-type", "text/html")
@@ -119,11 +121,11 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<br><p>You have order a rail for the room size (m): room height: ' + str(room_height)+ ', room width: '+ str(room_width) + ', room length: '+ str(room_length)+ ', rail hight: '+ str(rail_height) + '.</p>', 'utf-8'))
 
             s.wfile.write(bytes('<br><p>With the following varialbes: </p>', "utf-8"))
-            s.wfile.write(bytes('<br><ul>' + list_html + '</ul>, "utf-8"))
+            s.wfile.write(bytes('<br><ul>' + list_html + '</ul>', "utf-8"))
             s.wfile.write(bytes('<br><button type="submit" formaction="/setSize">Reset room</button><p>Click "Reset room" to reset the while room size and the while rail order</p>', "utf-8"))
             s.wfile.write(bytes('<br><button type="submit" formaction="/setVariables">Reset variables</button><p>Click "Reset variables" to reset the variables in the room</p>', "utf-8"))
-            s.wfile.write(bytes('<br><button type="submit">Submit</button></form><p>Click "Submit" to send the order of your rail</p>', "utf-8")) 
-            s.wfile.write(bytes('</body></html>', "utf-8"))
+            s.wfile.write(bytes('<br><button type="submit">Submit</button><<p>Click "Submit" to send the order of your rail</p>', "utf-8")) 
+            s.wfile.write(bytes('</form></body></html>', "utf-8"))
 
         else:
             s.wfile.write(bytes('<html><head><title>Cool interface.</title></head>', 'utf-8'))
@@ -131,7 +133,7 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('</body></html>', "utf-8"))
 
     def do_POST(s):
-        global room_height, room_width, room_length, matrix_room, matrix_height, rail_height, x_start, x_end, y_start, y_start, spes_height, var_type, var_list, list_html
+        global room_height, room_width, room_length, matrix_room, matrix_height, rail_height, x_start, x_end, y_start, y_start, spes_height, var_type, weight, var_list, list_html
         s.send_response(200)
         s.send_header("Content-type", "text/html")
         s.end_headers()
@@ -237,21 +239,24 @@ class MyHandler(BaseHTTPRequestHandler):
 
             if var_type == "RESET":
                 weight = 0
-                var_type_str = "Reset area "
+                var_type_str = "Reset area"
             elif var_type == "ATTACH_POINT":
                 weight = 1
-                var_type_str = "Attachment point "
+                var_type_str = "Attachment point"
             elif var_type == "FEED_LOC":
                 weight = 2
-                var_type_str = "Feeding location "
+                var_type_str = "Feeding location"
             elif var_type == "VISIT_LOC":
                 weight = 3
-                var_type_str = "Location to visit "
+                var_type_str = "Location to visit"
             elif var_type == "OBSTACLE":
                 weight = 4
-                var_type_str = "Obatacle "
+                var_type_str = "Obstacle"
             print("weight:")
             print(weight)
+
+            var_list = []
+            list_html = ""
 
             # Writing the variable to a string
             list_el = var_type_str + ' from width ' + str(x_start) + ' to ' + str(x_end) + ' and from length ' + str(y_start) + ' to ' + str(y_end)
@@ -263,31 +268,31 @@ class MyHandler(BaseHTTPRequestHandler):
             for li in var_list:
                 list_html += "<li>" + li + "</li>"
 
-            s.wfile.write(bytes('<br><ul>' + list_html + '</ul></form>', "utf-8"))
+            s.wfile.write(bytes('<br><ul>' + list_html + '</ul>', "utf-8"))
             
             # Length = number of rows
             # Width = number of columns
             # Adding the variable to the room matrix 
             print(np.matrix(matrix_room))
 
-            if var_type != "HEIGHT":
+            """if var_type != "HEIGHT":
                 r = y_start - 1 
                 c = x_start - 1 
                 while (r <= (y_end - 1)):
                     while (c <= (x_end - 1)):
                         matrix_room[r][c] = weight
                         c += 1
-                    r+= 1
+                    r+= 1"""
             
             # Changing the height in the room at det designated space
-            elif var_type == "HEIGHT":
+            """elif var_type == "HEIGHT":
                 r = y_start - 1 
                 c = x_start - 1 
                 while (r <= (y_end - 1)):
                     while (c <= (x_end - 1)):
                         matrix_room[r][c] = spes_height
                         c += 1
-                    r+= 1
+                    r+= 1"""
             # make a list of already made points, so the client kan view them (and delete?)
 
             #sending submit to a new page? Now it acts ass "Add variable"
@@ -304,13 +309,13 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<br><p>You have order a rail for the room size (m): room height: ' + str(room_height)+ ', room width: '+ str(room_width) + ', room length: '+ str(room_length)+ ', rail hight: '+ str(rail_height) + '.</p>', 'utf-8'))
 
             s.wfile.write(bytes('<br><p>With the following varialbes: </p>', "utf-8"))
-            s.wfile.write(bytes('<br><ul>' + list_html + '</ul>, "utf-8"))
+            s.wfile.write(bytes('<br><ul>' + list_html + '</ul>', "utf-8"))
             s.wfile.write(bytes('<br><button type="submit" formaction="/setSize">Reset room</button><p>Click "Reset room" to reset the while room size and the while rail order</p>', "utf-8"))
             s.wfile.write(bytes('<br><button type="submit" formaction="/setVariables">Reset variables</button><p>Click "Reset variables" to reset the variables in the room</p>', "utf-8"))
-            s.wfile.write(bytes('<br><button type="submit">Submit</button></form><p>Click "Submit" to send the order of your rail</p>', "utf-8")) 
-            s.wfile.write(bytes('</body></html>', "utf-8"))
+            s.wfile.write(bytes('<br><button type="submit">Submit</button><p>Click "Submit" to send the order of your rail</p>', "utf-8")) 
+            s.wfile.write(bytes('</form></body></html>', "utf-8"))
 
-            # Write to dfa file
+            # Write to dfa file 
 
 
 if __name__ == '__main__':
