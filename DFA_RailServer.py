@@ -10,6 +10,12 @@ rail_height = 0
 matrix_room = []
 matrix_height =[]
 
+# Or placing points into different lists
+attachement_points = [] 
+feeding_location = []
+visit_locations = []
+obstacles = []
+
 # Initial values of variables
 x_start = 0
 x_end = 0 
@@ -18,7 +24,6 @@ y_end = 0
 spes_height = 0 
 var_type = ""
 weight = 0 
-
 var_list = []
 list_html = ""
 
@@ -42,7 +47,7 @@ class MyHandler(BaseHTTPRequestHandler):
         s.end_headers()
 
     def do_GET(s):
-        global room_height, room_width, room_length, matrix_room, matrix_height, rail_height, x_start, x_end, y_start, y_start, spes_height, var_type, weight, var_list, list_html
+        global room_height, room_width, room_length, matrix_room, matrix_height, rail_height, x_start, x_end, y_start, y_start, spes_height, var_type, weight
         """Respond to a GET request."""
         s.send_response(200)
         s.send_header("Content-type", "text/html")
@@ -133,7 +138,7 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('</body></html>', "utf-8"))
 
     def do_POST(s):
-        global room_height, room_width, room_length, matrix_room, matrix_height, rail_height, x_start, x_end, y_start, y_start, spes_height, var_type, weight, var_list, list_html
+        global room_height, room_width, room_length, matrix_room, matrix_height, rail_height, x_start, x_end, y_start, y_start, spes_height, var_type, weight
         s.send_response(200)
         s.send_header("Content-type", "text/html")
         s.end_headers()
@@ -254,9 +259,6 @@ class MyHandler(BaseHTTPRequestHandler):
                 var_type_str = "Obstacle"
             print("weight:")
             print(weight)
-
-            var_list = []
-            list_html = ""
 
             # Writing the variable to a string
             list_el = var_type_str + ' from width ' + str(x_start) + ' to ' + str(x_end) + ' and from length ' + str(y_start) + ' to ' + str(y_end)
