@@ -8,6 +8,7 @@ room_length = 0
 room_width = 0
 rail_height = 0 
 matrix_room = []
+matrix_height =[]
 
 # Initial values of variables
 x_start = 0
@@ -16,6 +17,8 @@ y_start = 0
 y_end = 0 
 spes_height = 0 
 var_type = ""
+var_list = []
+list_html = ""
 
 HOST_NAME = '127.0.0.1'  # locathost - http://127.0.0.1
 #complete address would be: http://127.0.0.1:1234
@@ -37,7 +40,7 @@ class MyHandler(BaseHTTPRequestHandler):
         s.end_headers()
 
     def do_GET(s):
-        global room_height, room_width, room_length, matrix_room, rail_height, x_start, x_end, y_start, y_start, var_type, spes_height
+        global room_height, room_width, room_length, matrix_room, matrix_height, rail_height, x_start, x_end, y_start, y_start, spes_height, var_type, var_list, list_html
         """Respond to a GET request."""
         s.send_response(200)
         s.send_header("Content-type", "text/html")
@@ -70,7 +73,7 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<br><br><button type="submit">Set size</button><p>Click "Set size" to set the room size</p>', "utf-8"))
             s.wfile.write(bytes('<button type="submit" formaction="/setVariables">Continue</button><p>Click "Continue" to continue to add varialbes</p></form>', "utf-8"))
 
-            s.wfile.write(bytes('<img src="https://raw.githubusercontent.com/amaliebholm/TMM4275-Assignment2/main/3D-2D.jpeg" alt="Image illustrating 3D and 2D perspective" width="650" height="400">', "utf-8"))
+            s.wfile.write(bytes('<img src="https://raw.githubusercontent.com/amaliebholm/TMM4275-Assignment2/main/sketch_room.jpeg" alt="Image illustrating 3D and 2D perspective" width="650" height="400">', "utf-8"))
             s.wfile.write(bytes('</body></html>', "utf-8"))
 
         elif path.find("/setVariables") != -1:
@@ -89,7 +92,7 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<p>5. Specific area with different hight of ceiling</p>', "utf-8"))
 
             # Image illustrating 3D and 2D perspective 
-            s.wfile.write(bytes('<img src="https://raw.githubusercontent.com/amaliebholm/TMM4275-Assignment2/main/3D-2D.jpeg" alt="Image illustrating 3D and 2D perspective" width="650" height="400">', "utf-8"))
+            s.wfile.write(bytes('<img src="https://raw.githubusercontent.com/amaliebholm/TMM4275-Assignment2/main/sketch_room.jpeg" alt="Image illustrating 3D and 2D perspective" width="650" height="400">', "utf-8"))
 
             
             # Adding the coordinates of the variable 
@@ -107,14 +110,28 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<br><br><input type="submit" value="Submit"></form><p> Click "Submit" to send order of your rail.</p>', "utf-8"))
             
             s.wfile.write(bytes('</body></html>', "utf-8"))
+        
+        elif path.find("/sendOrder") != -1:
+            s.wfile.write(bytes('<html><body><h2>Rail specifications for your K2 EasyFeed:</h2>', "utf-8"))
+            s.wfile.write(bytes('<form action="/sendOrder" method="post">', 'utf-8'))
+            s.wfile.write(bytes('<label for="Thanks">Thank you for your order!</label><br>', 'utf-8'))
+
+            s.wfile.write(bytes('<br><p>You have order a rail for the room size (m): room height: ' + str(room_height)+ ', room width: '+ str(room_width) + ', room length: '+ str(room_length)+ ', rail hight: '+ str(rail_height) + '.</p>', 'utf-8'))
+
+            s.wfile.write(bytes('<br><p>With the following varialbes: </p>', "utf-8"))
+            s.wfile.write(bytes('<br><ul>' + list_html + '</ul>, "utf-8"))
+            s.wfile.write(bytes('<br><button type="submit" formaction="/setSize">Reset room</button><p>Click "Reset room" to reset the while room size and the while rail order</p>', "utf-8"))
+            s.wfile.write(bytes('<br><button type="submit" formaction="/setVariables">Reset variables</button><p>Click "Reset variables" to reset the variables in the room</p>', "utf-8"))
+            s.wfile.write(bytes('<br><button type="submit">Submit</button></form><p>Click "Submit" to send the order of your rail</p>', "utf-8")) 
+            s.wfile.write(bytes('</body></html>', "utf-8"))
+
         else:
             s.wfile.write(bytes('<html><head><title>Cool interface.</title></head>', 'utf-8'))
             s.wfile.write(bytes("<body><p>The path: " + path + "</p>", "utf-8"))
             s.wfile.write(bytes('</body></html>', "utf-8"))
 
     def do_POST(s):
-        global room_height, room_width, room_length, matrix_room, rail_height, x_start, x_end, y_start, y_start, var_type, spes_height
-
+        global room_height, room_width, room_length, matrix_room, matrix_height, rail_height, x_start, x_end, y_start, y_start, spes_height, var_type, var_list, list_html
         s.send_response(200)
         s.send_header("Content-type", "text/html")
         s.end_headers()
@@ -145,7 +162,12 @@ class MyHandler(BaseHTTPRequestHandler):
             # Length = number of rows
             # Width = number of columns
             matrix_room = [[0 for w in range(room_width)]for l in range(room_length)]
+            print("Room mareix:")
             print(np.matrix(matrix_room))
+
+            matrix_height = [[room_height for w in range(room_width)]for l in range(room_length)]
+            print("Heigt matrix:")
+            print(np.matrix(matrix_height))
 
             s.wfile.write(bytes('<html><body><h2>Determine rail specifications for your K2 EasyFeed:</h2>', "utf-8"))
             s.wfile.write(bytes('<form action="/setSize" method="post">', 'utf-8')) #Create a form to add variables
@@ -159,7 +181,7 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<br><br> <button type="submit">Set size</button><p>Click "Set size" to set the room size</p>', "utf-8"))
             s.wfile.write(bytes('<button type="submit" formaction="/setVariables">Continue</button><p>Click "Continue" to continue to add varialbes</p></form>', "utf-8"))
 
-            s.wfile.write(bytes('<img src="https://raw.githubusercontent.com/amaliebholm/TMM4275-Assignment2/main/3D-2D.jpeg" alt="Image illustrating 3D and 2D perspective" width="650" height="400">', "utf-8"))
+            s.wfile.write(bytes('<img src="https://raw.githubusercontent.com/amaliebholm/TMM4275-Assignment2/main/sketch_room.jpeg" alt="Image illustrating 3D and 2D perspective" width="650" height="400">', "utf-8"))
             s.wfile.write(bytes('</body></html>', "utf-8"))
 
         elif path.find("/setVariables") != -1:
@@ -196,7 +218,7 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<p>5. Specific area with different hight of ceiling</p>', "utf-8"))
 
             # Image illustrating 3D and 2D perspective 
-            s.wfile.write(bytes('<img src="https://raw.githubusercontent.com/amaliebholm/TMM4275-Assignment2/main/3D-2D.jpeg" alt="Image illustrating 3D and 2D perspective" width="650" height="400">', "utf-8"))
+            s.wfile.write(bytes('<img src="https://raw.githubusercontent.com/amaliebholm/TMM4275-Assignment2/main/sketch_room.jpeg" alt="Image illustrating 3D and 2D perspective" width="650" height="400">', "utf-8"))
             
             # Adding the coordinates of the variable 
                    
@@ -208,46 +230,87 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<br>In case of 5. Specific ceiling height:<br><input type="text" name="spes_height" value="' + str(spes_height) + '">', "utf-8"))
 
             # Adding type of variable 
-            s.wfile.write(bytes('<br>Type of variable:<br><select name="var_type" id="var_type"><option value="ATTACH_POINT">1. Attachment point</option><option value="FEED_LOC">2. Feeding location</option><option value="VISIT_LOC">3. Locations the cart should visit</option><option value="OBSTACLE">4. Obstacle </option><option value="HIGHT">5. Specific hight of ceiling </option></select>', "utf-8"))
+            s.wfile.write(bytes('<br>Type of variable:<br><select name="var_type" id="var_type"><option value="ATTACH_POINT">1. Attachment point</option><option value="FEED_LOC">2. Feeding location</option><option value="VISIT_LOC">3. Locations the cart should visit</option><option value="OBSTACLE">4. Obstacle </option><option value="HEIGHT">5. Specific hight of ceiling </option><option value="RESET">6. Reset this area</option></select>', "utf-8"))
             s.wfile.write(bytes('<button type="submit">Add variable</button>', "utf-8")) 
 
-            # Printing the variable 
-            list_el = var_type + ' from width ' + str(x_start) + ' to ' + str(x_end) + ' and from length ' + str(y_start) + ' to ' + str(y_end)
-            s.wfile.write(bytes('<br><br><label>'+ list_el + '. </label>', "utf-8"))
-                        
-            if var_type == "ATTACH_POINT":
+            s.wfile.write(bytes('<br><br><p> To remove objects form an area, specify the area an choose option 6. reset area. </p>', "utf-8"))
+
+            if var_type == "RESET":
+                weight = 0
+                var_type_str = "Reset area "
+            elif var_type == "ATTACH_POINT":
                 weight = 1
+                var_type_str = "Attachment point "
             elif var_type == "FEED_LOC":
                 weight = 2
+                var_type_str = "Feeding location "
             elif var_type == "VISIT_LOC":
                 weight = 3
+                var_type_str = "Location to visit "
             elif var_type == "OBSTACLE":
                 weight = 4
-            elif var_type == "HIGHT":
-                weight = 5
+                var_type_str = "Obatacle "
             print("weight:")
             print(weight)
+
+            # Writing the variable to a string
+            list_el = var_type_str + ' from width ' + str(x_start) + ' to ' + str(x_end) + ' and from length ' + str(y_start) + ' to ' + str(y_end)
+            # Adding this string to the list of varialbes
+            var_list.append(list_el)
+            print(var_list)
+
+            # Writing each element in the variable list to a html list element
+            for li in var_list:
+                list_html += "<li>" + li + "</li>"
+
+            s.wfile.write(bytes('<br><ul>' + list_html + '</ul></form>', "utf-8"))
             
             # Length = number of rows
             # Width = number of columns
-            # Adding the variable to the matrix 
+            # Adding the variable to the room matrix 
             print(np.matrix(matrix_room))
 
-            r = y_start - 1 
-            c = x_start - 1 
-            while (r <= (y_end - 1)):
-                while (c <= (x_end - 1)):
-                    matrix_room[r][c] = weight
-                    c += 1
-                r+= 1
+            if var_type != "HEIGHT":
+                r = y_start - 1 
+                c = x_start - 1 
+                while (r <= (y_end - 1)):
+                    while (c <= (x_end - 1)):
+                        matrix_room[r][c] = weight
+                        c += 1
+                    r+= 1
             
+            # Changing the height in the room at det designated space
+            elif var_type == "HEIGHT":
+                r = y_start - 1 
+                c = x_start - 1 
+                while (r <= (y_end - 1)):
+                    while (c <= (x_end - 1)):
+                        matrix_room[r][c] = spes_height
+                        c += 1
+                    r+= 1
             # make a list of already made points, so the client kan view them (and delete?)
 
-            s.wfile.write(bytes('<br><br><input type="submit" value="Submit"></form><p> Click "Submit" to send order of your rail.</p></body></html>', "utf-8"))
+            #sending submit to a new page? Now it acts ass "Add variable"
+            s.wfile.write(bytes('<button type="submit" formaction="/sendOrder">Submit</button><p>Click "Submit" to send the order of your rail</p></form>', "utf-8"))
             s.wfile.write(bytes('</body></html>', "utf-8"))
         
             return print(np.matrix(matrix_room))
 
+        elif path.find("/sendOrder") != -1:
+            s.wfile.write(bytes('<html><body><h2>Rail specifications for your K2 EasyFeed:</h2>', "utf-8"))
+            s.wfile.write(bytes('<form action="/sendOrder" method="post">', 'utf-8'))
+            s.wfile.write(bytes('<label for="Thanks">Thank you for your order!</label><br>', 'utf-8'))
+
+            s.wfile.write(bytes('<br><p>You have order a rail for the room size (m): room height: ' + str(room_height)+ ', room width: '+ str(room_width) + ', room length: '+ str(room_length)+ ', rail hight: '+ str(rail_height) + '.</p>', 'utf-8'))
+
+            s.wfile.write(bytes('<br><p>With the following varialbes: </p>', "utf-8"))
+            s.wfile.write(bytes('<br><ul>' + list_html + '</ul>, "utf-8"))
+            s.wfile.write(bytes('<br><button type="submit" formaction="/setSize">Reset room</button><p>Click "Reset room" to reset the while room size and the while rail order</p>', "utf-8"))
+            s.wfile.write(bytes('<br><button type="submit" formaction="/setVariables">Reset variables</button><p>Click "Reset variables" to reset the variables in the room</p>', "utf-8"))
+            s.wfile.write(bytes('<br><button type="submit">Submit</button></form><p>Click "Submit" to send the order of your rail</p>', "utf-8")) 
+            s.wfile.write(bytes('</body></html>', "utf-8"))
+
+            # Write to dfa file
 
 
 if __name__ == '__main__':
