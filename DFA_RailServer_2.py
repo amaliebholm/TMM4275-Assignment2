@@ -200,9 +200,8 @@ class MyHandler(BaseHTTPRequestHandler):
 
             #if within_constraints: # Add if the variable to the lists of variables if it is within the constraints
 
-            if var_type == "RESET":
-                var_type_str = "Reset area"
-            elif var_type == "ATTACH_POINT":
+            
+            if var_type == "ATTACH_POINT":
                 attachement_points.append([[x, y], spes_height])
                 var_type_str = "Attachment point"
             elif var_type == "FEED_LOC":

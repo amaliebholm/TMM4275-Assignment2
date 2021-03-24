@@ -143,15 +143,19 @@ class MyHandler(BaseHTTPRequestHandler):
             try:
                 x = int(newSplit[0][1])
                 y = int(newSplit[1][1])
-                obs_string = newSplit[3][1]
-                spes_height = int(newSplit[4][1])
-                var_type = newSplit[5][1]
+                spes_height = int(newSplit[2][1])
+                x_2 = int(newSplit[3][1])
+                y_2 = int(newSplit[4][1])
+                x_3 = int(newSplit[5][1])
+                y_3 = int(newSplit[6][1])
+                x_4 = int(newSplit[7][1])
+                y_4 = int(newSplit[8][1])
+                var_type = newSplit[9][1]
                 # Every variable has been given their value from the string 
             except:
                 pass
 
             # Checking if the koordinates are within the room size
-            This does not work somhow :(( 
             if x <= room_width:
                 if x >= 0:
                     if y <= room_length: 
@@ -179,11 +183,14 @@ class MyHandler(BaseHTTPRequestHandler):
             # Adding the coordinates of the variable       
             s.wfile.write(bytes('<h4>Seen from above, where are the variables located in the room? Give the coordinates below:</h4>', "utf-8"))
             s.wfile.write(bytes('<p>Go through the room chronologically and add variables as the appear in the room.</p>', "utf-8"))
-            s.wfile.write(bytes('<br>Point in the width direction:<br><input type="text" name="x" value="0">', "utf-8"))
-            s.wfile.write(bytes('<br>Point in the length direction:<br><input type="text" name="y" value="0">', "utf-8"))
-            s.wfile.write(bytes('<br>Ceiling height in this area (change if it differs form gnereal height):<br><input type="text" name="spes_height" value="' + str(room_height) + '">', "utf-8"))
-            s.wfile.write(bytes('<br><br> If the varaible is an obstacle add three more points, marking off the area the obstacle obtain in the room, filling the points: <br>[point in width, point in length]<br><input type="text" name="obs_string" value="[0, 0], [0, 0], [0, 0]">', "utf-8"))
-        
+            s.wfile.write(bytes('Width coordinate: <input type="text" name="x" value="0">', "utf-8"))
+            s.wfile.write(bytes('<br>Length coordinate: <input type="text" name="y" value="0">', "utf-8"))
+            s.wfile.write(bytes('<br>Ceiling height in this area (change if it differs form gnereal height): <input type="text" name="spes_height" value="' + str(room_height) + '">', "utf-8"))
+            s.wfile.write(bytes('<br><br> If the varaible is an obstacle add three more points, marking off the area the obstacle obtain in the room, filling the points: [width coordinate, length coordinate]', "utf-8"))
+            s.wfile.write(bytes('<br><br>Obstacle coordinate 2:<br> Width coordinate: <input type="text" name="x_2" value="0"> Length coordinate: <input type="text" name="y_2" value="0">', "utf-8"))
+            s.wfile.write(bytes('<br>Obstacle coordinate 3:<br> Width coordinate: <input type="text" name="x_3" value="0"> Length coordinate: <input type="text" name="y_3" value="0">', "utf-8"))
+            s.wfile.write(bytes('<br>Obstacle coordinate 4:<br> Width coordinate: <input type="text" name="x_4" value="0"> Length coordinaten: <input type="text" name="y_4" value="0">', "utf-8"))
+            
             # Adding type of variable 
             s.wfile.write(bytes('<br>Type of variable:<br><select name="var_type" id="var_type"><option value="ATTACH_POINT">1. Attachment point</option><option value="FEED_LOC">2. Feeding location</option><option value="VISIT_LOC">3. Locations the cart should visit</option><option value="OBSTACLE">4. Obstacle </option></select>', "utf-8"))
             # Checking if the variable is within constraints 
@@ -197,14 +204,14 @@ class MyHandler(BaseHTTPRequestHandler):
                     attachement_points.append([[x, y], spes_height])
                     var_type_str = "Attachment point"
                 elif var_type == "FEED_LOC":
-                    attachement_points.append([[x, y], spes_height])
+                    attachement_points.insert(0, [[x, y], spes_height])
                     # Feeding location inserted at start of the visit_location list
                     var_type_str = "Feeding location"
                 elif var_type == "VISIT_LOC":
-                    attachement_points.append([[x, y], spes_height])
+                    visit_locations.append([[x, y], spes_height])
                     var_type_str = "Location to visit"
                 elif var_type == "OBSTACLE":
-                    attachement_points.append([x, y], obs_string)
+                    obstacles.append([[x, y], [x_2, y_2], [x_3, y_3], [x_4, y_4]])
                     var_type_str = "Obstacle"
 
             else: # Write message that the variable was not valid 
@@ -226,7 +233,7 @@ class MyHandler(BaseHTTPRequestHandler):
             list_att = ""
             for li in attachement_points:
                 list_att += "<li>" + str(li) + "</li>"
-            s.wfile.write(bytes('<br><p>List of attachement points: [(point in width, poing in length), ceiling height]:</p>', "utf-8"))
+            s.wfile.write(bytes('<br><p>List of attachement points: [[width coordinate, length coordinate], ceiling height]:</p>', "utf-8"))
             s.wfile.write(bytes('<ul>' + list_att + '</ul>', "utf-8"))
             
             list_visit = ""
