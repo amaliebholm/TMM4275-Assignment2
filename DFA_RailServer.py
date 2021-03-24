@@ -14,7 +14,13 @@ obstacles = [] # On form [(x,y),(x,y),(x,y),(x,y) height], to form an area
 
 # Initial values of variables
 x = 0
+x_2 = 0
+x_3 = 0
+x_4 = 0
 y = 0 
+y_2 = 0 
+y_3 = 0 
+y_4 = 0 
 obs_string = ""
 spes_height = 0 
 var_type = ""
@@ -78,8 +84,7 @@ class MyHandler(BaseHTTPRequestHandler):
         s.send_header("Content-type", "text/html")
         s.end_headers()
         room_constraint = False # Boolean to see check if room is within constraits  
-        """variable_constraints = False #B oolean to see check if variable given is within the room """
-        variable_constraints = True
+        variable_constraints = False #B oolean to see check if variable given is within the room 
 
         # Check what is the path
         path = s.path
@@ -157,14 +162,20 @@ class MyHandler(BaseHTTPRequestHandler):
                 pass
 
             # Checking if the koordinates are within the room size
-            # This does not work somhow :(( 
-            """if x <= room_width:
-                if x >= 0:
-                    if y <= room_length: 
-                        if y >= 0:
-                            if spes_height > 0: 
-                                print("Params OK")
-                                variable_constraints = True"""
+            try:
+                if x <= room_width and x >= 0:
+                    if x_2 <= room_width and x_2 >= 0:
+                        if x_3 <= room_width and x_3 >= 0:
+                            if x_4 <= room_width and x_4 >= 0:
+                                if y <= room_length and y >= 0:
+                                    if y_2 <= room_length and y_2 >= 0:
+                                        if y_3 <= room_length and y_3 >= 0:
+                                            if y_4 <= room_length and y_4 >= 0:
+                                                if spes_height > 0: 
+                                                    print("Params OK")
+                                                    variable_constraints = True
+            except:
+                pass
 
             s.wfile.write(bytes('<html><body><h2>Determine rail specifications for your K2 EasyFeed:</h2>', "utf-8"))
             s.wfile.write(bytes('<form action="/setVariables" method="post">', 'utf-8')) #Create a form to add variables
@@ -192,34 +203,36 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<br><br>Obstacle coordinate 2:<br> Width coordinate: <input type="text" name="x_2" value="0"> Length coordinate: <input type="text" name="y_2" value="0">', "utf-8"))
             s.wfile.write(bytes('<br>Obstacle coordinate 3:<br> Width coordinate: <input type="text" name="x_3" value="0"> Length coordinate: <input type="text" name="y_3" value="0">', "utf-8"))
             s.wfile.write(bytes('<br>Obstacle coordinate 4:<br> Width coordinate: <input type="text" name="x_4" value="0"> Length coordinaten: <input type="text" name="y_4" value="0">', "utf-8"))
-        
+            
             # Adding type of variable 
             s.wfile.write(bytes('<br>Type of variable:<br><select name="var_type" id="var_type"><option value="ATTACH_POINT">1. Attachment point</option><option value="FEED_LOC">2. Feeding location</option><option value="VISIT_LOC">3. Locations the cart should visit</option><option value="OBSTACLE">4. Obstacle </option></select>', "utf-8"))
             # Checking if the variable is within constraints 
             s.wfile.write(bytes('<button type="submit">Add variable</button>', "utf-8")) 
 
-            #if within_constraints: # Add if the variable to the lists of variables if it is within the constraints
+            if variable_constraints: # Add if the variable to the lists of variables if it is within the constraints
 
-            if var_type == "ATTACH_POINT":
-                attachement_points.append([[x, y], spes_height])
-                var_type_str = "Attachment point"
-            elif var_type == "FEED_LOC":
-                attachement_points.insert(0, [[x, y], spes_height])
-                # Feeding location inserted at start of the visit_location list
-                var_type_str = "Feeding location"
-            elif var_type == "VISIT_LOC":
-                visit_locations.append([[x, y], spes_height])
-                var_type_str = "Location to visit"
-            elif var_type == "OBSTACLE":
-                obstacles.append([[x, y], [x_2, y_2], [x_3, y_3], [x_4, y_4]])
-                var_type_str = "Obstacle"
+                if var_type == "RESET":
+                    var_type_str = "Reset area"
+                elif var_type == "ATTACH_POINT":
+                    attachement_points.append([[x, y], spes_height])
+                    var_type_str = "Attachment point"
+                elif var_type == "FEED_LOC":
+                    attachement_points.insert(0, [[x, y], spes_height])
+                    # Feeding location inserted at start of the visit_location list
+                    var_type_str = "Feeding location"
+                elif var_type == "VISIT_LOC":
+                    visit_locations.append([[x, y], spes_height])
+                    var_type_str = "Location to visit"
+                elif var_type == "OBSTACLE":
+                    obstacles.append([[x, y], [x_2, y_2], [x_3, y_3], [x_4, y_4]])
+                    var_type_str = "Obstacle"
 
-            """else: # Write message that the variable was not valid 
+            else: # Write message that the variable was not valid 
                 print("Variable NOT OK")
                 s.wfile.write(bytes('<br><strong style="color: red;">The variable was outside the constraints.</strong>', "utf-8"))
-                s.wfile.write(bytes('<p style="color:red;">Point in width direction, ' + str(x) + ' must be within the room width ' + str(room_width) + ' </p>', "utf-8"))
-                s.wfile.write(bytes('<p style="color:red;">Point in length direction, ' + str(y) + ' must be within the room width ' + str(room_length) + ' </p>', "utf-8"))
-                s.wfile.write(bytes('<p style="color:red;">Ceiling height, ' + str(spes_height) + ' must be positive</p>', "utf-8"))"""
+                s.wfile.write(bytes('<p style="color:red;"> Width coordinates, ' + str(x) + ' (Obsacle: ' + str(x_2) + ' ,'  + str(x_3) + ' ,'  + str(x_4) + ') must be within the room width ' + str(room_width) + '. </p>', "utf-8"))
+                s.wfile.write(bytes('<p style="color:red;"> Length coordinates, ' + str(y) + ' (Obsacle: ' + str(y_2) + ' ,'  + str(y_3) + ' ,'  + str(y_4) + ') must be within the room length ' + str(room_length) + '. </p>', "utf-8"))
+                s.wfile.write(bytes('<p style="color:red;">Ceiling height, ' + str(spes_height) + ' must be positive.</p>', "utf-8"))
                 
             # Print out the current lists of points 
             print("Attachment points:")
@@ -268,7 +281,7 @@ class MyHandler(BaseHTTPRequestHandler):
             list_att = ""
             for li in attachement_points:
                 list_att += "<li>" + str(li) + "</li>"
-            s.wfile.write(bytes('<br><p>List of attachement points: [[point in width, poing in length], ceiling height]:</p>', "utf-8"))
+            s.wfile.write(bytes('<p>List of attachement points: [[point in width, poing in length], ceiling height]:</p>', "utf-8"))
             s.wfile.write(bytes('<ul>' + list_att + '</ul>', "utf-8"))
             
             list_visit = ""
