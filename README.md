@@ -30,8 +30,7 @@ This is a diagram showing the main blocks and interconnections between them.
 
 ![Client-Server](url)
 
-The main changes form assignment 1 is .... 
-
+The main lines of the KBE architecture are the same as in assignment 1, where the customer set values for different parameters on a website, which are then, if the are within some constraints, sent to a DFA template and made into a NX model. The main difference in the architecture is that the constraints for heights and variables within the room are now given by the room itself, therefor the DFA server do both tasks, of taking the input, and checking whether it is within the room size. This emilinates the need for an Fuseki server to take in constraints from the product engineer, and checking this up against the values given by the customer. Now the product engineer sets a DFA template which the input, after being verified, is written to.
 
 ### ULM Sequence Diagram
 
@@ -39,15 +38,13 @@ The ULM sequence diagram showing how an order making scenario will play out. Fro
 
 ![ULM:PNG](url)
 
-The main changes form assignment 1 is ....
-In assignment 1 Olingvo and Apache Jena Fuseki was used to communicate with the server containing the parameters, set by both the customer and the product engineer. This was not used in assignment 2, new the product engineer set a DFA template which was written to by the DFA server. 
+In assignment 1 Olingvo and Apache Jena Fuseki was used to communicate with the server containing the parameters, set by both the customer and the product engineer. In assignment 2 the product engineer set a DFA template which was written to by the DFA server, as well as cheching if they are within the room, and not needing a Manufacture Checker Server or a Fuseki Server. 
 
 ### Development Tools
 
 This code was made using python in Visual Studio Code. Knowledge Fusion and Journal was used in NX to make models of the rail.
 
-The main changes form assignment 1 is ....
-In assignment 1 Olingvo and Apache Jena Fuseki was used to communicate with the server containing the parameters, as stated above, this was not used in assignment 2. It is the room itself that sets the constraints for heights and variables within the room, therefor the DFA server do both tasks, of taking the input, and checking whether it is within the room size. 
+In assignment 1 Olingvo and Apache Jena Fuseki was used to communicate with the server containing the parameters, as stated above, this was not used in assignment 2, since the constraints the variables has to be within is both set by the DFA server, in the same place where they are fetched from the customer. 
 
 
 ### Code Description 
