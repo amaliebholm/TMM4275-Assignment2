@@ -2,8 +2,9 @@ import numpy as np
 import math
 import sys
 import matplotlib.pyplot as plt
+from scipy.spatial import distance
+from scipy.spatial.distance import cdist
 # math library made for this algorithmf
-from calculations import Calculations as calc
 
 
 # The path algorithm takes in a list of attatchment points where the first point is the location of the feeder.
@@ -181,6 +182,7 @@ class pathAlgorithm:
     def algorithm(self, attatchment_locations):
         path = []
         tracker = 0
+        points=[]
         # z- direction, is always zero since it is the roof stags that are scaled while the rail stays leveled.
         z = 0
 
@@ -189,6 +191,8 @@ class pathAlgorithm:
 
         # Main loop of the algorithm, runs until the whole list of attatchment points have been initilized.
         while tracker < len(attatchment_locations)-1:
+            print("tracker",tracker)
+            print("len",len(attatchment_locations)-1)
 
             # initilizing the first line
             # the first and second attatchment points
@@ -200,21 +204,25 @@ class pathAlgorithm:
 
             vector = [current_position, next_position]
             path.append(vector)
-            print("Path: ", path[-1])
+            points.append(next_position)
+            print("Point: ", points[-1])
 
             # checking for turn and what direction the turn is
             direction = self.InLineOfSight(
                 path[-1][0], path[-1][1], current_position)
 
             # On the same line
+            
             if len(path[-1]) == 2 and direction != 0:
                 vector = [current_position, next_position]
                 path.append(vector)
+                
+                """vector = [current_position, next_position]
+                path.append(vector)"""
 
-            # if direction == 1 and path[-1][0][1] > path[-1][1][1]:
+                # if direction == 1 and path[-1][0][1] > path[-1][1][1]:
 
             else:
-
                 center = self.findCenter(
                     path[-1][0], path[-1][1], direction)
 
@@ -294,19 +302,70 @@ class pathAlgorithm:
                     # Add the line (PointOnArc, the point)
                     vector = [PointOnArc, attatchment_locations[tracker]]
                     path.append(vector)
+        #Adding the first point
+        points.insert(0,self.start)
+        return path,points
 
-            return path
+    def bestPath(self, data, obsticles):
+        obsticles = obsticles
+        best_path = []
+        index = 0
+        start_position = data[index]
+        best_path.append(start_position)
+        data.remove(data[index])
+        updated_data = data
+        # print("Updated: ", data)
+
+        dummy_list = []
+        for i in updated_data:
+            dummy_list.append(i)
+        print("DUMMY: ", dummy_list)
+
+        for data_point in enumerate(updated_data):
+
+            if data_point is not None:
+                current_point = best_path[-1]
+                #print("CURRENT INDEX:  ", current_point)
+                #print("BEFORE REMOVING: ", updated_data)
+
+                if current_point in updated_data:
+                    dummy_list.remove(current_point)
+                    #print("AFTER REMOVING: ", dummy_list)
+
+                # finds the closest point.
+                if len(dummy_list) != 0:
+                    point = self.closest_node(current_point, dummy_list)
+                    if point not in best_path:
+                        best_path.append(point)
+                        #print("CLOSEST AND ADDED POINT: ", point)
+                else:
+                    pass
+            else:
+                pass
+
+        # next_position = path[index]
+            #print("PATH: ", best_path)
+        
+
+        return best_path
+
+    def closest_node(self, node, nodes):
+        return nodes[cdist([node], nodes).argmin()]
 
 
-PathAlgorithm = pathAlgorithm(2000, (0, 0), (-2000, -2000))
+PathAlgorithm = pathAlgorithm(2000, [0, 0], [-2000, -2000])
 
-data = [[0, 0], [0, 1700], [2500, 4000], [3500, -4000],
-        [10000, 6000], [-1000, 5900], [-2000, -2000]]
+data = [[0, 0], [0, 17000], [25000, 40000], [35000, -40000],
+        [100000, 60000], [-10000, 59000], [-20000, -20000]]
 
 desired_locations = [(500, 500), (2000, 3000), (2700, 4000)]
 
-path = PathAlgorithm.algorithm(data)
-print(path)
+#path,points = PathAlgorithm.algorithm(data)
+path = PathAlgorithm.bestPath(data,[])
+
+#print("all points",points)
+print("path",path)
+
 
 '''
 path = [[[0, 0, 0], [0, 1700, 0]], [[2500, 4000, 0], [
@@ -316,21 +375,166 @@ x = []
 y = []
 
 
-pointlist = [[0, 0], [0, 10000], [-2000, 12000], [-10000, 12000],
-             [-11414.21356, 11414.21356], [-13414.21356, 9414.21356]]
+#pointlist = [[0, 0], [0, 10000], [-2000, 12000], [-10000, 12000],
+ #            [-11414.21356, 11414.21356], [-13414.21356, 9414.21356]]
 
-for i in pointlist:
+
+for i in path:
     x.append(i[0])
-    print(x)
     y.append(i[1])
-    print(y)
 
-print(x)
-print(y)
+
+print("x",x)
+print("y",y)
+r = 2000
+
+
+for i in range(len(x)-2):
+    angle_in_r = math.atan2((y[i+1]-y[i]),(x[i+1]-x[i])) #The end position for the previous line(which is the curves start) minus its start position in atan2 gives us the angle in
+    angle_out_r = math.atan2((y[i+2]-y[i+1]),(x[i+2]-x[i+1]))
+    angle_in_d = angle_in_r*180/np.pi
+    angle_out_d = angle_out_r*180/np.pi
+    if angle_in_r <0:
+        angle_in_d = 360+(angle_in_r*180/np.pi)
+    if angle_out_r < 0:
+        angle_out_d = 360+(angle_out_r*180/np.pi)
+    
+    going_up = y[i+1] - y[i]
+    going_right = x[i+1]- x[i]
+    if going_right==0:
+        going_right=0.00001
+    turn_right_refframe = x[i+2]-x[i+1]
+    turn_up_refframe = y[i+2]-y[i+1]
+    print("turn",i)
+    print("right",going_right)
+    print("up",going_up)
+    print("turnright",turn_right_refframe)
+    print("turnup", turn_up_refframe) #gotta fix adjustments of the angle on the circle!!
+    print("Degree angle in: "+str(angle_in_d))
+    print("Degree angle out: "+str(angle_out_d))
+
+    index = 0
+    centerlist1 = []
+    centerlist2 = []
+    x_temp = x[i+1]
+    y_temp = y[i+1]
+    x_step = np.linspace(x[i+1],x[i],100000)
+    y_step = np.linspace(y[i+1],y[i],100000)
+    x_step2 = np.linspace(x[i+2],x[i],100000)
+    y_step2 = np.linspace(y[i+2],y[i],100000)
+    print("xstep",x_step)
+    print("ystep",y_step)
+
+    if going_up >= 0 and turn_right_refframe >= 0: #Going around top left quad
+        print("ystepindex",y_step[index])
+        print("yi",y[i])
+        print("x_step[index]",x_step[index])
+        while y_step[index] != y[i] or x_step[index] != x[i]:
+            
+            xc1 = x_step[index] + np.sin(angle_in_r)*r
+            yc1 = y_step[index] - np.cos(angle_in_r)*r
+            a = [np.round(xc1,6),np.round(yc1,6)]
+            centerlist1.append(a)
+            index += 1
+        while y_step2[index] != y[i] or x_step2[index] != x[i]:
+            
+            xc2 = x_step2[index] + np.sin(angle_in_r)*r
+            yc2 = y_step2[index] - np.cos(angle_in_r)*r
+            a = [np.round(xc2,6),np.round(yc2,6)]
+            centerlist2.append(a)
+            index += 1
+        #print("center",centerlist1)
+        list1 = [[0, 17000], [25000, 40000], [35000, -40000], [100000, 60000], [-10000, 59000], [-20000, -20000]]
+        list2 = [[0, 17001], [25020, 40000], [35000, -40003], [100000, 60200], [-10000, 59000], [-20000, -30000]]
+
+        out = any(check in centerlist1 for check in centerlist2)
+  
+        # Checking condition
+        print("aaaaaaa")
+        if out:
+            print("True") 
+        else :
+            print("False")
+            
+
+
+
+
+
+
+    """
+    if abs(going_up/going_right) >= 1 and y[i+2]-y[i+1]>0:  #Here the curve is mostly going vertically contra sideways on entry  
+        print("aaaaa")
+        if going_up >= 0 and turn_right_refframe >= 0: #up and turn towards right
+            print("5555")
+            if angle_in_d < 90:
+                angle_in = angle_out_d + 90 - 360 #we got to swap in and output angles since the arc only move right
+                angle_out = angle_in_d + 90
+            if angle_in_d >= 90:
+                angle_in = angle_in_d + 180  #we got to swap in and output angles since the arc only move right
+                angle_out = angle_out_d + 360
+        elif going_up >= 0 and turn_right_refframe < 0: #up and turn towards left, 
+            print("666")
+            if angle_in_d >= 90 and angle_out_d >= 90:
+                angle_in = angle_in_d - 90
+                angle_out = angle_out_d - 90
+            if angle_in_d < 90 or angle_out_d < 90:
+                angle_in = angle_in_d - 90 + 360
+                angle_out = angle_out_d - 90 +360
+        elif going_up < 0 and turn_right_refframe >= 0: #down and turn towards right
+            print("77777")
+            if angle_in_d >= 90 and angle_out_d >= 90:   
+                angle_in = angle_in_d - 90
+                angle_out = angle_out_d - 90
+            if angle_out_d < 90:
+                angle_in = angle_in_d - 90
+                angle_out = angle_out_d - 90 + 360
+        elif going_up < 0 and turn_right_refframe < 0: #down and turn towards left
+            print("888")
+            if angle_in_d >= 90 and angle_out_d >= 90:   
+                angle_in = angle_out_d + 90 #we got to swap in and output angles since the arc only move right
+                angle_out = angle_in_d + 90
+            if angle_out_d < 90:
+                angle_in = angle_out_d - 90
+                angle_out = angle_in_d - 90 + 360
+    elif abs(going_up/going_right) < 1: #Here the curve is mostly going sideways contra vertically on entry 
+        print("bbbb")
+        if going_right >= 0 and turn_up_refframe < 0: #right and turns downward
+            print("11111111111")
+            if angle_in_d < 90:
+                angle_in = angle_out_d + 90 - 360 #we got to swap in and output angles since the arc only move right
+                angle_out = angle_in_d + 90
+            if angle_in_d >= 90:
+                angle_in = angle_out_d + 90 #we got to swap in and output angles since the arc only move right
+                angle_out = angle_in_d + 90
+        elif going_right >= 0 and turn_up_refframe >= 0: #right and turns up
+            print("22222222")
+            if angle_in_d >= 90 and angle_out_d >= 90: 
+                angle_in = angle_in_d - 90
+                angle_out = angle_out_d - 90
+            if angle_in_d < 90:
+                angle_in = angle_in_d - 90 + 360
+                angle_out = angle_out_d +360
+        elif going_right < 0 and turn_up_refframe >= 0: #left and turn up
+            print("333333")
+            if angle_in_d < 90:
+                angle_in = angle_in_d + 90 - 360 #we got to swap in and output angles since the arc only move right
+                angle_out = angle_out_d + 90
+            if angle_in_d >= 90:
+                angle_in = angle_out_d + 90 #we got to swap in and output angles since the arc only move right
+                angle_out = angle_in_d + 90
+        elif going_right < 0 and turn_up_refframe < 0: #left and turn down
+            print("44444")
+            if angle_in_d >= 90 and angle_out_d >= 90: 
+                angle_in = angle_in_d - 90
+                angle_out = angle_out_d - 90
+            if angle_in_d < 90:
+                angle_in = angle_in_d - 90 + 360
+                angle_out = angle_out_d - 90 + 360
+    print("Degree angle in on circle: "+str(angle_in))
+    print("Degree angle out on circle: "+str(angle_out))
+    print("")"""
 
 plt.scatter(x, y)
 plt.plot(x, y)
 plt.show()
-
-
-# path = [[0, 0, 0], [100, 0, 0], [100, 400, 0], [100, 400, 0], [0, 400, 0]]
