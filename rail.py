@@ -1,27 +1,28 @@
 import math as m
 import numpy as np
+import matplotlib.pyplot as plt
 #Creates a costume rail from the user-inputs adjusting and pasting the templates
 #for lines and curves into the rail template
 
-dfaPath = "K:\\Biblioteker\\Dokumenter\\Skole\\Automatisering\\TMM4275-Assignment2\\DFAs\\" #The location of your DFA files
+dfaPath = "/Users/kasper/Documents/GitHub/TMM4275-Assignment2/DFAs/" #The location of your DFA files
 
-f = open(dfaPath + "templates\\Rail_template.dfa", "r") 
+f = open(dfaPath + "templates/Rail_template.dfa", "r") 
 rail = f.read()
 f.close() #Opens and reads the DFA template so that a new DFA file of the order can be made
 
-f = open(dfaPath + "templates\\Arc_template.dfa", "r") 
+f = open(dfaPath + "templates/Arc_template.dfa", "r") 
 arc_temp = f.read()
 f.close() #Opens and reads the arc DFA template so that curves can be added to the rail
 
-f = open(dfaPath + "templates\\Line_template.dfa", "r") 
+f = open(dfaPath + "templates/Line_template.dfa", "r") 
 line_temp = f.read()
 f.close() #Opens and reads the line DFA template so that straight lines can be added to the rail
 
-f = open(dfaPath + "templates\\Roof_mount_template.dfa", "r") 
+f = open(dfaPath + "templates/Roof_mount_template.dfa", "r") 
 mount_temp = f.read()
 f.close() #Opens and reads the line DFA template so that straight lines can be added to the rail
 
-f = open(dfaPath + "templates\\path_and_combine.dfa", "r") 
+f = open(dfaPath + "templates/path_and_combine.dfa", "r") 
 the_end = f.read()
 f.close() #Opens and reads the DFA file that contains the the joining and coloring
 
@@ -84,8 +85,8 @@ mount_list = np.array([[0,0,0,2000],[0,10000,0,5000]])
 #pointlist = np.array([[-1,20],[0,10],[-2,8]]) #ned sving mot venstre(refrenceframe)
 #pointlist = np.array([[0,0],[0,10],[2,12],[10,12],[11,13],[12,16]])
 #pointlist = np.array([[0,0,0],[0,10,0],[-2,12,0],[-10,12,0],[-11.41421356,11.41421356,0],[-13.41421356,9.41421356,0]])
-pointlist = np.array([[0,0,0],[0,10000,0],[-2000,12000,0],[-10000,12000,0],[-11414.21356,11414.21356,0],[-13414.21356,9414.21356,0]])
-
+#pointlist = np.array([[0,0,0],[0,10000,0],[-2000,12000,0],[-10000,12000,0],[-11414.21356,11414.21356,0],[-13414.21356,9414.21356,0]])
+pointlist = [[0, 0,0], [0, 17000,0], [25000, 17000,0], [25000, -40000,0],[100000, -40000,0], [100000, 59000,0], [-20000, 59000,0],[-20000, 20000,0]]
 
 
 #next_line_end = np.array([12,10]) #høyre
@@ -97,14 +98,79 @@ r = 2000
 element_string=" "
 prev_line_start = np.array(pointlist[0]) #variable for the start of the line that came before the arc, this variable will be change whenever a new line is implemented
 next_line_end = np.array(pointlist[3]) #variable for the end of the line that comes after the arc, this variable will be change whenever a new line is implemented
-#Assume every other line and arc?
-for i in range(len(pointlist)-1):
+adjusted_points = [pointlist[0]] 
+for i in range(len(pointlist)-2):
+    line_up = pointlist[i+1][1] - pointlist[i][1]
+    line_right = pointlist[i+1][0] - pointlist[i][0]
+    line_turn_right_refframe = pointlist[i+2][0] - pointlist[i+1][0]
+    line_turn_up_refframe = pointlist[i+2][1] - pointlist[i+1][1]
+
+    print("line_up",line_up)
+    print("line_right",line_right)
+    print("line_turn_right_refframe",line_turn_right_refframe)
+    print("line_turn_up_refframe",line_turn_up_refframe)
+    print("")
+
+    if line_up >0: #scenario when the rail is going upwards before corner
+        if line_turn_right_refframe > 0: #When rail is turning right in the ref frame
+            ytemp1 = pointlist[i+1][1]-r #shorten the line by the radius to make space for a curve
+            xtemp2 = pointlist[i+1][0]+r #move the start of the next line the equvilant sideways
+        if line_turn_right_refframe < 0:
+            ytemp1 = pointlist[i+1][1]-r #shorten the line by the radius to make space for a curve
+            xtemp2 = pointlist[i+1][0]-r #move the start of the next line the equvilant sideways in the direction
+        adjusted_points.append([pointlist[i+1][0],ytemp1,pointlist[i+1][2]])
+        adjusted_points.append([xtemp2,pointlist[i+1][1],pointlist[i+1][2]])
+    elif line_up < 0: #scenario when the rail is going downwards before corner
+        if line_turn_right_refframe > 0: #When rail is turning right in the ref frame
+            ytemp1 = pointlist[i+1][1]+r #shorten the line by the radius to make space for a curve
+            xtemp2 = pointlist[i+1][0]+r #move the start of the next line the equvilant sideways
+        if line_turn_right_refframe < 0:
+            ytemp1 = pointlist[i+1][1]+r #shorten the line by the radius to make space for a curve
+            xtemp2 = pointlist[i+1][0]-r #move the start of the next line the equvilant sideways in the direction
+        adjusted_points.append([pointlist[i+1][0],ytemp1,pointlist[i+1][2]])
+        adjusted_points.append([xtemp2,pointlist[i+1][1],pointlist[i+1][2]])
+    elif line_right > 0: #scenario when the rail is going right before corner
+        if line_turn_up_refframe > 0: #When rail is turning right in the ref frame
+            xtemp1 = pointlist[i+1][0]-r #shorten the line by the radius to make space for a curve
+            ytemp2 = pointlist[i+1][1]+r #move the start of the next line the equvilant sideways
+        if line_turn_up_refframe < 0:
+            xtemp1 = pointlist[i+1][0]-r #shorten the line by the radius to make space for a curve
+            ytemp2 = pointlist[i+1][1]-r #move the start of the next line the equvilant sideways
+        adjusted_points.append([xtemp1,pointlist[i+1][1],pointlist[i+1][2]])
+        adjusted_points.append([pointlist[i+1][0],ytemp2,pointlist[i+1][2]])
+    elif line_right < 0: #scenario when the rail is going right before corner
+        if line_turn_up_refframe > 0: #When rail is turning right in the ref frame
+            xtemp1 = pointlist[i+1][0]+r #shorten the line by the radius to make space for a curve
+            ytemp2 = pointlist[i+1][1]+r #move the start of the next line the equvilant sideways
+        if line_turn_up_refframe < 0:
+            xtemp1 = pointlist[i+1][0]+r #shorten the line by the radius to make space for a curve
+            ytemp2 = pointlist[i+1][1]-r #move the start of the next line the equvilant sideways
+        adjusted_points.append([xtemp1,pointlist[i+1][1],pointlist[i+1][2]])
+        adjusted_points.append([pointlist[i+1][0],ytemp2,pointlist[i+1][2]])
+    else:
+        print("Something went wrong making space for the curves")
+adjusted_points.append(pointlist[-1])
+print("adjusted_points", adjusted_points)
+
+pointlist = adjusted_points
+for i in range(len(pointlist)-2):
+
+    side=(pointlist[i+2][0]-pointlist[i][0])*(pointlist[i+1][1]-pointlist[i][1]) - (pointlist[i+2][1]-pointlist[i][1])*(pointlist[i+1][0]-pointlist[i][0])
+    #We choose direction -1 for left, 0 for on line and 1 for right
+    if side < 0:
+        dir = -1
+    elif side >0:
+        dir = 1
+    else:
+        dir = 0
+    print("dir:",dir)
     if i==0 or i/2==np.round(i/2):
         print("\nStart on new loop for line: " + str(i))
         print("---")
         rail = add_line(i,pointlist[i][0],pointlist[i][1],pointlist[i][2],pointlist[i+1][0],pointlist[i+1][1],pointlist[i+1][2],rail)
     #arcs
-    elif i!=0 and i/2!=np.round(i/2): #Temp solution to only get arc, here the arc and lines are every other time
+    elif i!=0 and i/2!=np.round(i/2): 
+
         if i!= 0:
             prev_line_start = np.array(pointlist[i-1])
         if i < len(pointlist)-2:
@@ -206,18 +272,20 @@ for i in range(len(pointlist)-1):
         print("Degree angle out: "+str(angle_out_d))
         print("----DFA file arc angles----") #Since DFA arcs can not go from a larger angle (e.g. 352) to a smaller angle(e.g.20), we gotta pull some tricks and reverse them or add 360 degrees
         
-        going_up = ye - yprev_line_start
-        going_right = xe- xprev_line_start
+        going_up = ys - yprev_line_start
+        going_right = xs- xprev_line_start
+        if going_right ==0:
+            going_right = 0.00001
         turn_right_refframe = xe-xs
         turn_up_refframe = ye-ys
-        """
+        
         print("right",going_right)
         print("up",going_up)
         print("turnright",turn_right_refframe)
-        print("turnup", turn_up_refframe)"""
+        print("turnup", turn_up_refframe)
         
         if dir!=0: #Here we change the angles from the reference frame to the arc angles in the dfa file
-            if abs(going_up/going_right) >= 1 and ye-ys>0:  #Here the curve is mostly going vertically contra sideways on entry  
+            if abs(going_up/going_right) >= 1:  #Here the curve is mostly going vertically contra sideways on entry  
                 if going_up >= 0 and turn_right_refframe >= 0: #up and turn towards right
                     if angle_in_d < 90:
                         angle_in = angle_out_d + 90 - 360 #we got to swap in and output angles since the arc only move right
@@ -233,7 +301,7 @@ for i in range(len(pointlist)-1):
                         angle_in = angle_in_d - 90 + 360
                         angle_out = angle_out_d - 90 +360
                 elif going_up < 0 and turn_right_refframe >= 0: #down and turn towards right
-                    if angle_in_d >= 90 and angle_out_d >= 90:   
+                    if angle_in_d >= 90 and angle_out_d >= 90:  
                         angle_in = angle_in_d - 90
                         angle_out = angle_out_d - 90
                     if angle_out_d < 90:
@@ -255,10 +323,13 @@ for i in range(len(pointlist)-1):
                         angle_in = angle_out_d + 90 #we got to swap in and output angles since the arc only move right
                         angle_out = angle_in_d + 90
                 elif going_right >= 0 and turn_up_refframe >= 0: #right and turns up
+                    print("quwwww")
                     if angle_in_d >= 90 and angle_out_d >= 90: 
+                        print("aaaa")
                         angle_in = angle_in_d - 90
                         angle_out = angle_out_d - 90
-                    if angle_out_d < 90:
+                    if angle_in_d < 90:
+                        print("bbb")
                         angle_in = angle_in_d - 90 + 360
                         angle_out = angle_out_d - 90 + 360
                 elif going_right < 0 and turn_up_refframe >= 0: #left and turn up
@@ -285,21 +356,20 @@ for i in range(len(pointlist)-1):
     else:
         print("Neither arc or line?")   
 
-    if i != (len(pointlist)-2): #Making the string that says what parts to curve_join
+    if i != (len(pointlist)-3): #Making the string that says what parts to curve_join
         element_string = element_string + "element_" + str(i) + ":, "
     else:
         element_string = element_string + "element_" + str(i) + ":"
 
-#For-loop to insert all the roof mounts############################# antar listen ser slik ut [[x,y,z,høyde],[samme-annen mount]]
+#For loop to add the roof mounts
 for i in range(len(mount_list)):
     rail = add_roof_mount(i,mount_list[i][0],mount_list[i][1],mount_list[i][2],mount_list[i][3],rail)
 
 rail = rail + the_end
 
-#rail = rail.replace("<ALL_ELEMENTS>", "element_1:")
 rail = rail.replace("<ALL_ELEMENTS>", element_string)
 
-f = open(dfaPath + "Rail_Order.dfa", "w") #Saves the customers chair as a new DFA file with the name My_Chair_Order.dfa
+f = open(dfaPath + "Rail_Order.dfa", "w")
 f.write(rail)
 f.close()
 

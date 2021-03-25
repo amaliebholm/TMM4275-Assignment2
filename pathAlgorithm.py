@@ -5,7 +5,7 @@ import math
 import sys
 import matplotlib.pyplot as plt
 # math library made for this algorithmf
-from calculations import Calculations as calc
+#from calculations import Calculations as calc
 from scipy.spatial import distance
 import sympy
 
@@ -148,10 +148,11 @@ class pathAlgorithm:
 
     def InLineOfSight(self, point1, point2, point3):
         # Link:
-        LOF = (point1[1] - point2[1]) * point3[0] + \
-            (point2[0] - point1[0]) * point3[1] + \
-            (point1[0] * point2[1] - point2[0] * point1[1])
-
+        LOF = (point1[1] - point2[1]) * point3[0] + (point2[0] - point1[0]) * point3[1] + (point1[0] * point2[1] - point2[0] * point1[1])
+        """print("p1",point1)
+        print("p2",point2)
+        print("p3",point3)
+        print("LOF",LOF)"""
         direction = 0
 
         if LOF > 0:
@@ -184,25 +185,31 @@ class pathAlgorithm:
         else:
             pass
 
-        while index < len(best_path)-1:
+        while index < len(best_path)-2:
             index += 1
             '''
             current_position = curved_path[index][0]
             next_position = curved_path[index][1]
             '''
+            print("")
             print("ITERATION: ", index)
             print(best_path[index-1])
             print(best_path[index])
             print(best_path[index+1])
 
             if index == 1:
+                print("liiiiine")
                 vector = [best_path[index-1], best_path[index]]
                 curved_path.append(vector)
 
             else:
+                print("ccuuuuuuurve")
                 direction = self.InLineOfSight(
-                    curved_path[-1][0], curved_path[-1][1], best_path[index-1])
+                    curved_path[-1][0], curved_path[-1][1], best_path[index])
                 print("DIRECTION: ", direction)
+                """print("curved_path[-1][0]",curved_path[-1][0])
+                print("curved_path[-1][1]",curved_path[-1][1])
+                print("best_path[index-1]",best_path[index])"""
                 # Check for turn
                 # no turn --> Straight line
                 if (len(curved_path[-1]) == 2) and direction == 0:
@@ -214,20 +221,24 @@ class pathAlgorithm:
                     vector = [best_path[index], best_path[index+1]]
                     curved_path.append(vector)
                     '''
-                    print(curved_path[-1][0])
-                    print(curved_path[-1][1])
-                    print(best_path[index-1])
+                    print("curved_path[-1][0]",curved_path[-1][0])
+                    print("curved_path[-1][1]",curved_path[-1][1])
+                    print("best_path[index]",best_path[index])
 
                     if len(curved_path[-1]) == 2:
 
                         direction = self.InLineOfSight(
-                            curved_path[-1][0], curved_path[-1][1], best_path[index - 1])
+                            curved_path[-1][0], curved_path[-1][1], best_path[index])
+                        print("direction again?",direction)
 
                         center = self.findCenter(
-                            curved_path[-1][0], curved_path[-1][1], direction)
+                            curved_path[-1][1], best_path[index], direction)
+                        print("input circle",curved_path[-1][1],best_path[index],direction)
+                        print("center",center)
 
                         psi = self.angleBetweenVectors(
-                            curved_path[-1][1], best_path[index-1])
+                            curved_path[-1][1], best_path[index])
+                        
 
                         # The angle between the center and  the  two endpoints of the arc
                         arcInteriorAngle = self.arcInclusiveAngle(psi)
@@ -242,8 +253,9 @@ class pathAlgorithm:
 
                         print("Distance to end: ", distance_to_point_end_of_arc)
 
-                        my_new_list = [
-                            i * distance_to_point_end_of_arc for i in directionVector]
+                        my_new_list = [ i * distance_to_point_end_of_arc/10000 for i in directionVector]
+                        print("distance_to_point_end_of_arc",distance_to_point_end_of_arc)
+                        print("list",my_new_list)
 
                         end_point_of_arc = best_path[index-1] + my_new_list
 
@@ -264,8 +276,8 @@ data = [[0, 0], [0, 1700], [2500, 4000], [3500, -4000],
 
 # desired_locations = [(500, 500), (2000, 3000), (2700, 4000)]
 obsticles = []
-path = PathAlgorithm.bestPath(data, obsticles)
-print(path)
+#path = PathAlgorithm.bestPath(data, obsticles)
+#print("path",path)
 
 
 '''
@@ -278,18 +290,21 @@ y = []
 
 pointlist = [[0, 0], [0, 10000], [-2000, 12000], [-10000, 12000],
              [-11414.21356, 11414.21356], [-13414.21356, 9414.21356]]
-'''
-for i in path:
-    x.append(i[0])
-    print(x)
-    y.append(i[1])
-    print(y)
 
-print(x)
-print(y)
+testlist = [[0, 0], [0, 1700], [2500, 1700], [2500, -4000],[10000, -4000], [10000, 5900], [-2000, 5900]]
+for i in testlist:
+    print("i",i)
+    x.append(i[0])
+    #print(x)
+    y.append(i[1])
+    #print(y)
+
+print("x",x)
+print("y",y)
 
 plt.scatter(x, y)
 plt.plot(x, y)
 plt.show()
-'''
+
 # path = [[0, 0, 0], [100, 0, 0], [100, 400, 0], [100, 400, 0], [0, 400, 0]]
+#[[0, 0, 0], [0, 15000, 0], [2000, 17000, 0], [23000, 17000, 0], [25000, 19000, 0], [25000, -38000, 0], [27000, -40000, 0], [98000, -40000, 0], [100000, -38000, 0], [10000, 57000, 0], [8000, 59000, 0]]
