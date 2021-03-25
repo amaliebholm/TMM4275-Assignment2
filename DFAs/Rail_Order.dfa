@@ -193,7 +193,7 @@ DefClass: Rail_Order (ug_base_part);
 
 (Child) the_path: {
     Class, ug_curve_join;
-    profile, { element_0:};
+    profile, { element_0:, element_1:, element_2:, element_3:, element_4:, element_5:, element_6:, element_7:, element_8:, element_9:, element_10:, element_11:};
 };
 
 (Child) the_full_rail: {
