@@ -248,9 +248,10 @@ class pathAlgorithm:
                         end_point_of_arc = best_path[index-1] + my_new_list
 
                         print("END POINT ON CURVE: ", end_point_of_arc)
+
                     else:
                         pass
-
+                index += 1
         return curved_path
 
     # Function for getting the intercepting tangent on the arc
