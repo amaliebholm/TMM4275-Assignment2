@@ -44,7 +44,8 @@ def main() :
     
     imageExportBuilder1.FileFormat = NXOpen.Gateway.ImageExportBuilder.FileFormats.Png
     
-    imageExportBuilder1.FileName = "K:\\Biblioteker\\Dokumenter\\Skole\\Automatisering\\TMM4275-Assignment2\\rail_model_image.png"
+    # imageExportBuilder1.FileName = "K:\\Biblioteker\\Dokumenter\\Skole\\Automatisering\\TMM4275-Assignment2\\rail_model_image.png"
+    imageExportBuilder1.FileName = "C:\\Users\\Amalie\\Documents\\GitHub\\TMM4275-Assignment2\\rail_model_image.png" # Ama Windows # Ama
     
     imageExportBuilder1.BackgroundOption = NXOpen.Gateway.ImageExportBuilder.BackgroundOptions.Original
     

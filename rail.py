@@ -3,7 +3,8 @@ import numpy as np
 #Creates a costume rail from the user-inputs adjusting and pasting the templates
 #for lines and curves into the rail template
 
-dfaPath = "K:\\Biblioteker\\Dokumenter\\Skole\\Automatisering\\TMM4275-Assignment2\\DFAs\\" #The location of your DFA files
+# dfaPath = "K:\\Biblioteker\\Dokumenter\\Skole\\Automatisering\\TMM4275-Assignment2\\DFAs\\" #The location of your DFA files
+dfaPath = "C:\\Users\\Amalie\\Documents\\GitHub\\TMM4275-Assignment2\\DFAs" # Ama Windows
 
 f = open(dfaPath + "templates\\Rail_template.dfa", "r") 
 rail = f.read()

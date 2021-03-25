@@ -12,9 +12,12 @@ clr.AddReference('NXOpen')
 import NXOpen
 #import NXOpen.Gateway
 
+# pathToImg = "\\Users\\eier\\Document\\GitHub\\TMM4275-Assignment2\\rail_model_image.png" # Ama Mac
+pathToImg = "C:\\Users\\Amalie\\Documents\\GitHub\\TMM4275-Assignment2\\rail_model_image.png" # Ama Windows
+pathToDFA = "C:\\Users\\Amalie\\Documents\\GitHub\\TMM4275-Assignment2\\DFAs\\Rail_Order.dfa" # Ama Windows
 
-pathToDFA = "K:\\Biblioteker\\Dokumenter\\Skole\\Automatisering\\TMM4275-Assignment2\\DFAs\\My_Chair_210201.dfa"
-pathToImg = "K:\\Biblioteker\\Dokumenter\\Skole\\Automatisering\\TMM4275-Assignment2\\rail_model_image.png"
+# pathToDFA = "K:\\Biblioteker\\Dokumenter\\Skole\\Automatisering\\TMM4275-Assignment2\\DFAs\\My_Chair_210201.dfa"
+# pathToImg = "K:\\Biblioteker\\Dokumenter\\Skole\\Automatisering\\TMM4275-Assignment2\\rail_model_image.png"
 lastTimeFileChange = 0.0
 
 class RepeatedTimer(object):
@@ -42,8 +45,6 @@ class RepeatedTimer(object):
 		self._timer.cancel()
 		self.is_running = False
 		
-
-
 
 def main() : 
 

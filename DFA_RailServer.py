@@ -1,6 +1,6 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import requests
-from imgSaverServer import RepeatedTimer, imgSaver
+import os
 
 # Initial valies of room size
 room_height = 0
@@ -11,7 +11,7 @@ rail_height = 0
 # Placing points into different lists
 attachement_points = []  # On form [(x,y), height]
 visit_locations = [] # On form [(x,y), height]
-obstacles = [] # On form [(x,y),(x,y),(x,y),(x,y) height], to form an area
+obstacles = [] # On form [(x,y),(x,y),(x,y),(x,y)] , to form an area
 
 # Initial values of variables
 x = 0
@@ -26,13 +26,14 @@ obs_string = ""
 spes_height = 0 
 var_type = ""
 
+lastTimeFileChange = 0.0
+
 HOST_NAME = '127.0.0.1'  # locathost - http://127.0.0.1
-# Complete address would be: http://127.0.0.1:1234
+# Complete address would be: http://127.0.0.1:1234/setSize to start making an order
 PORT_NUMBER = 1234
 
-pathToImg = "\\Users\\eier\\Document\\sGitHub\\TMM4275-Assignment2\\rail_model_image.png" 
-# pathToImg = "K:\\Biblioteker\\Dokumenter\\Skole\\Automatisering\\TMM4275-Assignment2\\rail_model_image.png"
-lastTimeFileChange = 0.0
+pathToImg = "C:\\Users\\Amalie\\Documents\\GitHub\\TMM4275-Assignment2\\rail_model_image.png" # Ama Windows
+pathToDFA = "C:\\Users\\Amalie\\Documents\\GitHub\\TMM4275-Assignment2\\DFAs\\Rail_Order.dfa" # Ama Windows
 
 # Handler of HTTP requests / responses
 class MyHandler(BaseHTTPRequestHandler):
@@ -301,21 +302,23 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<p>List of obstacles:</p>', "utf-8"))
             s.wfile.write(bytes('<ul>' + list_obs + '</ul>', "utf-8"))
 
+            #Read the change of the DFA file
+            global lastTimeFileChange
+            fileLastChanged = os.path.getmtime(pathToImg)
+            #Check if it is > lastTimeFileChange
+            if (fileLastChanged > lastTimeFileChange):
+                lastTimeFileChange = fileLastChanged
+                #If yes, set this as the new time and print the image to pge
+                print("Image file has been saved")
+                s.wfile.write(bytes('<br> Model of your rail: ', "utf-8"))
+                s.wfile.write(bytes('<br> <img src="rail_model_image.jpg">', "utf-8"))  
+            else:
+                s.wfile.write(bytes('<br>Was not able to update rail model...', "utf-8"))
+
             # Giving options to go back and reset at room size or variables, of submitting the order 
             s.wfile.write(bytes('<br><button type="submit" formaction="/setSize">Reset room</button><p>Click "Reset room" to reset the while room size and the while rail order</p>', "utf-8"))
             s.wfile.write(bytes('<br><button type="submit" formaction="/setVariables">Reset variables</button><p>Click "Reset variables" to reset the variables in the room</p>', "utf-8"))
 
-            print("starting...")
-            # First param - is the frequency
-            # Second param - is the function
-            # Third param - path of image
-            rt = RepeatedTimer(5, imgSaver, pathToImg) # it auto-starts, no need of rt.start()
-            try:
-                sleep(25) # your long-running job goes here...
-            finally:
-                rt.stop() # better in a try/finally block to make sure the program ends
-            s.wfile.write(bytes('<br> Model of your rail: ', "utf-8"))
-            s.wfile.write(bytes('<br> <img src="rail_model_image.jpg">', "utf-8"))  
             s.wfile.write(bytes('<br><button type="submit">Submit</button><p>Click "Submit" to send the order of your rail</p>', "utf-8")) 
             s.wfile.write(bytes('</form></body></html>', "utf-8"))
 
