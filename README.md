@@ -28,7 +28,7 @@ Then, the customer will give coordinates of the different variables in the room:
 
 This is a diagram showing the main blocks and interconnections between them. 
 
-![Client-Server](https://github.com/amaliebholm/TMM4275-KBE-project/blob/main/Images/Client-Server.png)
+![Client-Server](url)
 
 The main changes form assignment 1 is .... 
 
@@ -37,12 +37,17 @@ The main changes form assignment 1 is ....
 
 The ULM sequence diagram showing how an order making scenario will play out. From how the customer makes the order of the rail, to the algorithm finding the best path and this path being made in NX. 
 
-![ULM:PNG](https://github.com/amaliebholm/TMM4275-KBE-project/blob/main/Images/ULM.PNG)
+![ULM:PNG](url)
 
+The main changes form assignment 1 is ....
+In assignment 1 Olingvo and Apache Jena Fuseki was used to communicate with the server containing the parameters, set by both the customer and the product engineer. This was not used in assignment 2, new the product engineer set a DFA template which was written to by the DFA server. 
 
 ### Development Tools
 
-This code was made using python in Visual Studio Code. Knowledge Fusion and Journal was used in NX to make models of the chair.
+This code was made using python in Visual Studio Code. Knowledge Fusion and Journal was used in NX to make models of the rail.
+
+The main changes form assignment 1 is ....
+In assignment 1 Olingvo and Apache Jena Fuseki was used to communicate with the server containing the parameters, as stated above, this was not used in assignment 2. It is the room itself that sets the constraints for heights and variables within the room, therefor the DFA server do both tasks, of taking the input, and checking whether it is within the room size. 
 
 
 ### Code Description 
@@ -62,7 +67,7 @@ This code was made using python in Visual Studio Code. Knowledge Fusion and Jour
 Image of the alerts 
 
 ### Example 1 
-![Ex1%20-%20setParams.PNG](https://github.com/amaliebholm/TMM4275-KBE-project/blob/main/Images/Ex1%20-%20setParams.PNG)
+![Ex1%20-%20setParams.PNG](url)
 
 ### Example 2
 
