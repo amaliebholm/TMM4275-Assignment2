@@ -8,7 +8,7 @@ global_path = []
 
 def astar(input_matrix):
     path = []
-
+    turn = False
     width = len(input_matrix[0])
     height = len(input_matrix)
 
@@ -45,8 +45,11 @@ def astar(input_matrix):
         visited[(i, j)] = current_state[2]
         # check for if the path has a viable turn, (has to be able to turn with a radius of 2m).
         # The neighbor nodes needs to form a freespace kvadrat for a turn.
-
-        # exploring neighbors:
+        if input_matrix[i-1][j] == 0 and input_matrix[i+1][j] == 0 and input_matrix[i][j-1] == 0 and input_matrix[i][j+1] == 0:
+            turn = True
+            print(turn)
+            print("Here you can turn", input_matrix[i][j])
+            # exploring neighbors:
         neighbors = list()
         if i > 0 and input_matrix[i-1][j] > 0:
             neighbors.append((i-1, j))
@@ -91,4 +94,4 @@ dummy_matrix2 = [[0, 2, 0, 0, 0, 0, 1, 0],
 
 if __name__ == "__main__":
     astar(dummy_matrix)
-    astar(dummy_matrix2)
+    # astar(dummy_matrix2)
