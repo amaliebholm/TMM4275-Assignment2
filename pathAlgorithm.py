@@ -1,9 +1,11 @@
+from scipy.spatial.distance import cdist
 import numpy as np
 import math
 import sys
 import matplotlib.pyplot as plt
 # math library made for this algorithmf
 from calculations import Calculations as calc
+from scipy.spatial import distance
 
 
 # The path algorithm takes in a list of attatchment points where the first point is the location of the feeder.
@@ -14,7 +16,7 @@ from calculations import Calculations as calc
 # taking in three lists: Attatchment points, desired locations, and obsticles
 
 # Input-format = [[[x,y],h],[[x,y],h],[[x,y],h],[[x,y],h],....,[[x,y],h],]
-# Output-format: List = [[[x,y,z],h],[[x,y,z]],[[x,y,z]],[[x,y,z],h],....]
+# Output-format: List = [[[x,y],h],[[x,y]],[[x,y]],[[x,y],h],....]
 
 
 class pathAlgorithm:
@@ -29,6 +31,51 @@ class pathAlgorithm:
     dir, is a direction - (-1):clockwise/(+1)counter clockwise to
     decide which direction is the turn.
     """
+
+    def closest_node(self, node, nodes):
+        return nodes[cdist([node], nodes).argmin()]
+
+    def bestPath(self, data, obsticles):
+        obsticles = obsticles
+        best_path = []
+        index = 0
+        start_position = data[index]
+        best_path.append(start_position)
+        data.remove(data[index])
+        updated_data = data
+        # print("Updated: ", data)
+
+        dummy_list = []
+        for i in updated_data:
+            dummy_list.append(i)
+        print("DUMMY: ", dummy_list)
+
+        for data_point in enumerate(updated_data):
+
+            if data_point is not None:
+                current_point = best_path[-1]
+                print("CURRENT INDEX:  ", current_point)
+                print("BEFORE REMOVING: ", updated_data)
+
+                if current_point in updated_data:
+                    dummy_list.remove(current_point)
+                    print("AFTER REMOVING: ", dummy_list)
+
+                # finds the closest point.
+                if len(dummy_list) != 0:
+                    point = self.closest_node(current_point, dummy_list)
+                    if point not in best_path:
+                        best_path.append(point)
+                        print("CLOSEST AND ADDED POINT: ", point)
+                else:
+                    pass
+            else:
+                pass
+
+        # next_position = path[index]
+            print("PATH: ", best_path)
+
+        return best_path
 
    # Function for finding the center of the fictive circle given the current position, the next and the direction.
     def findCenter(self, current_position, next_position, direction):
@@ -46,7 +93,7 @@ class pathAlgorithm:
 
         return center
 
-    # Function for getting the distance between two points
+    # Function for getting the distance between two points (vector)
 
     def getDistance(self, point1, point2):
         delta_x = point2[0] - point1[0]
@@ -56,6 +103,37 @@ class pathAlgorithm:
         return distance
 
     # Function for checking where the next point lies in reference to the current position.
+
+    def normalizedVector(self, point, distance):
+
+        normalizedVector = [point[0]/distance, point[1]/distance]
+
+        return normalizedVector
+
+    def directonalVector(self, point1, point2):
+
+        dirVec = [point1[0]-point2[0], point1[1] - point2[1]]
+
+        return dirVec
+
+    # Fucntion for getting the angle between two vectors
+
+    def angleBetweenVectors(self, vector1, vector2):
+
+        unit_vector1 = np.divide(vector1, np.linalg.norm(vector1))
+        unit_vector2 = np.divide(vector2, np.linalg.norm(vector2))
+
+        dot_product = np.dot(unit_vector1, unit_vector2)
+        psi = np.arccos(dot_product)
+
+        return psi
+
+    # Function for finding the arc angle
+    def arcInclusiveAngle(self, angleVectors):
+        psi = angleVectors
+        alpha = 2*np.arcsin((psi/2))
+
+        return alpha
 
     def InLineOfSight(self, point1, point2, point3):
         # Link:
@@ -75,6 +153,7 @@ class pathAlgorithm:
             return direction
 
     # Function for getting the intercepting tangent on the arc
+
     def getTangentPointM(self, center, point3, point2, direction):
 
         distance = self.getDistance(center, point3)
@@ -188,6 +267,7 @@ class pathAlgorithm:
         # all_locations = attatchment_locations + desired_locations
 
         # Main loop of the algorithm, runs until the whole list of attatchment points have been initilized.
+
         while tracker < len(attatchment_locations)-1:
 
             # initilizing the first line
@@ -202,6 +282,8 @@ class pathAlgorithm:
             path.append(vector)
             print("Path: ", path[-1])
 
+            # Finding the best path
+
             # checking for turn and what direction the turn is
             direction = self.InLineOfSight(
                 path[-1][0], path[-1][1], current_position)
@@ -215,8 +297,17 @@ class pathAlgorithm:
 
             else:
 
+                # initializing necessery helper functions:
+
                 center = self.findCenter(
                     path[-1][0], path[-1][1], direction)
+
+                psi = self.angleBetweenVectors(path[-1][0], path[-1][1])
+
+                # The angle between the center and  the  two endpoints of the arc
+                arcInteriorAngle = self.arcInclusiveAngle(psi)
+
+                dirVec = self.directonalVector(path[-1][0], path[-1][1])
 
                 PointOnArc = self.getTangentPointM(
                     center, current_position, path[-1][1], direction)
@@ -227,8 +318,8 @@ class pathAlgorithm:
                 if (direction == 1 and path[-1][0][1] > path[-1][1][1]):
 
                     if (startEndAngles[0] < 0):  # Outgoing from IV quater
-                        #newEndAng = 2 * math.pi + startEndAngles[0]
-                        #newStartAng = startEndAngles[1]
+                        # newEndAng = 2 * math.pi + startEndAngles[0]
+                        # newStartAng = startEndAngles[1]
                         pointOnCurve = [path[-1][1], PointOnArc]
                         print("POSITIONS: ", path[-1][0], path[-1][1])
                         print("POINT ON CURVE: ", pointOnCurve)
@@ -287,6 +378,7 @@ class pathAlgorithm:
 
                     pointOnCurve = [path[-1][1], PointOnArc]
                     path.append(pointOnCurve)
+
                 else:
 
                     pointOnCurve = [path[-1][1], PointOnArc]
@@ -295,15 +387,15 @@ class pathAlgorithm:
                     vector = [PointOnArc, attatchment_locations[tracker]]
                     path.append(vector)
 
-            return path
+        return path
 
 
-PathAlgorithm = pathAlgorithm(2000, (0, 0), (-2000, -2000))
+PathAlgorithm = pathAlgorithm(2000, [0, 0], [-2000, -2000])
 
 data = [[0, 0], [0, 1700], [2500, 4000], [3500, -4000],
         [10000, 6000], [-1000, 5900], [-2000, -2000]]
 
-desired_locations = [(500, 500), (2000, 3000), (2700, 4000)]
+# desired_locations = [(500, 500), (2000, 3000), (2700, 4000)]
 
 path = PathAlgorithm.algorithm(data)
 print(path)
@@ -312,14 +404,14 @@ print(path)
 path = [[[0, 0, 0], [0, 1700, 0]], [[2500, 4000, 0], [
     3500, -4000, 0]], [[10000, 6000, 0], [1000, 5900]]]
 '''
+
 x = []
 y = []
-
 
 pointlist = [[0, 0], [0, 10000], [-2000, 12000], [-10000, 12000],
              [-11414.21356, 11414.21356], [-13414.21356, 9414.21356]]
 
-for i in pointlist:
+for i in path:
     x.append(i[0])
     print(x)
     y.append(i[1])
@@ -331,6 +423,5 @@ print(y)
 plt.scatter(x, y)
 plt.plot(x, y)
 plt.show()
-
 
 # path = [[0, 0, 0], [100, 0, 0], [100, 400, 0], [100, 400, 0], [0, 400, 0]]
