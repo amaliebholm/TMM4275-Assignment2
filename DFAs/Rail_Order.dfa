@@ -92,58 +92,14 @@ DefClass: Rail_Order (ug_base_part);
 
 (Child) element_0: {
     class, ug_line;
-    start_Point, Point(0.0,0.0,0.0);
-    end_Point,   Point(0.0,10000.0,0.0);
+    start_Point, Point(0,0,0);
+    end_Point,   Point(0,0,0);
 };
 
-(Child) element_1: {
-    class, ug_arc;
-    radius, 2000;
-    start_angle, 0.0;
-    end_angle, 90.0;
-    center, point(-2000.0,10000.0,0);
-};
-
-(Child) element_2: {
-    class, ug_line;
-    start_Point, Point(-2000.0,12000.0,0.0);
-    end_Point,   Point(-10000.0,12000.0,0.0);
-};
-
-(Child) element_3: {
-    class, ug_arc;
-    radius, 2000;
-    start_angle, 90.0;
-    end_angle, 135.0;
-    center, point(-9999.9999953,10000.0,0);
-};
-
-(Child) element_4: {
-    class, ug_line;
-    start_Point, Point(-11414.21356,11414.21356,0.0);
-    end_Point,   Point(-13414.21356,9414.21356,0.0);
-};
-
-
-(child) mount_0:{
-        class, ug_cylinder;
-        diameter, 100;
-        height, 4686.666;
-        Origin, Point(0,0,313.334);
-        Direction, Vector(0,0,1);
-    };
-
-(child) mount_1:{
-        class, ug_cylinder;
-        diameter, 100;
-        height, 1686.666;
-        Origin, Point(0,10000,313.334);
-        Direction, Vector(0,0,1);
-    };
 
 (Child) the_path: {
     Class, ug_curve_join;
-    profile, { element_0:, element_1:, element_2:, element_3:, element_4:};
+    profile, { element_0:};
 };
 
 (Child) the_full_rail: {

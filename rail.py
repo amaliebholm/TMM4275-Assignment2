@@ -13,12 +13,13 @@ import DFA_RailServer
 #Creates a costume rail from the user-inputs adjusting and pasting the templates
 #for lines and curves into the rail template
 
-mount_list = np.array([[0,0,0,2000],[0,10000,0,5000]])
-pointlist = [[0, 0,0], [0, 17000,0], [25000, 17000,0], [25000, -40000,0],[100000, -40000,0], [100000, 59000,0], [-20000, 59000,0],[-20000, 20000,0]]
+#mount_list = np.array([[0,0,0,2000],[0,10000,0,5000]])
+#pointlist = [[0, 0,0], [0, 17000,0], [25000, 17000,0], [25000, -40000,0],[100000, -40000,0], [100000, 59000,0], [-20000, 59000,0],[-20000, 20000,0]]
 
 
-#pointlist = DFA_RailServer.algo_path #USE these when working togheter with the dfa server
-#mount_list = DFA_RailServer.attachement_points
+pointlist = DFA_RailServer.algo_path #USE these when working togheter with the dfa server
+mount_list = DFA_RailServer.attachement_points
+print(pointlist)
 
 fixedlist = []
 for place in pointlist: #Here we transform from meters to millimeters
@@ -32,42 +33,63 @@ for place in mount_list: #Here we transform from meters to millimeters
     fixedlist.append(fixed_part_list)
 mount_list = fixedlist 
 
-dfaPath = "/Users/kasper/Documents/GitHub/TMM4275-Assignment2/DFAs/" #The location of your DFA files
+dfaPath = "C:\\Users\\Amalie\\Documents\\GitHub\\TMM4275-Assignment2\\DFAs\\"
+#The location of your DFA files
 
+<<<<<<< HEAD
 f = open(dfaPath + "templates/Rail_template.dfa", "r") 
 >>>>>>> d8376b373d5dead213c0eb27714acfcc09557d17
+=======
+f = open(dfaPath + "templates\\Rail_template.dfa", "r") 
+>>>>>>> 54622005664a6e703f533187c0aefed6b8a358c1
 rail = f.read()
 f.close()  # Opens and reads the DFA template so that a new DFA file of the order can be made
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 f = open(dfaPath + "templates\\Arc_template.dfa", "r")
 =======
 f = open(dfaPath + "templates/Arc_template.dfa", "r") 
 >>>>>>> d8376b373d5dead213c0eb27714acfcc09557d17
+=======
+f = open(dfaPath + "templates\Arc_template.dfa", "r") 
+>>>>>>> 54622005664a6e703f533187c0aefed6b8a358c1
 arc_temp = f.read()
 f.close()  # Opens and reads the arc DFA template so that curves can be added to the rail
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 f = open(dfaPath + "templates\\Line_template.dfa", "r")
 =======
 f = open(dfaPath + "templates/Line_template.dfa", "r") 
 >>>>>>> d8376b373d5dead213c0eb27714acfcc09557d17
+=======
+f = open(dfaPath + "templates\Line_template.dfa", "r") 
+>>>>>>> 54622005664a6e703f533187c0aefed6b8a358c1
 line_temp = f.read()
 f.close()  # Opens and reads the line DFA template so that straight lines can be added to the rail
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 f = open(dfaPath + "templates\\Roof_mount_template.dfa", "r")
 =======
 f = open(dfaPath + "templates/Roof_mount_template.dfa", "r") 
 >>>>>>> d8376b373d5dead213c0eb27714acfcc09557d17
+=======
+f = open(dfaPath + "templates\Roof_mount_template.dfa", "r") 
+>>>>>>> 54622005664a6e703f533187c0aefed6b8a358c1
 mount_temp = f.read()
 f.close()  # Opens and reads the line DFA template so that straight lines can be added to the rail
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 f = open(dfaPath + "templates\\path_and_combine.dfa", "r")
 =======
 f = open(dfaPath + "templates/path_and_combine.dfa", "r") 
 >>>>>>> d8376b373d5dead213c0eb27714acfcc09557d17
+=======
+f = open(dfaPath + "templates\path_and_combine.dfa", "r") 
+>>>>>>> 54622005664a6e703f533187c0aefed6b8a358c1
 the_end = f.read()
 f.close()  # Opens and reads the DFA file that contains the the joining and coloring
 
