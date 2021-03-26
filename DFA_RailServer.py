@@ -245,7 +245,7 @@ class MyHandler(BaseHTTPRequestHandler):
                 '<p>4. An obstacle in the room, the feeder can not pass through these points</p>', "utf-8"))
 
             # Image illustrating 3D and 2D perspective
-            s.wfile.write(bytes('<img src="https://raw.githubusercontent.com/amaliebholm/TMM4275-Assignment2/main/Images/sketch_room.jpeg" alt="Image illustrating 3D and 2D perspective" width="650" height="400">', "utf-8"))
+            s.wfile.write(bytes('<img src="https://raw.githubusercontent.com/amaliebholm/TMM4275-Assignment2/Images/main/sketch_room.jpeg" alt="Image illustrating 3D and 2D perspective" width="650" height="400">', "utf-8"))
 
             # Adding the coordinates of the variable
             s.wfile.write(bytes(
@@ -316,7 +316,7 @@ class MyHandler(BaseHTTPRequestHandler):
             for li in attachement_points:
                 list_att += "<li>" + str(li) + "</li>"
             s.wfile.write(bytes(
-                '<br><p>List of attachement points: [[width coordinate, length coordinate], ceiling height]:</p>', "utf-8"))
+                '<br><p>List of attachment points: [[width coordinate, length coordinate], ceiling height]:</p>', "utf-8"))
             s.wfile.write(bytes('<ul>' + list_att + '</ul>', "utf-8"))
 
             list_visit = ""
@@ -366,7 +366,7 @@ class MyHandler(BaseHTTPRequestHandler):
             for li in attachement_points:
                 list_att += "<li>" + str(li) + "</li>"
             s.wfile.write(bytes(
-                '<p>List of attachement points: [[point in width, poing in length], ceiling height]:</p>', "utf-8"))
+                '<p>List of attachment points: [[point in width, poing in length], ceiling height]:</p>', "utf-8"))
             s.wfile.write(bytes('<ul>' + list_att + '</ul>', "utf-8"))
 
             list_visit = ""
