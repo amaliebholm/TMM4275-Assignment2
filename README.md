@@ -22,7 +22,7 @@ Then, the customer will give coordinates of the different variables in the room:
 * Attachement point in the ceiling
 * Feeding location for the cart
 * Locations the cart should visit in the room 
-* Obstacles in the room that the cart has to avoid (given as whole areas in the room)
+* Obstacles in the room that the cart has to avoid (given as whole areas within the room)
 
 ### The KBE Application Architecture
 
@@ -55,6 +55,11 @@ In assignment 1 Olingvo and Apache Jena Fuseki was used to communicate with the 
 
 ### DFAs
 - `Rail_Order.dfa` - Containing the NX file whith the parameters given by the customer
+- `Rail_template.dfa` - Containing the rail template 
+- `Arc_template.dfa` - Containing the arc template
+- `Line_template.dfa` - Containing the line template
+- `Roof_mount_template.dfa` - Containing the template for how roof mounts
+- `path_and_combine.dfa`- Containing the template for combining the whole rile according to the path 
 
 ## Video of working KBE system
 
