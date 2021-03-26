@@ -28,14 +28,16 @@ class pathAlgorithm:
         return nodes[cdist([node], nodes).argmin()]
 
     def listMaker(self, data):
-        new_list = []
-        for i in data:
-            z_value = i[1]
-            i.remove(z_value)
-            for j in i:
-                j.append(z_value)
-                new_list.append(j)
-
+        try:
+            new_list = []
+            for i in data:
+                z_value = i[1]
+                i.remove(z_value)
+                for j in i:
+                    j.append(z_value)
+                    new_list.append(j)
+        except:
+            IndexError
         return new_list
 
     # Function that makes the input have 90 deegre turns, for testing purposes
