@@ -51,6 +51,7 @@ In assignment 1 Olingvo and Apache Jena Fuseki was used to communicate with the 
 
 - `DFAserver.py` - Setting up the web-page that the customer uses to place an order, making sure that the variables are set within the size of the room. Giving the lists of different variables as output. 
 - `astar_alg.py`- ... 
+- `pathAlgorithm.py`- Has the purpose of making the optimal path from the lists of points given from the webserver. 
 - Rest of .py files ... 
 
 ### DFAs
