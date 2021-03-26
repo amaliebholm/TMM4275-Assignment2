@@ -78,7 +78,7 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<br><br><button type="submit">Set size</button><p>Click "Set size" to set the room size</p>', "utf-8"))
             s.wfile.write(bytes('<button type="submit" formaction="/setVariables">Continue</button><p>Click "Continue" to continue to add varialbes</p></form>', "utf-8"))
 
-            s.wfile.write(bytes('<img src="https://raw.githubusercontent.com/amaliebholm/TMM4275-Assignment2/main/sketch_room.jpeg" alt="Image illustrating 3D and 2D perspective" width="650" height="400">', "utf-8"))
+            s.wfile.write(bytes('<img src="https://raw.githubusercontent.com/amaliebholm/TMM4275-Assignment2/main/Images/sketch_room.jpeg" alt="Image illustrating 3D and 2D perspective" width="650" height="400">', "utf-8"))
             s.wfile.write(bytes('</body></html>', "utf-8"))
 
         elif path.find("/rail_model_image.png") != -1: 
@@ -152,7 +152,7 @@ class MyHandler(BaseHTTPRequestHandler):
                 s.wfile.write(bytes('<script>function alertFunction(){alert("The rail height, ' + str(rail_height) + ', must be lower than the room height, ' + str(room_height) + '.  Room height, ' + str(room_height) + ', width, ' + str(room_width) + ', and length ' + str(room_length) + ', must be more than zero!");} </script>', "utf-8"))
                 s.wfile.write(bytes('<button onclick="alertFunction()">Continue</button><p>Click "Continue" to continue to add varialbes</p>', "utf-8"))
 
-            s.wfile.write(bytes('<img src="https://raw.githubusercontent.com/amaliebholm/TMM4275-Assignment2/main/sketch_room.jpeg" alt="Image illustrating 3D and 2D perspective" width="650" height="400">', "utf-8"))
+            s.wfile.write(bytes('<img src="https://raw.githubusercontent.com/amaliebholm/TMM4275-Assignment2/main/Images/sketch_room.jpeg" alt="Image illustrating 3D and 2D perspective" width="650" height="400">', "utf-8"))
             s.wfile.write(bytes('</form></body></html>', "utf-8"))
 
         elif path.find("/setVariables") != -1: # Web page to add variables in the room 
@@ -211,7 +211,7 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<p>4. An obstacle in the room, the feeder can not pass through these points</p>', "utf-8"))
 
             # Image illustrating 3D and 2D perspective 
-            s.wfile.write(bytes('<img src="https://raw.githubusercontent.com/amaliebholm/TMM4275-Assignment2/main/sketch_room.jpeg" alt="Image illustrating 3D and 2D perspective" width="650" height="400">', "utf-8"))
+            s.wfile.write(bytes('<img src="https://raw.githubusercontent.com/amaliebholm/TMM4275-Assignment2/main/Images/sketch_room.jpeg" alt="Image illustrating 3D and 2D perspective" width="650" height="400">', "utf-8"))
             
             # Adding the coordinates of the variable       
             s.wfile.write(bytes('<h4>Seen from above, where are the variables located in the room? Give the coordinates below:</h4>', "utf-8"))
