@@ -87,9 +87,9 @@ If the customer tries to add a variable that is located outside the room then th
 
 ### Example 3
 
-![room_size.png](https://github.com/amaliebholm/TMM4275-Assignment2/blob/main/Images/room_size.png)
+![example3_size.png](https://github.com/amaliebholm/TMM4275-Assignment2/blob/main/Images/example3_size.png)
 
-![list_of_points.png](https://github.com/amaliebholm/TMM4275-Assignment2/blob/main/Images/list_of_points.png)
+![example3_list.png](https://github.com/amaliebholm/TMM4275-Assignment2/blob/main/Images/example3_list.png)
 
 
 ### Common Colclusion on Building KBE System based on A1 and A2
