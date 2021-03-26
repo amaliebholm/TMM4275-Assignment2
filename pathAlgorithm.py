@@ -28,22 +28,25 @@ class pathAlgorithm:
         return nodes[cdist([node], nodes).argmin()]
 
     def listMaker(self, data):
-        new_list = []
-        for i in data:
-            z_value = i[1]
-            i.remove(z_value)
-            for j in i:
-                j.append(z_value)
-                new_list.append(j)
-
+        try:
+            new_list = []
+            for i in data:
+                z_value = i[1]
+                i.remove(z_value)
+                for j in i:
+                    j.append(z_value)
+                    new_list.append(j)
+        except:
+            IndexError
         return new_list
 
     # Function that makes the input have 90 deegre turns, for testing purposes
     def preProcessData(self, data):
         # Initializing
         new_list = self.listMaker(data)
+        print(new_list)
         index = 0
-        dummy_list = data
+        dummy_list = new_list
         list_of_points = []
         # Adding the two first points
         list_of_points.append(new_list[0])
@@ -68,8 +71,8 @@ class pathAlgorithm:
             except:
                 IndexError
 
-        # print("NEW LIST : ", dummy_list)
-        # print("LIST: ", list_of_points)
+        #print("NEW LIST : ", dummy_list)
+        #print("LIST: ", list_of_points)
 
         return new_list
 
@@ -416,6 +419,9 @@ dataPRe = [[0, 0], [0, 1700], [2500, 1700], [2500, -4000],
 Newpointlist = [[[1000, 2700], 10], [[3700, 10000], 0], [[-2000, 12000], 6], [[3000, 12000], 15],
                 [[-10000, 5000], 0], [[5900, 29876], 7], [[7000, 3000], 0], [[4000, - 5700], 20], [[2456, 17000], 1]]
 
+Newpointlist2 = [[[1500, 2700], 10], [[7700, 10000], 0], [[-5000, 16000], 6], [[1000, 4000], 15],
+                 [[-10000, 5000], 0], [[5900, 29876], 7], [[7000, 3000], 0], [[4000, - 5700], 20], [[2456, 17000], 1]]
+
 pointlist = [[[0, 0], 10], [[0, 10000], 0], [[-2000, 12000], 6], [[-10000, 12000], 15],
              [[-11414.21356, 11414.21356], 0], [[-13414.21356, 9414.21356], 7]]
 
@@ -426,17 +432,15 @@ path = [[[0, 0, 0], [0, 1700, 0]], [[2500, 4000, 0], [
 
 
 # desired_locations = [(500, 500), (2000, 3000), (2700, 4000)]
-obsticles = []
-new_list = PathAlgorithm.listMaker(Newpointlist)
 
-print("New list: ", new_list)
 
 # path = PathAlgorithm.bestPath(dataPRe)
 all_locations = [[[7000, 8000], 10000], [[7000, 29000], 10000],
                  [[16000, 29000], 10000], [[16000, 7000], 10000]]
 
-if len(new_list) > 0:
-    ninty_path = PathAlgorithm.preProcessData(new_list)
+if len(Newpointlist2) > 0:
+    ninty_path = PathAlgorithm.preProcessData(Newpointlist2)
+    print(ninty_path)
 
 x = []
 y = []
