@@ -455,7 +455,7 @@ class MyHandler(BaseHTTPRequestHandler):
             print("line_turn_up_refframe",line_turn_up_refframe)
             print("")"""
 
-            if line_up >0: #scenario when the rail is going upwards before corner
+    if line_up >0: #scenario when the rail is going upwards before corner
         if line_turn_right_refframe > 0: #When rail is turning right in the ref frame
             ytemp1 = pointlist[i+1][1]-r #shorten the line by the radius to make space for a curve
             xtemp2 = pointlist[i+1][0]+r #move the start of the next line the equvilant sideways
