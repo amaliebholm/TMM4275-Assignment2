@@ -15,6 +15,7 @@ rail_height = 0
 attachement_points = []  # On form [(x,y), height]
 visit_locations = []  # On form [(x,y), height]
 obstacles = []  # On form [(x,y),(x,y),(x,y),(x,y) height], to form an area
+global attatch_path, algo_path
 
 # Initial values of variables
 x = 0
@@ -343,11 +344,15 @@ class MyHandler(BaseHTTPRequestHandler):
 
         # Review of order, and allowing the customer to go back and reset at different points
         elif path.find("/sendOrder") != -1:
-            global algo_path
+           
             all_locations = attachement_points.copy() + visit_locations.copy()
             algo_path = pathAlgorithm.pathAlgorithm(
                 2000).preProcessData(all_locations)
             print("PATH: ", algo_path)
+            
+            attatch_path = pathAlgorithm.pathAlgorithm(
+                2000).preProcessData(attachement_points)
+            print("Attatchment point: ", attatch_path)
             
         pointlist = algo_path #USE these when working togheter with the dfa server
         mount_list = attachement_points

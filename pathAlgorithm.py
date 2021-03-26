@@ -28,9 +28,10 @@ class pathAlgorithm:
         return nodes[cdist([node], nodes).argmin()]
 
     def listMaker(self, data):
+        mock_data = data
         try:
             new_list = []
-            for i in data:
+            for i in mock_data:
                 z_value = i[1]
                 i.remove(z_value)
                 for j in i:
