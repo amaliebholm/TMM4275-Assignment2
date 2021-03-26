@@ -46,7 +46,7 @@ f = open(dfaPath + "templates/path_and_combine.dfa", "r")
 the_end = f.read()
 f.close() #Opens and reads the DFA file that contains the the joining and coloring
 
-startx =  pointlist[0][0] 
+startx = pointlist[0][0] 
 starty = pointlist[0][1]
 startz = pointlist[0][2]
 
@@ -326,13 +326,10 @@ for i in range(len(pointlist)-2): #This for loop inserts lines and arcs into the
                         angle_in = angle_out_d + 90 #we got to swap in and output angles since the arc only move right
                         angle_out = angle_in_d + 90
                 elif going_right >= 0 and turn_up_refframe >= 0: #right and turns up
-                    print("quwwww")
                     if angle_in_d >= 90 and angle_out_d >= 90: 
-                        print("aaaa")
                         angle_in = angle_in_d - 90
                         angle_out = angle_out_d - 90
                     if angle_in_d < 90:
-                        print("bbb")
                         angle_in = angle_in_d - 90 + 360
                         angle_out = angle_out_d - 90 + 360
                 elif going_right < 0 and turn_up_refframe >= 0: #left and turn up
