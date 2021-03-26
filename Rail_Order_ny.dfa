@@ -157,7 +157,7 @@ DefClass: Rail_Order_ny (ug_base_part);
         class, ug_cylinder;
         diameter, 100;
         height, 2686.666;
-        Origin, Point(10000,10000,2313.334);
+        Origin, Point(10000,10000,313.334);
         Direction, Vector(0,0,1);
     };
 
