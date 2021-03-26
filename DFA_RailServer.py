@@ -400,12 +400,13 @@ class MyHandler(BaseHTTPRequestHandler):
             finally:
                 rt.stop()  # better in a try/finally block to make sure the program ends
                 '''
+            '''
             s.wfile.write(bytes('<br> Model of your rail: ', "utf-8"))
             s.wfile.write(
                 bytes('<br> <img src="rail_model_image.jpg">', "utf-8"))
             s.wfile.write(bytes(
                 '<br><button type="submit">Submit</button><p>Click "Submit" to send the order of your rail</p>', "utf-8"))
-            s.wfile.write(bytes('</form></body></html>', "utf-8"))
+            s.wfile.write(bytes('</form></body></html>', "utf-8"))'''
 
             return room_height, room_width, room_length, rail_height, attachement_points, visit_locations, obstacles
 
