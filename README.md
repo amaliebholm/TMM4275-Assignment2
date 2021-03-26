@@ -9,7 +9,7 @@ This project is made by:
 
 ### The Rail
 
-The image below show a NX modelling of the rail: 
+The image below show an example of a NX modelling of the rail: 
 ![rail_model_image.png](https://github.com/amaliebholm/TMM4275-Assignment2/blob/main/Images/rail_model_image.png)
 
 First, the customer will define the size of the room: 
@@ -70,10 +70,14 @@ In assignment 1 Olingvo and Apache Jena Fuseki was used to communicate with the 
 ## Examples of Three Different Product Orders  
 
 ### A Customer Trying to Order Outside the Constraints
-Image of the alerts 
+Befor submitting variables for both the size of the room and before being able to add a variable to the room, the values are verified. If a customer tries to set values outside of these verifications they will recieve a notification. If the room size is below or equal to zero of ir the rail height is higher than the ceiling height the customer will recieve this alert: 
+![alert.PNG](https://github.com/amaliebholm/TMM4275-Assignment2/blob/main/Images/alert.PNG)
+
+If the customer tries to add a variable that is located outside the room then they will recieve this response:
+![constraint.PNG](https://github.com/amaliebholm/TMM4275-Assignment2/blob/main/Images/constraint.PNG)
 
 ### Example 1 
-![Ex1%20-%20setParams.PNG](url)
+
 
 ### Example 2
 
