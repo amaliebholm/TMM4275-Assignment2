@@ -99,46 +99,32 @@ DefClass: Rail_Order (ug_base_part);
 (Child) element_1: {
     class, ug_arc;
     radius, 2000;
-    start_angle, 270.0;
+    start_angle, 90.0;
     end_angle, 180.0;
-    center, point(10000.0,6000.0,0);
+    center, point(12000.0,4000.0,0);
 };
 
 (Child) element_2: {
     class, ug_line;
     start_Point, Point(12000,6000,30000);
-    end_Point,   Point(0,6000,30000);
+    end_Point,   Point(23000,6000,30000);
 };
 
 (Child) element_3: {
     class, ug_arc;
     radius, 2000;
-    start_angle, 450.0;
-    end_angle, 326.30993247402023;
-    center, point(None,None,0);
-};
-
-(Child) element_4: {
-    class, ug_line;
-    start_Point, Point(19000,0,30000);
-    end_Point,   Point(23000,6000,30000);
-};
-
-(Child) element_5: {
-    class, ug_arc;
-    radius, 2000;
-    start_angle, -180.0;
-    end_angle, 146.30993247402023;
+    start_angle, 270.0;
+    end_angle, 360.0;
     center, point(23000.0,8000.0,0);
 };
 
-(Child) element_6: {
+(Child) element_4: {
     class, ug_line;
     start_Point, Point(25000,8000,30000);
     end_Point,   Point(25000,23000,30000);
 };
 
-(Child) element_7: {
+(Child) element_5: {
     class, ug_arc;
     radius, 2000;
     start_angle, 0.0;
@@ -146,23 +132,9 @@ DefClass: Rail_Order (ug_base_part);
     center, point(23000.0,23000.0,0);
 };
 
-(Child) element_8: {
+(Child) element_6: {
     class, ug_line;
     start_Point, Point(23000,25000,30000);
-    end_Point,   Point(0,25000,30000);
-};
-
-(Child) element_9: {
-    class, ug_arc;
-    radius, 2000;
-    start_angle, 90.0;
-    end_angle, 27.474431626277124;
-    center, point(None,None,0);
-};
-
-(Child) element_10: {
-    class, ug_line;
-    start_Point, Point(14000,0,30000);
     end_Point,   Point(1000,25000,30000);
 };
 
@@ -185,7 +157,7 @@ DefClass: Rail_Order (ug_base_part);
 
 (Child) the_path: {
     Class, ug_curve_join;
-    profile, { element_0:, element_1:, element_2:, element_3:, element_4:, element_5:, element_6:, element_7:, element_8:, element_9:, element_10:};
+    profile, { element_0:, element_1:, element_2:, element_3:, element_4:, element_5:, element_6:};
 };
 
 (Child) the_full_rail: {
