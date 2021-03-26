@@ -52,9 +52,9 @@ In assignment 1 Olingvo and Apache Jena Fuseki was used to communicate with the 
 ### Code Description 
 
 - `DFA_RailServer.py` - Setting up the web-page that the customer uses to place an order, making sure that the variables are set within the size of the room. Giving the lists of different variables as output. This is done by three webpages linked together, sending the customer to the next one when all the necessary values are given. 
-- `rial.py`- ... KASPER8
-- `pathAlgorithm.py` - Finging best possible path.... MYKLE
-- `aStarAlgorithm.py` - Finging best possible path using aStar, did not work because .... instead .... MYKLE
+- `rail.py`- ... This takes in the list of the sorted points, adds the curves and creates the dfa file that is used to create the 3d model. 
+- `pathAlgorithm.py` - Has the purpose of finding the optimal path through the points given by the user in the webserver client. It uses euclidean distance between a point and the rest to find the shortest paths.
+- `aStarAlgorithm.py` - We first tried to implement the shortest path through the points given from the webserver using the A* algorithm, but this proved to be very difficult. The solution we tried was to update the start point and end point to the current and next points in the list, but the heuristic became increasingly worse through each iteration.
 - `rail_journal.py` - A journal using NX Open to take a picture of the ordered rail and saving it in the folder with the rest of the files. 
 
 ### DFAs
