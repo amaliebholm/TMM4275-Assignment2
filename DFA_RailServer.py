@@ -13,6 +13,7 @@ rail_height = 0
 attachement_points = []  # On form [(x,y), height]
 visit_locations = []  # On form [(x,y), height]
 obstacles = []  # On form [(x,y),(x,y),(x,y),(x,y) height], to form an area
+global algo_path
 
 # Initial values of variables
 x = 0
@@ -32,8 +33,8 @@ HOST_NAME = '127.0.0.1'  # locathost - http://127.0.0.1
 PORT_NUMBER = 1234
 
 # Setting the local paths
-pathToImg = "C:\\Users\\Amalie\\Documents\\GitHub\\TMM4275-Assignment2\\rail_model_image.png" # Ama Windows
-pathToDFA = "C:\\Users\\Amalie\\Documents\\GitHub\\TMM4275-Assignment2\\DFAs\\Rail_Order.dfa" # Ama Windows
+pathToImg = "C:\\Users\\Amalie\\Documents\\GitHub\\TMM4275-Assignment2\\rail_model_image.png"  # Ama Windows
+pathToDFA = "C:\\Users\\Amalie\\Documents\\GitHub\\TMM4275-Assignment2\\DFAs\\Rail_Order.dfa"  # Ama Windows
 
 # Initial time for changed file, uploaded image
 lastTimeFileChange = 0.0
@@ -337,7 +338,6 @@ class MyHandler(BaseHTTPRequestHandler):
 
         # Review of order, and allowing the customer to go back and reset at different points
         elif path.find("/sendOrder") != -1:
-            global algo_path
             all_locations = attachement_points.copy() + visit_locations.copy()
             algo_path = pathAlgorithm.pathAlgorithm(
                 2000).preProcessData(all_locations)
