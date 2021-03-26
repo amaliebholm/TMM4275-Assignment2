@@ -8,7 +8,7 @@ import DFA_RailServer
 mount_list = np.array([[0,0,0,2000],[0,10000,0,5000]])
 #pointlist = [[0, 0,0], [0, 17000,0], [25000, 17000,0], [25000, -40000,0],[100000, -40000,0], [100000, 59000,0], [-20000, 59000,0],[-20000, 20000,0]]
 
-pointlist = [[10, 1, 30], [10, 6, 30], [19, 6, 30], [25, 6, 30], [25, 25, 30], [14, 25, 30], [1, 25, 30]]
+pointlist = [[1, 1, 20], [1, 5, 20], [10, 5, 20], [10, 19, 20], [1, 19, 20]]
 #pointlist = DFA_RailServer.algo_path #USE these when working togheter with the dfa server
 #mount_list = DFA_RailServer.attachement_points
 

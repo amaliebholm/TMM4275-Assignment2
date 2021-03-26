@@ -390,7 +390,7 @@ class MyHandler(BaseHTTPRequestHandler):
 
         startx = pointlist[0][0] 
         starty = pointlist[0][1]
-        startz = pointlist[0][2]
+        startz = railheight
 
         rail = rail.replace("Rail_template (ug_base_part)", "Rail_Order (ug_base_part)") #Replaces the template with the customers chair values
         rail = rail.replace("<STARTX>", str(startx)) #First we need to insert the start position for our rail
@@ -464,46 +464,46 @@ class MyHandler(BaseHTTPRequestHandler):
                 if line_turn_right_refframe > 0: #When rail is turning right in the ref frame
                     ytemp1 = pointlist[i+1][1]-r #shorten the line by the radius to make space for a curve
                     xtemp2 = pointlist[i+1][0]+r #move the start of the next line the equvilant sideways
-                    adjusted_points.append([pointlist[i+1][0],ytemp1,pointlist[0][2]])
-                    adjusted_points.append([xtemp2,pointlist[i+1][1],pointlist[0][2]])
+                    adjusted_points.append([pointlist[i+1][0],ytemp1,railheight])
+                    adjusted_points.append([xtemp2,pointlist[i+1][1],railheight])
                 if line_turn_right_refframe < 0:
                     ytemp1 = pointlist[i+1][1]-r #shorten the line by the radius to make space for a curve
                     xtemp2 = pointlist[i+1][0]-r #move the start of the next line the equvilant sideways in the direction
-                    adjusted_points.append([pointlist[i+1][0],ytemp1,pointlist[0][2]])
-                    adjusted_points.append([xtemp2,pointlist[i+1][1],pointlist[0][2]])
+                    adjusted_points.append([pointlist[i+1][0],ytemp1,railheight])
+                    adjusted_points.append([xtemp2,pointlist[i+1][1],railheight])
             elif line_up < 0: #scenario when the rail is going downwards before corner
                 if line_turn_right_refframe > 0: #When rail is turning right in the ref frame
                     ytemp1 = pointlist[i+1][1]+r #shorten the line by the radius to make space for a curve
                     xtemp2 = pointlist[i+1][0]+r #move the start of the next line the equvilant sideways
-                    adjusted_points.append([pointlist[i+1][0],ytemp1,pointlist[0][2]])
-                    adjusted_points.append([xtemp2,pointlist[i+1][1],pointlist[0][2]])
+                    adjusted_points.append([pointlist[i+1][0],ytemp1,railheight])
+                    adjusted_points.append([xtemp2,pointlist[i+1][1],railheight])
                 if line_turn_right_refframe < 0:
                     ytemp1 = pointlist[i+1][1]+r #shorten the line by the radius to make space for a curve
                     xtemp2 = pointlist[i+1][0]-r #move the start of the next line the equvilant sideways in the direction
-                    adjusted_points.append([pointlist[i+1][0],ytemp1,pointlist[0][2]])
-                    adjusted_points.append([xtemp2,pointlist[i+1][1],pointlist[0][2]])
+                    adjusted_points.append([pointlist[i+1][0],ytemp1,railheight])
+                    adjusted_points.append([xtemp2,pointlist[i+1][1],railheight])
             elif line_right > 0: #scenario when the rail is going right before corner
                 if line_turn_up_refframe > 0: #When rail is turning right in the ref frame
                     xtemp1 = pointlist[i+1][0]-r #shorten the line by the radius to make space for a curve
                     ytemp2 = pointlist[i+1][1]+r #move the start of the next line the equvilant sideways
-                    adjusted_points.append([xtemp1,pointlist[i+1][1],pointlist[0][2]])
-                    adjusted_points.append([pointlist[i+1][0],ytemp2,pointlist[0][2]])
+                    adjusted_points.append([xtemp1,pointlist[i+1][1],railheight])
+                    adjusted_points.append([pointlist[i+1][0],ytemp2,railheight])
                 if line_turn_up_refframe < 0:
                     xtemp1 = pointlist[i+1][0]-r #shorten the line by the radius to make space for a curve
                     ytemp2 = pointlist[i+1][1]-r #move the start of the next line the equvilant sideways
-                    adjusted_points.append([xtemp1,pointlist[i+1][1],pointlist[0][2]])
-                    adjusted_points.append([pointlist[i+1][0],ytemp2,pointlist[0][2]])
+                    adjusted_points.append([xtemp1,pointlist[i+1][1],railheight])
+                    adjusted_points.append([pointlist[i+1][0],ytemp2,railheight])
             elif line_right < 0: #scenario when the rail is going right before corner
                 if line_turn_up_refframe > 0: #When rail is turning right in the ref frame
                     xtemp1 = pointlist[i+1][0]+r #shorten the line by the radius to make space for a curve
                     ytemp2 = pointlist[i+1][1]+r #move the start of the next line the equvilant sideways
-                    adjusted_points.append([xtemp1,pointlist[i+1][1],pointlist[0][2]])
-                    adjusted_points.append([pointlist[i+1][0],ytemp2,pointlist[0][2]])
+                    adjusted_points.append([xtemp1,pointlist[i+1][1],railheight])
+                    adjusted_points.append([pointlist[i+1][0],ytemp2,railheight])
                 if line_turn_up_refframe < 0:
                     xtemp1 = pointlist[i+1][0]+r #shorten the line by the radius to make space for a curve
                     ytemp2 = pointlist[i+1][1]-r #move the start of the next line the equvilant sideways
-                    adjusted_points.append([xtemp1,pointlist[i+1][1],pointlist[0][2]])
-                    adjusted_points.append([pointlist[i+1][0],ytemp2,pointlist[0][2]])
+                    adjusted_points.append([xtemp1,pointlist[i+1][1],railheight])
+                    adjusted_points.append([pointlist[i+1][0],ytemp2,railheight])
             else:
                 print("Something went wrong making space for the curves")
         adjusted_points.append(pointlist[-1]) #This adds the last point of the list
@@ -525,7 +525,7 @@ class MyHandler(BaseHTTPRequestHandler):
             if i==0 or i/2==np.round(i/2):
                 print("\nStart on new loop for line: " + str(i))
                 print("---")
-                rail = add_line(i,pointlist[i][0],pointlist[i][1],pointlist[0][2],pointlist[i+1][0],pointlist[i+1][1],pointlist[0][2],rail)
+                rail = add_line(i,pointlist[i][0],pointlist[i][1],railheight,pointlist[i+1][0],pointlist[i+1][1],railheight,rail)
             #arcs
             elif i!=0 and i/2!=np.round(i/2): 
 
@@ -707,7 +707,7 @@ class MyHandler(BaseHTTPRequestHandler):
                         print("Something went wrong with the translation of angles")
                     print("Angle in: " + str(angle_in))
                     print("Angle out: " + str(angle_out))
-                rail = add_arc(i,r,angle_in,angle_out,xcenter,ycenter,0,rail) # Temp set to 0 if this is correct, thinking maybe z = pointlist[0][2] is for the roof mounting
+                rail = add_arc(i,r,angle_in,angle_out,xcenter,ycenter,0,rail) # Temp set to 0 if this is correct, thinking maybe z = railheight is for the roof mounting
             else:
                 print("Neither arc or line?")   
 

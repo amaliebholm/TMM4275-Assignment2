@@ -6,9 +6,9 @@ DefClass: Rail_Order (ug_base_part);
     (number parameter) web_thick: 6.604; #Thickness of web
     (number parameter) f_thick: 11.167; #Thickness of flange
 
-    (number parameter) startx: 10000;
+    (number parameter) startx: 1000;
     (number parameter) starty: 1000;
-    (number parameter) startz: 30000;
+    (number parameter) startz: 20000;
 
 
     #First we set up the profile for the beam, by defining its sides going clockwise
@@ -92,8 +92,8 @@ DefClass: Rail_Order (ug_base_part);
 
 (Child) element_0: {
     class, ug_line;
-    start_Point, Point(10000,1000,30000);
-    end_Point,   Point(10000,4000,30000);
+    start_Point, Point(1000,1000,20000);
+    end_Point,   Point(1000,3000,20000);
 };
 
 (Child) element_1: {
@@ -101,13 +101,13 @@ DefClass: Rail_Order (ug_base_part);
     radius, 2000;
     start_angle, 90.0;
     end_angle, 180.0;
-    center, point(12000.0,4000.0,0);
+    center, point(3000.0,3000.0,0);
 };
 
 (Child) element_2: {
     class, ug_line;
-    start_Point, Point(12000,6000,30000);
-    end_Point,   Point(23000,6000,30000);
+    start_Point, Point(3000,5000,20000);
+    end_Point,   Point(8000,5000,20000);
 };
 
 (Child) element_3: {
@@ -115,13 +115,13 @@ DefClass: Rail_Order (ug_base_part);
     radius, 2000;
     start_angle, 270.0;
     end_angle, 360.0;
-    center, point(23000.0,8000.0,0);
+    center, point(8000.0,7000.0,0);
 };
 
 (Child) element_4: {
     class, ug_line;
-    start_Point, Point(25000,8000,30000);
-    end_Point,   Point(25000,23000,30000);
+    start_Point, Point(10000,7000,20000);
+    end_Point,   Point(10000,17000,20000);
 };
 
 (Child) element_5: {
@@ -129,13 +129,13 @@ DefClass: Rail_Order (ug_base_part);
     radius, 2000;
     start_angle, 0.0;
     end_angle, 90.0;
-    center, point(23000.0,23000.0,0);
+    center, point(8000.0,17000.0,0);
 };
 
 (Child) element_6: {
     class, ug_line;
-    start_Point, Point(23000,25000,30000);
-    end_Point,   Point(1000,25000,30000);
+    start_Point, Point(8000,19000,20000);
+    end_Point,   Point(1000,19000,20000);
 };
 
 
