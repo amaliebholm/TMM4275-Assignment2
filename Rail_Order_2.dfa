@@ -1,5 +1,5 @@
 #! NX/KF 4.0
-DefClass: Rail_Order (ug_base_part);
+DefClass: Rail_Order_2 (ug_base_part);
     #Parameters for the rails cross section
     (number parameter) height: 291; #Heigth of web
     (number parameter) flange: 167; #Length of flange
@@ -221,7 +221,7 @@ DefClass: Rail_Order (ug_base_part);
         class, ug_cylinder;
         diameter, 100;
         height, 2686.666;
-        Origin, Point(20000,60000,313.334);
+        Origin, Point(20000,59000,313.334);
         Direction, Vector(0,0,1);
     };
 
@@ -229,7 +229,7 @@ DefClass: Rail_Order (ug_base_part);
         class, ug_cylinder;
         diameter, 100;
         height, 2686.666;
-        Origin, Point(20000,50000,313.334);
+        Origin, Point(20000,51000,313.334);
         Direction, Vector(0,0,1);
     };
 
@@ -245,7 +245,7 @@ DefClass: Rail_Order (ug_base_part);
         class, ug_cylinder;
         diameter, 100;
         height, 2686.666;
-        Origin, Point(50000,0,313.334);
+        Origin, Point(50000,1000,313.334);
         Direction, Vector(0,0,1);
     };
 
