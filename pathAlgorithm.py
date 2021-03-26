@@ -4,10 +4,12 @@ import numpy
 import math
 import sys
 import matplotlib.pyplot as plt
-# math library made for this algorithmf
-from calculations import Calculations as calc
 from scipy.spatial import distance
 import sympy
+'''
+from DFA_RailServer import attachement_points
+from DFA_RailServer import visit_locations
+'''
 
 
 # The path algorithm takes in a list of attatchment points where the first point is the location of the feeder.
@@ -23,71 +25,118 @@ import sympy
 
 class pathAlgorithm:
 
-    def __init__(self, turn_radius, start, end):
+    def __init__(self, turn_radius):
         self.turn_radius = turn_radius  # 2m (2000) is the fixed radius
-        self.start = start  # feeder
-        self.end = end  # last attatchment point of the rail
-
-    """
-    gets the center (X, Y) of the the curve for the specified (in constructor) radius
-    dir, is a direction - (-1):clockwise/(+1)counter clockwise to
-    decide which direction is the turn.
-    """
 
     def closest_node(self, node, nodes):
         return nodes[cdist([node], nodes).argmin()]
 
-    def bestPath(self, data, obsticles):
-        obsticles = obsticles
+    # Function that makes the input have 90 deegre turns, for testing purposes
+    def preProcessData(self, data):
+        # Initializing
+        index = 0
+        dummy_list = data
+        list_of_points = []
+        # Adding the two first points
+        list_of_points.append(data[0])
+        list_of_points.append(data[1])
+
+        # Looping through the list and changing the X and Y coordinates to form a 90 degrees turn
+        for index, element in enumerate(data):
+            try:
+                if data[0] == dummy_list[0]:
+                    dummy_list[index] = data[index]
+                    # list_of_points.append(dummy_list[0])
+
+                # every other element changes Y value
+                if index % 2 == 0 and index != 0:
+                    dummy_list[index][0][1] = data[index+1][0][1]
+                    list_of_points.append(dummy_list[index])
+
+                # the rest changes x-value
+                else:
+                    dummy_list[index+1][0][0] = data[index][0][0]
+                    list_of_points.append(dummy_list[index+1])
+            except:
+                IndexError
+
+        print("NEW LIST : ", dummy_list)
+        print("LIST: ", list_of_points)
+
+        return data
+
+    '''
+    -----------------------------------------------
+    ALGORITHM FOR FINDING THE BEST PATH
+    -----------------------------------------------
+    '''
+
+    def bestPath(self, data):
+        '''
+        The function takes a list of points as input. It then finds the shortest
+        euclidean path between the the current point and all the other points. It then
+        selects the point which is closest to the current point, adds it to the list and
+        moves to that point. Then it repeats until the list is empty
+        '''
+
         best_path = []
         index = 0
+        # initilizing the start position
         start_position = data[index]
         best_path.append(start_position)
+        # removing the start position form the list
+        # this is because if it was included the shortest path would be to itself.
         data.remove(data[index])
         updated_data = data
         # print("Updated: ", data)
-
+        # Dummy list for keeping track of removed points
         dummy_list = []
+
         for i in updated_data:
             dummy_list.append(i)
-        # print("DUMMY: ", dummy_list)
 
+        # main loop.
         for data_point in enumerate(updated_data):
 
+            # Updates the current point to the last added element in the list
             if data_point is not None:
                 current_point = best_path[-1]
-                # print("CURRENT INDEX:  ", current_point)
-                # print("BEFORE REMOVING: ", updated_data)
+                print("CURRENT INDEX:  ", current_point)
+                print("BEFORE REMOVING: ", updated_data)
 
+                # Checks if the current point is in the upgraded data list, removes it from the
+                # dummy list if it is.
                 if current_point in updated_data:
                     dummy_list.remove(current_point)
-                    # print("AFTER REMOVING: ", dummy_list)
+                    print("AFTER REMOVING: ", dummy_list)
 
-                # finds the closest point.
                 if len(dummy_list) != 0:
+                    # Calculating the distance from the current point to all other points in the dummy list.
                     point = self.closest_node(current_point, dummy_list)
                     if point not in best_path:
                         best_path.append(point)
-                        # print("CLOSEST AND ADDED POINT: ", point)
+                        # best_path.append(point)
+                        print("CLOSEST AND ADDED POINT: ", point)
                 else:
                     pass
             else:
                 pass
 
-        # next_position = path[index]
             print("PATH: ", best_path)
+        # self.railAlgorithm(best_path)
+        # returns the shortest path
+        return best_path
 
-        return self.railAlgorithm(best_path)
-
-   # Function for finding the center of the fictive circle given the current position, the next and the direction.
     def findCenter(self, current_position, next_position, direction):
+        '''
+        Function for finding the center of the fictive circle given the current position,
+        the next and the direction.
+        '''
         # Link:
-
         delta_x = next_position[0] - current_position[0]  # x_1 - x_2
         delta_y = next_position[1] - current_position[1]  # y_1 - y_2
         psi = math.atan2(delta_y, delta_x)  # arctanget
-        psi += direction * math.pi / 2
-
+        psi += direction * (math.pi / 2)
         x_shifted = self.turn_radius * math.cos(psi)
         y_shifted = self.turn_radius * math.sin(psi)
 
@@ -96,7 +145,6 @@ class pathAlgorithm:
         return center
 
     # Function for getting the distance between two points (vector)
-
     def getDistance(self, point1, point2):
         delta_x = point2[0] - point1[0]
         delta_y = point2[1] - point1[1]
@@ -105,7 +153,6 @@ class pathAlgorithm:
         return distance
 
     # Function for checking where the next point lies in reference to the current position.
-
     def normalizedVector(self, point, distance):
 
         normalizedVector = [point[0]/distance, point[1]/distance]
@@ -114,6 +161,7 @@ class pathAlgorithm:
 
         return normalizedVector
 
+    # Function for finding the  direction of a vector
     def directonalVector(self, point1, point2):
 
         dirVec = [point1[0]-point2[0], point1[1] - point2[1]]
@@ -135,11 +183,11 @@ class pathAlgorithm:
 
         return psi
 
-    # Function for finding the arc angle
+    # Function for finding the interior arc angle of the circle segment
     def arcInclusiveAngle(self, angleVectors):
         psi = angleVectors
         psi = sympy.cot((psi/2))
-        print("PSI/2: ", psi)
+        print("Psi: ", psi)
         psi = math.radians(psi)
         alpha = numpy.arcsin(psi)
         alpha = 2*alpha
@@ -163,26 +211,103 @@ class pathAlgorithm:
         else:
             return direction
 
+        # Function for changing the path so it does not collide with obsticles in the room
+    def optimalPath(self, best_path, obsticles):
+        # We want to check if the path runs in to obsticles
+
+        optimal_path = []
+
+        # We have to check if there any obsticle at all:
+        if not obsticles:
+            print("No obsticles exists in the room")
+            return best_path
+        else:
+            print("Obsticles detected")
+
+        return optimal_path
+
+    def identifyingQuadrant(self, center, next_position):
+
+        qaudrant = 0
+
+        delta_x = next_position[0] - center[0]  # Change in x-direction
+        delta_y = next_position[1] - center[1]  # Change in y-direction
+
+        # first quadrant
+        if delta_x > 0 and delta_y > 0:  # (x, y) is first quadrant
+            qaudrant = 1
+            return qaudrant
+
+        # Second quadrant
+        elif delta_x < 0 and delta_y > 0:  # (-x, y) is second quadrant
+            qaudrant = 2
+            return qaudrant
+
+        # Third quadrant
+        elif delta_x < 0 and delta_y < 0:  # (-x, -y) is third quadrant
+            qaudrant = 3
+            return qaudrant
+
+        # Fourth quadrant
+        elif delta_x > 0 and delta_y < 0:  # (x, -y) is fourth quadrant
+            qaudrant = 4
+            return qaudrant
+        else:
+            print("No quadrant could be found")
+            pass
+
+    def obsticleAvoider(self, vector, obsticles):
+
+        return
+
+    def angleFinder(self, center, point1, point2):
+        # https://stackoverflow.com/questions/1211212/how-to-calculate-an-angle-from-three-points
+        # We need to determine the angle between the circle center and the two point
+        vector_1 = (point1[0] - center[0], point1[1] - center[1])
+        vector_2 = (point2[0] - center[0], point2[1] - center[1])
+        v1v2scalar = vector_1[0] * vector_2[0] + vector_1[1] * vector_2[1]
+        lenght_vec1 = math.sqrt(vector_1[0] ** 2 + vector_1[1] ** 2)
+        length_vec2 = math.sqrt(vector_2[0] ** 2 + vector_2[1] ** 2)
+        angle = math.acos(v1v2scalar / (lenght_vec1 * length_vec2))
+
+        return angle
+
+    def findTangentPoint(self, direction, current_position, next_position, center):
+
+        # Need to find if the incoming line is in a spesific quadrant
+        # Defining the quadrants
+        quadrant = ""
+
+        distance_NePo_cent = self.getDistance(center, next_position)
+
+        # Finding the angle between the next position, the center and the intercepiton point
+        angle_NePo_cent_IntPo = math.acos(self.turn_radius/distance_NePo_cent)
+
+        return
+
+    '''
+    ---------------------------------------------------------
+    MAIN ALGORITHM FOR FINDING THE RAIL - FINDING THE CURVES
+    --------------------------------------------------------
+    '''
+
     def railAlgorithm(self, best_path):
-        index = 0
-        curved_path = []
 
         # initialize
         '''
         vector = [best_path[0], best_path[1]]
         curved_path.append(vector)
         '''
+
         print("THE BEST PATH: ", best_path)
-        print("THE curved path: ", curved_path)
+
         '''
         current_position = curved_path[index][0]
         next_position = curved_path[index][1]
         '''
-
-        if len(curved_path) > 2:
-            previous_position = curved_path[index - 1]
-        else:
-            pass
+        # Finding the curves on the path, need to identify the turns
+        index = 0
+        curved_path = []
 
         while index < len(best_path)-1:
             index += 1
@@ -193,15 +318,15 @@ class pathAlgorithm:
             print("ITERATION: ", index)
             print(best_path[index-1])
             print(best_path[index])
-            print(best_path[index+1])
+            # print(best_path[index+1])
 
             if index == 1:
-                vector = [best_path[index-1], best_path[index]]
+                vector = [best_path[index-1], best_path[index+1]]
                 curved_path.append(vector)
 
             else:
                 direction = self.InLineOfSight(
-                    curved_path[-1][0], curved_path[-1][1], best_path[index-1])
+                    curved_path[-1][0], curved_path[-1][1], best_path[index])
                 print("DIRECTION: ", direction)
                 # Check for turn
                 # no turn --> Straight line
@@ -214,9 +339,12 @@ class pathAlgorithm:
                     vector = [best_path[index], best_path[index+1]]
                     curved_path.append(vector)
                     '''
+
+                    '''
                     print(curved_path[-1][0])
                     print(curved_path[-1][1])
                     print(best_path[index-1])
+                    '''
 
                     if len(curved_path[-1]) == 2:
 
@@ -235,7 +363,7 @@ class pathAlgorithm:
                         directionVector = self.directonalVector(
                             best_path[index], best_path[index-1])
 
-                     # Calculating distance along one of the vectors to the interception point on the arc. (End of arc)
+                # Calculating distance along one of the vectors to the interception point on the arc. (End of arc)
 
                         distance_to_point_end_of_arc = self.turn_radius * \
                             sympy.cot(psi/2)
@@ -245,51 +373,79 @@ class pathAlgorithm:
                         my_new_list = [
                             i * distance_to_point_end_of_arc for i in directionVector]
 
-                        end_point_of_arc = best_path[index-1] + my_new_list
+                        end_point_of_arc = [sum(x) for x in zip(
+                            best_path[index-1], my_new_list)]
+
+                        end_point_of_arc = [x/1000 for x in end_point_of_arc]
+
+                        curved_path.append(end_point_of_arc)
 
                         print("END POINT ON CURVE: ", end_point_of_arc)
+
+                        print("CURVED PATH: ", curved_path)
 
                     else:
                         pass
                 index += 1
         return curved_path
 
-    # Function for getting the intercepting tangent on the arc
 
+"""
+--------------------------------------------------
+TESTING AND VARIABLE INITIATION
+--------------------------------------------------
+"""
 
-PathAlgorithm = pathAlgorithm(2000, [0, 0], [-2000, -2000])
+'''
+
+PathAlgorithm = pathAlgorithm(2000)
 
 data = [[0, 0], [0, 1700], [2500, 4000], [3500, -4000],
         [10000, 6000], [-1000, 5900], [-2000, -2000]]
 
-# desired_locations = [(500, 500), (2000, 3000), (2700, 4000)]
-obsticles = []
-path = PathAlgorithm.bestPath(data, obsticles)
-print(path)
+dataPRe = [[0, 0], [0, 1700], [2500, 1700], [2500, -4000],
+           [10000, -4000], [10000, 5900], [-2000, 5900]]
 
+Newpointlist = [[[1000, 2700], 10], [[3700, 10000], 0], [[-2000, 12000], 6], [[3000, 12000], 15],
+                [[-10000, 5000], 0], [[5900, 29876], 7], [[7000, 3000], 0], [[4000, - 5700], 20], [[2456, 17000], 1]]
 
-'''
+pointlist = [[[0, 0], 10], [[0, 10000], 0], [[-2000, 12000], 6], [[-10000, 12000], 15],
+             [[-11414.21356, 11414.21356], 0], [[-13414.21356, 9414.21356], 7]]
+
+ninty_degrees_path = [[0, 0], [0, 10000], [2000, 10000], [2000, 4000]]
+
 path = [[[0, 0, 0], [0, 1700, 0]], [[2500, 4000, 0], [
     3500, -4000, 0]], [[10000, 6000, 0], [1000, 5900]]]
+
+
+attatchemnt_points = DFA_RailServer.attachement_points
+desired_locations = DFA_RailServer.visit_locations
+
+all_locations = attatchemnt_points + desired_locations
+
+# desired_locations = [(500, 500), (2000, 3000), (2700, 4000)]
+obsticles = []
 '''
+'''
+# path = PathAlgorithm.bestPath(dataPRe)
+all_locations = [[[7000, 8000], 10000], [[7000, 29000], 10000],
+                 [[16000, 29000], 10000], [[16000, 7000], 10000]]
+
+if len(all_locations) > 0:
+    ninty_path = PathAlgorithm.preProcessData(all_locations)
 
 x = []
 y = []
 
-pointlist = [[0, 0], [0, 10000], [-2000, 12000], [-10000, 12000],
-             [-11414.21356, 11414.21356], [-13414.21356, 9414.21356]]
-'''
-for i in path:
-    x.append(i[0])
-    print(x)
-    y.append(i[1])
-    print(y)
+# Function for plotting the rail on a 2d grid.
 
-print(x)
-print(y)
+for i in all_locations:
+    x.append(i[0][0])
+    y.append(i[0][1])
 
 plt.scatter(x, y)
 plt.plot(x, y)
 plt.show()
-'''
+
 # path = [[0, 0, 0], [100, 0, 0], [100, 400, 0], [100, 400, 0], [0, 400, 0]]
+'''
