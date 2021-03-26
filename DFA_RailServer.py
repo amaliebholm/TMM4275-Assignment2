@@ -464,19 +464,19 @@ class MyHandler(BaseHTTPRequestHandler):
                 if line_turn_right_refframe > 0: #When rail is turning right in the ref frame
                     ytemp1 = pointlist[i+1][1]-r #shorten the line by the radius to make space for a curve
                     xtemp2 = pointlist[i+1][0]+r #move the start of the next line the equvilant sideways
-                    adjusted_points.append([pointlist[i+1][0],ytemp1,railheight])
-                    adjusted_points.append([xtemp2,pointlist[i+1][1],railheight])
+                    adjusted_points.append([pointlist[i+1][0],ytemp1,rail_height])
+                    adjusted_points.append([xtemp2,pointlist[i+1][1],rail_height])
                 if line_turn_right_refframe < 0:
                     ytemp1 = pointlist[i+1][1]-r #shorten the line by the radius to make space for a curve
                     xtemp2 = pointlist[i+1][0]-r #move the start of the next line the equvilant sideways in the direction
-                    adjusted_points.append([pointlist[i+1][0],ytemp1,railheight])
-                    adjusted_points.append([xtemp2,pointlist[i+1][1],railheight])
+                    adjusted_points.append([pointlist[i+1][0],ytemp1,rail_height])
+                    adjusted_points.append([xtemp2,pointlist[i+1][1],rail_height])
             elif line_up < 0: #scenario when the rail is going downwards before corner
                 if line_turn_right_refframe > 0: #When rail is turning right in the ref frame
                     ytemp1 = pointlist[i+1][1]+r #shorten the line by the radius to make space for a curve
                     xtemp2 = pointlist[i+1][0]+r #move the start of the next line the equvilant sideways
-                    adjusted_points.append([pointlist[i+1][0],ytemp1,railheight])
-                    adjusted_points.append([xtemp2,pointlist[i+1][1],railheight])
+                    adjusted_points.append([pointlist[i+1][0],ytemp1,rail_height])
+                    adjusted_points.append([xtemp2,pointlist[i+1][1],rail_height])
                 if line_turn_right_refframe < 0:
                     ytemp1 = pointlist[i+1][1]+r #shorten the line by the radius to make space for a curve
                     xtemp2 = pointlist[i+1][0]-r #move the start of the next line the equvilant sideways in the direction
@@ -486,8 +486,8 @@ class MyHandler(BaseHTTPRequestHandler):
                 if line_turn_up_refframe > 0: #When rail is turning right in the ref frame
                     xtemp1 = pointlist[i+1][0]-r #shorten the line by the radius to make space for a curve
                     ytemp2 = pointlist[i+1][1]+r #move the start of the next line the equvilant sideways
-                    adjusted_points.append([xtemp1,pointlist[i+1][1],railheight])
-                    adjusted_points.append([pointlist[i+1][0],ytemp2,railheight])
+                    adjusted_points.append([xtemp1,pointlist[i+1][1],rail_height])
+                    adjusted_points.append([pointlist[i+1][0],ytemp2,rail_height])
                 if line_turn_up_refframe < 0:
                     xtemp1 = pointlist[i+1][0]-r #shorten the line by the radius to make space for a curve
                     ytemp2 = pointlist[i+1][1]-r #move the start of the next line the equvilant sideways
@@ -502,8 +502,8 @@ class MyHandler(BaseHTTPRequestHandler):
                 if line_turn_up_refframe < 0:
                     xtemp1 = pointlist[i+1][0]+r #shorten the line by the radius to make space for a curve
                     ytemp2 = pointlist[i+1][1]-r #move the start of the next line the equvilant sideways
-                    adjusted_points.append([xtemp1,pointlist[i+1][1],railheight])
-                    adjusted_points.append([pointlist[i+1][0],ytemp2,railheight])
+                    adjusted_points.append([xtemp1,pointlist[i+1][1],rail_height])
+                    adjusted_points.append([pointlist[i+1][0],ytemp2,rail_height])
             else:
                 print("Something went wrong making space for the curves")
         adjusted_points.append(pointlist[-1]) #This adds the last point of the list
@@ -525,7 +525,7 @@ class MyHandler(BaseHTTPRequestHandler):
             if i==0 or i/2==np.round(i/2):
                 print("\nStart on new loop for line: " + str(i))
                 print("---")
-                rail = add_line(i,pointlist[i][0],pointlist[i][1],railheight,pointlist[i+1][0],pointlist[i+1][1],railheight,rail)
+                rail = add_line(i,pointlist[i][0],pointlist[i][1],rail_height,pointlist[i+1][0],pointlist[i+1][1],rail_height,rail)
             #arcs
             elif i!=0 and i/2!=np.round(i/2): 
 
