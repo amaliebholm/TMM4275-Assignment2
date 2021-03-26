@@ -329,7 +329,7 @@ class MyHandler(BaseHTTPRequestHandler):
                 #s.wfile.write(bytes('<br>Was not able to update rail model...', "utf-8"))
 
             # Giving options to go back and reset at room size or variables, of submitting the order 
-            s.wfile.write(bytes('<br><button type="submit" formaction="/setSize">Reset room</button><p>Click "Reset room" to reset the while room size and the while rail order</p>', "utf-8"))
+            s.wfile.write(bytes('<br><br><button type="submit" formaction="/setSize">Reset room</button><p>Click "Reset room" to reset the while room size and the while rail order</p>', "utf-8"))
             s.wfile.write(bytes('<br><button type="submit" formaction="/setVariables">Reset variables</button><p>Click "Reset variables" to reset the variables in the room</p>', "utf-8"))
 
             s.wfile.write(bytes('<br><button type="submit">Submit</button><p>Click "Submit" to send the order of your rail</p>', "utf-8")) 
