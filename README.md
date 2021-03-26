@@ -65,7 +65,6 @@ In assignment 1 Olingvo and Apache Jena Fuseki was used to communicate with the 
 - `Roof_mount_template.dfa` - Containing the template for how roof mounts
 - `path_and_combine.dfa`- Containing the template for combining the whole rile according to the path 
 
-## Video of working KBE system
 
 ## Examples of Three Different Product Orders  
 
