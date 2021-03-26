@@ -390,7 +390,7 @@ class MyHandler(BaseHTTPRequestHandler):
 
         startx = pointlist[0][0] 
         starty = pointlist[0][1]
-        startz = railheight
+        startz = rail_height
 
         rail = rail.replace("Rail_template (ug_base_part)", "Rail_Order (ug_base_part)") #Replaces the template with the customers chair values
         rail = rail.replace("<STARTX>", str(startx)) #First we need to insert the start position for our rail
@@ -718,7 +718,7 @@ class MyHandler(BaseHTTPRequestHandler):
 
         #For loop to add the roof mounts
         for i in range(len(mount_list)):
-            rail = add_roof_mount(i,mount_list[i][0],mount_list[i][1],mount_list[i][2],mount_list[i][3],rail)
+            rail = add_roof_mount(i,mount_list[i][0],mount_list[i][1],rail_height,room_height,rail)
 
         rail = rail + the_end
 
