@@ -1,6 +1,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import requests
 import pathAlgorithm
+import rail
 
 
 # Initial valies of room size
@@ -26,6 +27,7 @@ y_4 = 0
 obs_string = ""
 spes_height = 0
 var_type = ""
+algo_path = [[0,0,0],[0,0,0],[0,0,0],[0,0,0]]
 
 HOST_NAME = '127.0.0.1'  # locathost - http://127.0.0.1
 # Complete address would be: http://127.0.0.1:1234
@@ -49,7 +51,7 @@ class MyHandler(BaseHTTPRequestHandler):
         s.end_headers()
 
     def do_GET(s):
-        global room_height, room_width, room_length, matrix_room, matrix_height, rail_height, x, y, obs_string, spes_height, var_type
+        global room_height, room_width, room_length, matrix_room, matrix_height, rail_height, x, y, obs_string, spes_height, var_type,algo_path,attachement_points
         """Respond to a GET request."""
         s.send_response(200)
         s.send_header("Content-type", "text/html")
@@ -103,7 +105,7 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('</body></html>', "utf-8"))
 
     def do_POST(s):
-        global room_height, room_width, room_length, matrix_room, matrix_height, rail_height, x, y, obs_string, spes_height, var_type
+        global room_height, room_width, room_length, matrix_room, matrix_height, rail_height, x, y, obs_string, spes_height, var_type,algo_path,attachement_points
         s.send_response(200)
         s.send_header("Content-type", "text/html")
         s.end_headers()
@@ -342,6 +344,8 @@ class MyHandler(BaseHTTPRequestHandler):
             algo_path = pathAlgorithm.pathAlgorithm(
                 2000).preProcessData(all_locations)
             print("PATH: ", algo_path)
+            rail
+
 
             s.wfile.write(
                 bytes('<html><body><h2>Rail specifications for your K2 EasyFeed:</h2>', "utf-8"))
