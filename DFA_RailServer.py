@@ -33,8 +33,11 @@ HOST_NAME = '127.0.0.1'  # locathost - http://127.0.0.1
 PORT_NUMBER = 1234
 
 # Setting the local paths
-pathToImg = "/Users/kasper/Documents/GitHub/TMM4275-Assignment2/rail_model_image.png" # Ama Windows
-pathToDFA = "/Users/kasper/Documents/GitHub/TMM4275-Assignment2/DFAs/" # Ama Windows
+#pathToImg = "/Users/kasper/Documents/GitHub/TMM4275-Assignment2/rail_model_image.png" # Ama Windows
+#pathToDFA = "/Users/kasper/Documents/GitHub/TMM4275-Assignment2/DFAs/" # Ama Windows
+
+pathToImg = "C:\\Users\\Amalie\\Documents\\GitHub\\TMM4275-Assignment2\\rail_model_image.png" # Ama Windows
+pathToDFA = "C:\\Users\\Amalie\\Documents\\GitHub\\TMM4275-Assignment2\\DFAs\\Rail_Order.dfa" # Ama Windows#
 
 # Initial time for changed file, uploaded image 
 lastTimeFileChange = 0.0
@@ -172,7 +175,7 @@ class MyHandler(BaseHTTPRequestHandler):
                 s.wfile.write(bytes(
                     '<button onclick="alertFunction()">Continue</button><p>Click "Continue" to continue to add varialbes</p>', "utf-8"))
 
-            s.wfile.write(bytes('<img src="https://raw.githubusercontent.com/amaliebholm/TMM4275-Assignment2/main/sketch_room.jpeg" alt="Image illustrating 3D and 2D perspective" width="650" height="400">', "utf-8"))
+            s.wfile.write(bytes('<img src="https://raw.githubusercontent.com/amaliebholm/TMM4275-Assignment2/main/Images/sketch_room.jpeg" alt="Image illustrating 3D and 2D perspective" width="650" height="400">', "utf-8"))
             s.wfile.write(bytes('</form></body></html>', "utf-8"))
 
         elif path.find("/setVariables") != -1:  # Web page to add variables in the room
@@ -243,7 +246,7 @@ class MyHandler(BaseHTTPRequestHandler):
                 '<p>4. An obstacle in the room, the feeder can not pass through these points</p>', "utf-8"))
 
             # Image illustrating 3D and 2D perspective
-            s.wfile.write(bytes('<img src="https://raw.githubusercontent.com/amaliebholm/TMM4275-Assignment2/main/sketch_room.jpeg" alt="Image illustrating 3D and 2D perspective" width="650" height="400">', "utf-8"))
+            s.wfile.write(bytes('<img src="https://raw.githubusercontent.com/amaliebholm/TMM4275-Assignment2/main/Images/sketch_room.jpeg" alt="Image illustrating 3D and 2D perspective" width="650" height="400">', "utf-8"))
 
             # Adding the coordinates of the variable
             s.wfile.write(bytes(
@@ -360,7 +363,7 @@ class MyHandler(BaseHTTPRequestHandler):
             fixedlist.append(fixed_part_list)
         mount_list = fixedlist 
 
-        dfaPath = "/Users/kasper/Documents/GitHub/TMM4275-Assignment2/DFAs/"
+        dfaPath = "C:\\Users\\Amalie\\Documents\\GitHub\\TMM4275-Assignment2\\DFAs"
         #The location of your DFA files
 
         f = open(dfaPath + "templates/Rail_template.dfa", "r") 
