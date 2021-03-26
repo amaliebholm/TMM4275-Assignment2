@@ -69,6 +69,16 @@ In assignment 1 Olingvo and Apache Jena Fuseki was used to communicate with the 
 
 ## Examples of Three Different Product Orders  
 
+### The Layout of the Web Page the Customer Uses
+First page: /setSize
+![:setSize.png](https://github.com/amaliebholm/TMM4275-Assignment2/blob/main/Images/:setSize.png)
+
+The next page, after the room size have been set: /setVariables 
+![:setVariables.png](https://github.com/amaliebholm/TMM4275-Assignment2/blob/main/Images/:setVariables.png)
+
+The last page, confirming the order: /sendOrder
+![:sendOrder.png](https://github.com/amaliebholm/TMM4275-Assignment2/blob/main/Images/:sendOrder.png)
+
 ### A Customer Trying to Order Outside the Constraints
 Befor submitting variables for both the size of the room and before being able to add a variable to the room, the values are verified. If a customer tries to set values outside of these verifications they will recieve a notification. If the room size is below or equal to zero of ir the rail height is higher than the ceiling height the customer will recieve this alert: 
 ![alert.PNG](https://github.com/amaliebholm/TMM4275-Assignment2/blob/main/Images/alert.PNG)
