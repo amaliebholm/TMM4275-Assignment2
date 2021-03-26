@@ -28,7 +28,7 @@ Then, the customer will give coordinates of the different variables in the room:
 
 This is a diagram showing the main blocks and interconnections between them. 
 
-![Client-Server](url)
+![block%20diagram.PNG](https://github.com/amaliebholm/TMM4275-Assignment2/blob/main/Images/block%20diagram.PNG)
 
 The main lines of the KBE architecture are the same as in assignment 1, where the customer set values for different parameters on a website, which are then, if the are within some constraints, sent to a DFA template and made into a NX model. The main difference in the architecture is that the constraints for heights and variables within the room are now given by the room itself, therefor the DFA server do both tasks, of taking the input, and checking whether it is within the room size. This emilinates the need for an Fuseki server to take in constraints from the product engineer, and checking this up against the values given by the customer. Now the product engineer sets a DFA template which the input, after being verified, is written to.
 
@@ -52,7 +52,7 @@ In assignment 1 Olingvo and Apache Jena Fuseki was used to communicate with the 
 ### Code Description 
 
 - `DFA_RailServer.py` - Setting up the web-page that the customer uses to place an order, making sure that the variables are set within the size of the room. Giving the lists of different variables as output. This is done by three webpages linked together, sending the customer to the next one when all the necessary values are given. 
-- `rail.py`- ... This takes in the list of the sorted points, adds the curves and creates the dfa file that is used to create the 3d model. 
+- `rail.py`- This takes in the list of the sorted points, adds the curves and creates the dfa file that is used to create the 3d model. 
 - `pathAlgorithm.py` - Has the purpose of finding the optimal path through the points given by the user in the webserver client. It uses euclidean distance between a point and the rest to find the shortest paths.
 - `aStarAlgorithm.py` - We first tried to implement the shortest path through the points given from the webserver using the A* algorithm, but this proved to be very difficult. The solution we tried was to update the start point and end point to the current and next points in the list, but the heuristic became increasingly worse through each iteration.
 - `rail_journal.py` - A journal using NX Open to take a picture of the ordered rail and saving it in the folder with the rest of the files. 
@@ -84,4 +84,4 @@ If the customer tries to add a variable that is located outside the room then th
 ### Example 3
 
 ### Common Colclusion on Building KBE System based on A1 and A2
-Before this class noen of us had any experience with building KBE Systems, through these two assignments we have already learned a lot. How there are a complex structure and architecture surrounding what can seam as a simple web page for a customer. How important it is that all these components are able to comunicate in a proper way. 
+Before this class none of us had any experience with building KBE Systems, through these two assignments we have already learned a lot. How there are a complex structure and architecture surrounding what can seem as a simple web page for a customer. How important it is that all these components are able to comunicate in a proper way. It is a timeconsuming but giving process to develop a KBE System.
