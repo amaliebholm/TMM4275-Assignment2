@@ -82,11 +82,15 @@ If the customer tries to add a variable that is located outside the room then th
 ![list_of_points.png](https://github.com/amaliebholm/TMM4275-Assignment2/blob/main/Images/list_of_points.png)
 
 
+![nx_order1.PNG](https://github.com/amaliebholm/TMM4275-Assignment2/blob/main/Images/nx_order1.PNG)
 
 ### Example 2
 ![room_size.png](https://github.com/amaliebholm/TMM4275-Assignment2/blob/main/Images/room_size.png)
 
 ![list_of_points.png](https://github.com/amaliebholm/TMM4275-Assignment2/blob/main/Images/list_of_points.png)
+
+
+![nx_order2.PNG](https://github.com/amaliebholm/TMM4275-Assignment2/blob/main/Images/nx_order2.PNG)
 ### Example 3
 
 ![example3_size.png](https://github.com/amaliebholm/TMM4275-Assignment2/blob/main/Images/example3_size.png)
@@ -94,5 +98,6 @@ If the customer tries to add a variable that is located outside the room then th
 ![example3_list.png](https://github.com/amaliebholm/TMM4275-Assignment2/blob/main/Images/example3_list.png)
 
 
+![nx_order3.PNG](https://github.com/amaliebholm/TMM4275-Assignment2/blob/main/Images/nx_order3.PNG)
 ### Common Colclusion on Building KBE System based on A1 and A2
 Before this course none of us had any experience with building KBE Systems, but through these two assignments we have learned a lot. We have learned that there are alot of complex structures and architecture surrounding what can seem as a simple web page for a customer. We have also learned how important it is that all these components are able to comunicate in a proper way. It was a timeconsuming but rewarding process to develop these KBE Systems.
