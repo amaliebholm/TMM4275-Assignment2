@@ -39,7 +39,7 @@ PORT_NUMBER = 1234
 #pathToDFA = "/Users/kasper/Documents/GitHub/TMM4275-Assignment2/DFAs/" # Ama Windows
 
 pathToImg = "C:\\Users\\Amalie\\Documents\\GitHub\\TMM4275-Assignment2\\rail_model_image.png" # Ama Windows
-pathToDFA = "C:\\Users\\Amalie\\Documents\\GitHub\\TMM4275-Assignment2\\DFAs\\Rail_Order.dfa" # Ama Windows#
+pathToDFA = "C:\\Users\\Amalie\\Documents\\GitHub\\TMM4275-Assignment2\\DFAs\\Rail_Order.py" # Ama Windows#
 
 # Initial time for changed file, uploaded image 
 lastTimeFileChange = 0.0
@@ -365,26 +365,26 @@ class MyHandler(BaseHTTPRequestHandler):
             fixedlist.append(fixed_part_list)
         mount_list = fixedlist 
 
-        dfaPath = "C:\\Users\\Amalie\\Documents\\GitHub\\TMM4275-Assignment2\\DFAs"
+        dfaPath = "C:\\Users\\Amalie\\Documents\\GitHub\\TMM4275-Assignment2\\DFAs\\"
         #The location of your DFA files
 
-        f = open(dfaPath + "templates/Rail_template.dfa", "r") 
+        f = open(dfaPath + "templates\\Rail_template.dfa", "r") 
         rail = f.read()
         f.close() #Opens and reads the DFA template so that a new DFA file of the order can be made
 
-        f = open(dfaPath + "templates/Arc_template.dfa", "r") 
+        f = open(dfaPath + "templates\\Arc_template.dfa", "r") 
         arc_temp = f.read()
         f.close() #Opens and reads the arc DFA template so that curves can be added to the rail
 
-        f = open(dfaPath + "templates/Line_template.dfa", "r") 
+        f = open(dfaPath + "templates\\Line_template.dfa", "r") 
         line_temp = f.read()
         f.close() #Opens and reads the line DFA template so that straight lines can be added to the rail
 
-        f = open(dfaPath + "templates/Roof_mount_template.dfa", "r") 
+        f = open(dfaPath + "templates\\Roof_mount_template.dfa", "r") 
         mount_temp = f.read()
         f.close() #Opens and reads the line DFA template so that straight lines can be added to the rail
 
-        f = open(dfaPath + "templates/path_and_combine.dfa", "r") 
+        f = open(dfaPath + "templates\\path_and_combine.dfa", "r") 
         the_end = f.read()
         f.close() #Opens and reads the DFA file that contains the the joining and coloring
 
