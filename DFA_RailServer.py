@@ -67,7 +67,7 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<html><body><h2>Determine rail specifications for your K2 EasyFeed:</h2>', "utf-8"))
             s.wfile.write(bytes('<form action="/setSize" method="post">', 'utf-8')) #Create a form to take in values
             
-            s.wfile.write(bytes('<h4>Set room size (m):</h4>', "utf-8"))
+            s.wfile.write(bytes('<h4>Set room size (mm):</h4>', "utf-8"))
             s.wfile.write(bytes('<br>Room height:<br><input type="text" name="room_height" value="0">', "utf-8"))
             s.wfile.write(bytes('<br>Room width:<br><input type="text" name="room_width" value="0">', "utf-8"))
             s.wfile.write(bytes('<br>Room length:<br><input type="text" name="room_length" value="0">', "utf-8"))
@@ -119,10 +119,10 @@ class MyHandler(BaseHTTPRequestHandler):
             for i in splitString:
                 newSplit.append(i.split("="))
 
-            room_height = int(newSplit[0][1]) * 1000
-            room_width = int(newSplit[1][1]) * 1000
-            room_length = int(newSplit[2][1]) * 1000
-            rail_height = int(newSplit[3][1]) * 1000
+            room_height = int(newSplit[0][1]) 
+            room_width = int(newSplit[1][1]) 
+            room_length = int(newSplit[2][1]) 
+            rail_height = int(newSplit[3][1]) 
             # Every variable has been given their value from the string
 
             if rail_height < room_height:
@@ -135,11 +135,11 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<html><body><h2>Determine rail specifications for your K2 EasyFeed:</h2>', "utf-8"))
             s.wfile.write(bytes('<form action="/setSize" method="post">', 'utf-8')) #Create a form to add variables
                 
-            s.wfile.write(bytes('<h4>Your room size is set to (m):</h4>', "utf-8"))
-            s.wfile.write(bytes('<br>Room height:<br><input type="text" name="room_height" value="' + str(room_height/1000) + '">', "utf-8"))
-            s.wfile.write(bytes('<br>Room width:<br><input type="text" name="room_width" value="' + str(room_width/1000) + '">', "utf-8"))
-            s.wfile.write(bytes('<br>Room length:<br><input type="text" name="room_length" value="' + str(room_length/1000) + '">', "utf-8"))
-            s.wfile.write(bytes('<br>Height from floor to railing:<br><input type="text" name="rail_height" value="' + str(rail_height/1000) + '">', "utf-8"))
+            s.wfile.write(bytes('<h4>Your room size is set to (mm):</h4>', "utf-8"))
+            s.wfile.write(bytes('<br>Room height:<br><input type="text" name="room_height" value="' + str(room_height) + '">', "utf-8"))
+            s.wfile.write(bytes('<br>Room width:<br><input type="text" name="room_width" value="' + str(room_width) + '">', "utf-8"))
+            s.wfile.write(bytes('<br>Room length:<br><input type="text" name="room_length" value="' + str(room_length) + '">', "utf-8"))
+            s.wfile.write(bytes('<br>Height from floor to railing:<br><input type="text" name="rail_height" value="' + str(rail_height) + '">', "utf-8"))
             # Checking if the variable is within constraints 
             s.wfile.write(bytes('<br><br><button type="submit">Set size</button> <p>Click "Set size" to set the room size</p>', "utf-8"))
 
@@ -147,7 +147,7 @@ class MyHandler(BaseHTTPRequestHandler):
                 s.wfile.write(bytes('<button type="submit" formaction="/setVariables">Continue</button><p>Click "Continue" to continue to add varialbes</p>', "utf-8"))
             else: # If the room is not within the constraints: alert that the values are outside constraints 
                 print("Room size NOT OK")
-                s.wfile.write(bytes('<script>function alertFunction(){alert("The rail height, ' + str(rail_height/1000) + ', must be lower than the room height, ' + str(room_height/1000) + '.  Room height, ' + str(room_height/1000) + ', width, ' + str(room_width/1000) + ', and length ' + str(room_length/1000) + ', must be more than zero!");} </script>', "utf-8"))
+                s.wfile.write(bytes('<script>function alertFunction(){alert("The rail height, ' + str(rail_height) + ', must be lower than the room height, ' + str(room_height) + '.  Room height, ' + str(room_height) + ', width, ' + str(room_width) + ', and length ' + str(room_length) + ', must be more than zero!");} </script>', "utf-8"))
                 s.wfile.write(bytes('<button onclick="alertFunction()">Continue</button><p>Click "Continue" to continue to add varialbes</p>', "utf-8"))
 
             s.wfile.write(bytes('<img src="https://raw.githubusercontent.com/amaliebholm/TMM4275-Assignment2/main/sketch_room.jpeg" alt="Image illustrating 3D and 2D perspective" width="650" height="400">', "utf-8"))
@@ -165,16 +165,16 @@ class MyHandler(BaseHTTPRequestHandler):
                 newSplit.append(i.split("="))
 
             try:
-                x = int(newSplit[0][1]) * 1000
-                y = int(newSplit[1][1]) * 1000
-                spes_height = int(newSplit[2][1]) * 1000
-                x_2 = int(newSplit[3][1]) * 1000
-                y_2 = int(newSplit[4][1]) * 1000
-                x_3 = int(newSplit[5][1]) * 1000
-                y_3 = int(newSplit[6][1]) * 1000
-                x_4 = int(newSplit[7][1]) * 1000
-                y_4 = int(newSplit[8][1]) * 1000
-                var_type = newSplit[9][1] * 1000
+                x = int(newSplit[0][1]) 
+                y = int(newSplit[1][1]) 
+                spes_height = int(newSplit[2][1])
+                x_2 = int(newSplit[3][1]) 
+                y_2 = int(newSplit[4][1]) 
+                x_3 = int(newSplit[5][1]) 
+                y_3 = int(newSplit[6][1]) 
+                x_4 = int(newSplit[7][1]) 
+                y_4 = int(newSplit[8][1]) 
+                var_type = newSplit[9][1] 
                 # Every variable has been given their value from the string 
             except:
                 pass
@@ -197,7 +197,7 @@ class MyHandler(BaseHTTPRequestHandler):
 
             s.wfile.write(bytes('<html><body><h2>Determine rail specifications for your K2 EasyFeed:</h2>', "utf-8"))
             s.wfile.write(bytes('<form action="/setVariables" method="post">', 'utf-8')) #Create a form to add variables
-            s.wfile.write(bytes('<p>You have set the room size (m): room height: ' + str(room_height/1000)+ ', room width: '+ str(room_width/1000) + ', room length: '+ str(room_length/1000)+ ', rail hight: '+ str(rail_height/1000) + '.</p>', 'utf-8'))
+            s.wfile.write(bytes('<p>You have set the room size (mm): room height: ' + str(room_height)+ ', room width: '+ str(room_width) + ', room length: '+ str(room_length)+ ', rail hight: '+ str(rail_height) + '.</p>', 'utf-8'))
             
             s.wfile.write(bytes('<button type="submit" formaction="/setSize">Change</button><p>Click "Change" to set the new room size</p>', "utf-8"))
             
@@ -216,7 +216,7 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<p>Go through the room chronologically and add variables as the appear in the room.</p>', "utf-8"))
             s.wfile.write(bytes('Width coordinate: <input type="text" name="x" value="0">', "utf-8"))
             s.wfile.write(bytes('<br>Length coordinate: <input type="text" name="y" value="0">', "utf-8"))
-            s.wfile.write(bytes('<br>Ceiling height in this area (change if it differs form gnereal height): <input type="text" name="spes_height" value="' + str(room_height/1000) + '">', "utf-8"))
+            s.wfile.write(bytes('<br>Ceiling height in this area (change if it differs form gnereal height): <input type="text" name="spes_height" value="' + str(room_height) + '">', "utf-8"))
             s.wfile.write(bytes('<br><br> If the varaible is an obstacle add three more points, marking off the area the obstacle obtain in the room, filling the points: [width coordinate, length coordinate]', "utf-8"))
             s.wfile.write(bytes('<br><br>Obstacle coordinate 2:<br> Width coordinate: <input type="text" name="x_2" value="0"> Length coordinate: <input type="text" name="y_2" value="0">', "utf-8"))
             s.wfile.write(bytes('<br>Obstacle coordinate 3:<br> Width coordinate: <input type="text" name="x_3" value="0"> Length coordinate: <input type="text" name="y_3" value="0">', "utf-8"))
@@ -246,9 +246,9 @@ class MyHandler(BaseHTTPRequestHandler):
             else: # Write message that the variable was not valid 
                 print("Variable NOT OK")
                 s.wfile.write(bytes('<br><strong style="color: red;">The variable was outside the constraints.</strong>', "utf-8"))
-                s.wfile.write(bytes('<p style="color:red;"> Width coordinates, ' + str(x/1000) + ' (Obsacle: ' + str(x_2/1000) + ' ,'  + str(x_3/1000) + ' ,'  + str(x_4/1000) + ') must be within the room width ' + str(room_width/1000) + '. </p>', "utf-8"))
-                s.wfile.write(bytes('<p style="color:red;"> Length coordinates, ' + str(y/1000) + ' (Obsacle: ' + str(y_2/1000) + ' ,'  + str(y_3/1000) + ' ,'  + str(y_4/1000) + ') must be within the room length ' + str(room_length/1000) + '. </p>', "utf-8"))
-                s.wfile.write(bytes('<p style="color:red;">Ceiling height, ' + str(spes_height/1000) + ' must be positive.</p>', "utf-8"))
+                s.wfile.write(bytes('<p style="color:red;"> Width coordinates, ' + str(x) + ' (Obsacle: ' + str(x_2) + ' ,'  + str(x_3) + ' ,'  + str(x_4) + ') must be within the room width ' + str(room_width) + '. </p>', "utf-8"))
+                s.wfile.write(bytes('<p style="color:red;"> Length coordinates, ' + str(y) + ' (Obsacle: ' + str(y_2) + ' ,'  + str(y_3) + ' ,'  + str(y_4) + ') must be within the room length ' + str(room_length) + '. </p>', "utf-8"))
+                s.wfile.write(bytes('<p style="color:red;">Ceiling height, ' + str(spes_height) + ' must be positive.</p>', "utf-8"))
                 
             # Print out the current lists of points 
             print("Attachment points:")
@@ -289,7 +289,7 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<label for="Thanks">Thank you for your order!</label><br>', 'utf-8'))
 
             # The room size
-            s.wfile.write(bytes('<br><p>You have order a rail for the room size (m): room height: ' + str(room_height/1000)+ ', room width: '+ str(room_width/1000) + ', room length: '+ str(room_length/1000)+ ', rail hight: '+ str(rail_height/1000) + '.</p>', 'utf-8'))
+            s.wfile.write(bytes('<br><p>You have order a rail for the room size (m): room height: ' + str(room_height)+ ', room width: '+ str(room_width) + ', room length: '+ str(room_length)+ ', rail hight: '+ str(rail_height) + '.</p>', 'utf-8'))
 
             s.wfile.write(bytes('<br><p>With the following varialbes: </p>', "utf-8"))
             
@@ -313,7 +313,7 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<ul>' + list_obs + '</ul>', "utf-8"))
 
             s.wfile.write(bytes('<br> Model of your rail: ', "utf-8")) 
-            s.wfile.write(bytes('<br> <img src="../rail_model_image.png"><br>', "utf-8")) 
+            s.wfile.write(bytes('<br></form><img src="rail_model_image.png" alt="The rail comes here" width="800" height="420">',"utf-8")) 
             
             #Read the change of the DFA file
             #global lastTimeFileChange
@@ -333,7 +333,7 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<br><button type="submit" formaction="/setVariables">Reset variables</button><p>Click "Reset variables" to reset the variables in the room</p>', "utf-8"))
 
             s.wfile.write(bytes('<br><button type="submit">Submit</button><p>Click "Submit" to send the order of your rail</p>', "utf-8")) 
-            s.wfile.write(bytes('</form></body></html>', "utf-8"))
+            s.wfile.write(bytes('</body></html>', "utf-8"))
 
             return room_height, room_width, room_length, rail_height, attachement_points, visit_locations, obstacles
 
