@@ -39,6 +39,9 @@ class pathAlgorithm:
                     new_list.append(j)
         except:
             IndexError
+        if not in new_list:
+            print("NB! The list is empty")
+
         return new_list
 
     # Function that makes the input have 90 deegre turns, for testing purposes

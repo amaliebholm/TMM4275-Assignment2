@@ -355,7 +355,7 @@ class MyHandler(BaseHTTPRequestHandler):
             print("Attatchment point: ", attatch_path)
             
         pointlist = algo_path #USE these when working togheter with the dfa server
-        mount_list = attachement_points
+        mount_list = attatch_path
         print(pointlist)
 
         fixedlist = []
