@@ -84,4 +84,4 @@ If the customer tries to add a variable that is located outside the room then th
 ### Example 3
 
 ### Common Colclusion on Building KBE System based on A1 and A2
-Before this class none of us had any experience with building KBE Systems, through these two assignments we have already learned a lot. How there are a complex structure and architecture surrounding what can seem as a simple web page for a customer. How important it is that all these components are able to comunicate in a proper way. It is a timeconsuming but giving process to develop a KBE System.
+Before this course none of us had any experience with building KBE Systems, but through these two assignments we have learned a lot. We have learned that there are alot of complex structures and architecture surrounding what can seem as a simple web page for a customer. We have also learned how important it is that all these components are able to comunicate in a proper way. It was a timeconsuming but rewarding process to develop these KBE Systems.
