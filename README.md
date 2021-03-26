@@ -36,9 +36,11 @@ The main lines of the KBE architecture are the same as in assignment 1, where th
 
 The ULM sequence diagram showing how an order making scenario will play out. From how the customer makes the order of the rail, to the algorithm finding the best path and this path being made in NX. 
 
-![ULM:PNG](url)
+![seq-diag.PNG](https://github.com/amaliebholm/TMM4275-Assignment2/blob/main/Images/seq-diag.PNG)
 
 In assignment 1 Olingvo and Apache Jena Fuseki was used to communicate with the server containing the parameters, set by both the customer and the product engineer. In assignment 2 the product engineer set a DFA template which was written to by the DFA server, as well as cheching if they are within the room, and not needing a Manufacture Checker Server or a Fuseki Server. 
+
+Another difference from assignment 1 is that web browser client now uses three different websites rather than only one, to get the values from the customer. This makes the sequence diagram more heavy on the left hand side for assignment 2. 
 
 ### Development Tools
 
@@ -50,8 +52,9 @@ In assignment 1 Olingvo and Apache Jena Fuseki was used to communicate with the 
 ### Code Description 
 
 - `DFA_RailServer.py` - Setting up the web-page that the customer uses to place an order, making sure that the variables are set within the size of the room. Giving the lists of different variables as output. This is done by three webpages linked together, sending the customer to the next one when all the necessary values are given. 
-- `rial.py`- ... 
-- `pathAlgorithm.py` - Finging best possible path.... 
+- `rial.py`- ... KASPER8
+- `pathAlgorithm.py` - Finging best possible path.... MYKLE
+- `aStarAlgorithm.py` - Finging best possible path using aStar, did not work because .... instead .... MYKLE
 - `rail_journal.py` - A journal using NX Open to take a picture of the ordered rail and saving it in the folder with the rest of the files. 
 
 ### DFAs
@@ -77,4 +80,4 @@ Image of the alerts
 ### Example 3
 
 ### Common Colclusion on Building KBE System based on A1 and A2
-... 
+Before this class noen of us had any experience with building KBE Systems, through these two assignments we have already learned a lot. How there are a complex structure and architecture surrounding what can seam as a simple web page for a customer. How important it is that all these components are able to comunicate in a proper way. 
