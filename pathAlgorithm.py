@@ -6,10 +6,6 @@ import sys
 import matplotlib.pyplot as plt
 from scipy.spatial import distance
 import sympy
-'''
-from DFA_RailServer import attachement_points
-from DFA_RailServer import visit_locations
-'''
 
 
 # The path algorithm takes in a list of attatchment points where the first point is the location of the feeder.
@@ -31,39 +27,51 @@ class pathAlgorithm:
     def closest_node(self, node, nodes):
         return nodes[cdist([node], nodes).argmin()]
 
+    def listMaker(self, data):
+        new_list = []
+        for i in data:
+            z_value = i[1]
+            i.remove(z_value)
+            for j in i:
+                j.append(z_value)
+                new_list.append(j)
+
+        return new_list
+
     # Function that makes the input have 90 deegre turns, for testing purposes
     def preProcessData(self, data):
         # Initializing
+        new_list = self.listMaker(data)
         index = 0
         dummy_list = data
         list_of_points = []
         # Adding the two first points
-        list_of_points.append(data[0])
-        list_of_points.append(data[1])
+        list_of_points.append(new_list[0])
+        list_of_points.append(new_list[1])
 
         # Looping through the list and changing the X and Y coordinates to form a 90 degrees turn
-        for index, element in enumerate(data):
+        for index, element in enumerate(new_list):
             try:
-                if data[0] == dummy_list[0]:
-                    dummy_list[index] = data[index]
+                if new_list[0] == dummy_list[0]:
+                    dummy_list[index] = new_list[index]
                     # list_of_points.append(dummy_list[0])
 
                 # every other element changes Y value
                 if index % 2 == 0 and index != 0:
-                    dummy_list[index][0][1] = data[index+1][0][1]
+                    dummy_list[index][1] = new_list[index+1][1]
                     list_of_points.append(dummy_list[index])
 
                 # the rest changes x-value
                 else:
-                    dummy_list[index+1][0][0] = data[index][0][0]
+                    dummy_list[index+1][0] = new_list[index][0]
                     list_of_points.append(dummy_list[index+1])
             except:
                 IndexError
 
-        print("NEW LIST : ", dummy_list)
-        print("LIST: ", list_of_points)
+        # print("NEW LIST : ", dummy_list)
+        # print("LIST: ", list_of_points)
 
-        return data
+        return new_list
 
     '''
     -----------------------------------------------
@@ -395,7 +403,6 @@ class pathAlgorithm:
 TESTING AND VARIABLE INITIATION
 --------------------------------------------------
 """
-
 '''
 
 PathAlgorithm = pathAlgorithm(2000)
@@ -418,30 +425,27 @@ path = [[[0, 0, 0], [0, 1700, 0]], [[2500, 4000, 0], [
     3500, -4000, 0]], [[10000, 6000, 0], [1000, 5900]]]
 
 
-attatchemnt_points = DFA_RailServer.attachement_points
-desired_locations = DFA_RailServer.visit_locations
-
-all_locations = attatchemnt_points + desired_locations
-
 # desired_locations = [(500, 500), (2000, 3000), (2700, 4000)]
 obsticles = []
-'''
-'''
+new_list = PathAlgorithm.listMaker(Newpointlist)
+
+print("New list: ", new_list)
+
 # path = PathAlgorithm.bestPath(dataPRe)
 all_locations = [[[7000, 8000], 10000], [[7000, 29000], 10000],
                  [[16000, 29000], 10000], [[16000, 7000], 10000]]
 
-if len(all_locations) > 0:
-    ninty_path = PathAlgorithm.preProcessData(all_locations)
+if len(new_list) > 0:
+    ninty_path = PathAlgorithm.preProcessData(new_list)
 
 x = []
 y = []
 
 # Function for plotting the rail on a 2d grid.
 
-for i in all_locations:
-    x.append(i[0][0])
-    y.append(i[0][1])
+for i in ninty_path:
+    x.append(i[0])
+    y.append(i[1])
 
 plt.scatter(x, y)
 plt.plot(x, y)
