@@ -1,5 +1,5 @@
 #! NX/KF 4.0
-DefClass: Rail_Order_| (ug_base_part);
+DefClass: Rail_Order_1 (ug_base_part);
     #Parameters for the rails cross section
     (number parameter) height: 291; #Heigth of web
     (number parameter) flange: 167; #Length of flange
