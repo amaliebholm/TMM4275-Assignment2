@@ -79,7 +79,7 @@ If the customer tries to add a variable that is located outside the room then th
 ### Example 1 
 ![set_room_size.png](https://github.com/amaliebholm/TMM4275-Assignment2/blob/main/Images/set_room_size.png)
 
-![list of points.png](https://github.com/amaliebholm/TMM4275-Assignment2/blob/main/Images/list of points.png)
+![list_of_points.png](https://github.com/amaliebholm/TMM4275-Assignment2/blob/main/Images/list_of_points.png)
 
 
 
