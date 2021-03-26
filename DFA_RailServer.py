@@ -14,6 +14,7 @@ attachement_points = []  # On form [(x,y), height]
 visit_locations = []  # On form [(x,y), height]
 obstacles = []  # On form [(x,y),(x,y),(x,y),(x,y) height], to form an area
 global algo_path
+global attatch_path
 
 # Initial values of variables
 x = 0
@@ -339,10 +340,16 @@ class MyHandler(BaseHTTPRequestHandler):
 
         # Review of order, and allowing the customer to go back and reset at different points
         elif path.find("/sendOrder") != -1:
+
             all_locations = attachement_points.copy() + visit_locations.copy()
             algo_path = pathAlgorithm.pathAlgorithm(
                 2000).preProcessData(all_locations)
             print("PATH: ", algo_path)
+
+            attatch_path = pathAlgorithm.pathAlgorithm(
+                2000).preProcessData(attachement_points)
+            print("Attatchment point: ", attatch_path)
+
             s.wfile.write(
                 bytes('<html><body><h2>Rail specifications for your K2 EasyFeed:</h2>', "utf-8"))
             s.wfile.write(
