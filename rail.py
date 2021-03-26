@@ -5,13 +5,13 @@ import DFA_RailServer
 #Creates a costume rail from the user-inputs adjusting and pasting the templates
 #for lines and curves into the rail template
 
-#mount_list = np.array([[0,0,0,2000],[0,10000,0,5000]])
+mount_list = np.array([[0,0,0,2000],[0,10000,0,5000]])
 #pointlist = [[0, 0,0], [0, 17000,0], [25000, 17000,0], [25000, -40000,0],[100000, -40000,0], [100000, 59000,0], [-20000, 59000,0],[-20000, 20000,0]]
 
+pointlist = [[10, 1, 30], [10, 6, 30], [19, 6, 30], [25, 6, 30], [25, 25, 30], [14, 25, 30], [1, 25, 30]]
+#pointlist = DFA_RailServer.algo_path #USE these when working togheter with the dfa server
+#mount_list = DFA_RailServer.attachement_points
 
-pointlist = DFA_RailServer.algo_path #USE these when working togheter with the dfa server
-mount_list = DFA_RailServer.attachement_points
-print(pointlist)
 
 fixedlist = []
 for place in pointlist: #Here we transform from meters to millimeters
@@ -24,27 +24,27 @@ for place in mount_list: #Here we transform from meters to millimeters
     fixed_part_list = [i * 1000 for i in place]
     fixedlist.append(fixed_part_list)
 mount_list = fixedlist 
-
-dfaPath = "C:\\Users\\Amalie\\Documents\\GitHub\\TMM4275-Assignment2\\DFAs\\"
+print(pointlist)
+dfaPath = "/Users/kasper/Documents/GitHub/TMM4275-Assignment2/DFAs/"
 #The location of your DFA files
 
-f = open(dfaPath + "templates\\Rail_template.dfa", "r") 
+f = open(dfaPath + "templates/Rail_template.dfa", "r") 
 rail = f.read()
 f.close() #Opens and reads the DFA template so that a new DFA file of the order can be made
 
-f = open(dfaPath + "templates\Arc_template.dfa", "r") 
+f = open(dfaPath + "templates/Arc_template.dfa", "r") 
 arc_temp = f.read()
 f.close() #Opens and reads the arc DFA template so that curves can be added to the rail
 
-f = open(dfaPath + "templates\Line_template.dfa", "r") 
+f = open(dfaPath + "templates/Line_template.dfa", "r") 
 line_temp = f.read()
 f.close() #Opens and reads the line DFA template so that straight lines can be added to the rail
 
-f = open(dfaPath + "templates\Roof_mount_template.dfa", "r") 
+f = open(dfaPath + "templates/Roof_mount_template.dfa", "r") 
 mount_temp = f.read()
 f.close() #Opens and reads the line DFA template so that straight lines can be added to the rail
 
-f = open(dfaPath + "templates\path_and_combine.dfa", "r") 
+f = open(dfaPath + "templates/path_and_combine.dfa", "r") 
 the_end = f.read()
 f.close() #Opens and reads the DFA file that contains the the joining and coloring
 
@@ -114,7 +114,10 @@ for i in range(len(pointlist)-2): #This for loop adjust the lines the lines leng
     print("line_turn_right_refframe",line_turn_right_refframe)
     print("line_turn_up_refframe",line_turn_up_refframe)
     print("")"""
-
+    ytemp1 = 0
+    xtemp2=0
+    xtemp1 =0
+    ytemp2 = 0
     if line_up >0: #scenario when the rail is going upwards before corner
         if line_turn_right_refframe > 0: #When rail is turning right in the ref frame
             ytemp1 = pointlist[i+1][1]-r #shorten the line by the radius to make space for a curve
@@ -375,7 +378,7 @@ f = open(dfaPath + "Rail_Order.dfa", "w")
 f.write(rail)
 f.close()
 
-"""
+
 x = []
 y = []
 for i in pointlist:
@@ -386,4 +389,4 @@ for i in pointlist:
     #print(y)
 plt.scatter(x, y)
 plt.plot(x, y)
-plt.show()"""
+plt.show()
