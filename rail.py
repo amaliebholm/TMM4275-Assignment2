@@ -1,16 +1,28 @@
 import math as m
 import numpy as np
 import matplotlib.pyplot as plt
+import DFA_RailServer 
 #Creates a costume rail from the user-inputs adjusting and pasting the templates
 #for lines and curves into the rail template
 
-
 mount_list = np.array([[0,0,0,2000],[0,10000,0,5000]])
-
-#pointlist = np.array([[0,0,0],[0,10,0],[-2,12,0],[-10,12,0],[-11.41421356,11.41421356,0],[-13.41421356,9.41421356,0]])
-#pointlist = np.array([[0,0,0],[0,10000,0],[-2000,12000,0],[-10000,12000,0],[-11414.21356,11414.21356,0],[-13414.21356,9414.21356,0]])
 pointlist = [[0, 0,0], [0, 17000,0], [25000, 17000,0], [25000, -40000,0],[100000, -40000,0], [100000, 59000,0], [-20000, 59000,0],[-20000, 20000,0]]
 
+
+#pointlist = DFA_RailServer.algo_path #USE these when working togheter with the dfa server
+#mount_list = DFA_RailServer.attachement_points
+
+fixedlist = []
+for place in pointlist: #Here we transform from meters to millimeters
+    fixed_part_list = [i * 1000 for i in place]
+    fixedlist.append(fixed_part_list)
+pointlist = fixedlist 
+
+fixedlist = []
+for place in mount_list: #Here we transform from meters to millimeters
+    fixed_part_list = [i * 1000 for i in place]
+    fixedlist.append(fixed_part_list)
+mount_list = fixedlist 
 
 dfaPath = "/Users/kasper/Documents/GitHub/TMM4275-Assignment2/DFAs/" #The location of your DFA files
 
@@ -364,7 +376,7 @@ f = open(dfaPath + "Rail_Order.dfa", "w")
 f.write(rail)
 f.close()
 
-
+"""
 x = []
 y = []
 
@@ -377,4 +389,4 @@ for i in pointlist:
 
 plt.scatter(x, y)
 plt.plot(x, y)
-plt.show()
+plt.show()"""
