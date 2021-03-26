@@ -22,7 +22,7 @@ Then, the customer will give coordinates of the different variables in the room:
 * Attachement point in the ceiling
 * Feeding location for the cart
 * Locations the cart should visit in the room 
-* Obstacles in the room that the cart has to avoid (given as whole areas in the room)
+* Obstacles in the room that the cart has to avoid (given as whole areas within the room)
 
 ### The KBE Application Architecture
 
@@ -42,19 +42,25 @@ In assignment 1 Olingvo and Apache Jena Fuseki was used to communicate with the 
 
 ### Development Tools
 
-This code was made using python in Visual Studio Code. Knowledge Fusion and Journal was used in NX to make models of the rail.
+This code was made using python in Visual Studio Code. Knowledge Fusion and Journal was used in NX to make models of the rail. NX Open was used to make journals, to be able to easily take pictures of the product for every order. 
 
 In assignment 1 Olingvo and Apache Jena Fuseki was used to communicate with the server containing the parameters, as stated above, this was not used in assignment 2, since the constraints the variables has to be within is both set by the DFA server, in the same place where they are fetched from the customer. 
 
 
 ### Code Description 
 
-- `DFAserver.py` - Setting up the web-page that the customer uses to place an order, making sure that the variables are set within the size of the room. Giving the lists of different variables as output. 
-- `astar_alg.py`- ... 
-- Rest of .py files ... 
+- `DFA_RailServer.py` - Setting up the web-page that the customer uses to place an order, making sure that the variables are set within the size of the room. Giving the lists of different variables as output. This is done by three webpages linked together, sending the customer to the next one when all the necessary values are given. 
+- `rial.py`- ... 
+- `pathAlgorithm.py` - Finging best possible path.... 
+- `rail_journal.py` - A journal using NX Open to take a picture of the ordered rail and saving it in the folder with the rest of the files. 
 
 ### DFAs
 - `Rail_Order.dfa` - Containing the NX file whith the parameters given by the customer
+- `Rail_template.dfa` - Containing the rail template 
+- `Arc_template.dfa` - Containing the arc template
+- `Line_template.dfa` - Containing the line template
+- `Roof_mount_template.dfa` - Containing the template for how roof mounts
+- `path_and_combine.dfa`- Containing the template for combining the whole rile according to the path 
 
 ## Video of working KBE system
 
