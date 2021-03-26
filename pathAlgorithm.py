@@ -27,10 +27,11 @@ class pathAlgorithm:
     def closest_node(self, node, nodes):
         return nodes[cdist([node], nodes).argmin()]
 
-    def listMaker(self, data):
+    def listTransformer(self, data):
+        mock_data = data
         try:
             new_list = []
-            for i in data:
+            for i in mock_data:
                 z_value = i[1]
                 i.remove(z_value)
                 for j in i:
@@ -43,7 +44,7 @@ class pathAlgorithm:
     # Function that makes the input have 90 deegre turns, for testing purposes
     def preProcessData(self, data):
         # Initializing
-        new_list = self.listMaker(data)
+        new_list = self.listTransformer(data)
         print(new_list)
         index = 0
         dummy_list = new_list
@@ -112,14 +113,14 @@ class pathAlgorithm:
             # Updates the current point to the last added element in the list
             if data_point is not None:
                 current_point = best_path[-1]
-                print("CURRENT INDEX:  ", current_point)
-                print("BEFORE REMOVING: ", updated_data)
+                #print("CURRENT INDEX:  ", current_point)
+                #print("BEFORE REMOVING: ", updated_data)
 
                 # Checks if the current point is in the upgraded data list, removes it from the
                 # dummy list if it is.
                 if current_point in updated_data:
                     dummy_list.remove(current_point)
-                    print("AFTER REMOVING: ", dummy_list)
+                    #print("AFTER REMOVING: ", dummy_list)
 
                 if len(dummy_list) != 0:
                     # Calculating the distance from the current point to all other points in the dummy list.
@@ -206,7 +207,7 @@ class pathAlgorithm:
         return alpha
 
     def InLineOfSight(self, point1, point2, point3):
-        # Link:
+        # Link: https://stackoverflow.com/questions/1560492/how-to-tell-whether-a-point-is-to-the-right-or-left-side-of-a-line?fbclid=IwAR1C4J0-pFEgesJUtpIS4xY3jSdjKB8HUovqKBuCTo0QtfQ3DPGx4ya2nPk
         LOF = (point1[1] - point2[1]) * point3[0] + \
             (point2[0] - point1[0]) * point3[1] + \
             (point1[0] * point2[1] - point2[0] * point1[1])
@@ -287,7 +288,7 @@ class pathAlgorithm:
 
         # Need to find if the incoming line is in a spesific quadrant
         # Defining the quadrants
-        quadrant = ""
+        quadrant = int()
 
         distance_NePo_cent = self.getDistance(center, next_position)
 
@@ -406,7 +407,7 @@ class pathAlgorithm:
 TESTING AND VARIABLE INITIATION
 --------------------------------------------------
 """
-'''
+
 
 PathAlgorithm = pathAlgorithm(2000)
 
@@ -456,4 +457,3 @@ plt.plot(x, y)
 plt.show()
 
 # path = [[0, 0, 0], [100, 0, 0], [100, 400, 0], [100, 400, 0], [0, 400, 0]]
-'''
