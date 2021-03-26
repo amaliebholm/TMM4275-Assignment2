@@ -77,6 +77,10 @@ If the customer tries to add a variable that is located outside the room then th
 ![constraint.PNG](https://github.com/amaliebholm/TMM4275-Assignment2/blob/main/Images/constraint.PNG)
 
 ### Example 1 
+![constraint.PNG](https://github.com/amaliebholm/TMM4275-Assignment2/blob/main/Images/set_room_size)
+
+![constraint.PNG](https://github.com/amaliebholm/TMM4275-Assignment2/blob/main/Images/list of points)
+
 
 
 ### Example 2
