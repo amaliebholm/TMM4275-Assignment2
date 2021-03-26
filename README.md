@@ -10,7 +10,7 @@ This project is made by:
 ### The Rail
 
 The image below show a NX modelling of the rail: 
-![name](url)
+![rail_model_image.png](https://github.com/amaliebholm/TMM4275-Assignment2/blob/main/Images/rail_model_image.png)
 
 First, the customer will define the size of the room: 
 * Room height 
