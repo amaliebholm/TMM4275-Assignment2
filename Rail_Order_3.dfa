@@ -1,5 +1,5 @@
 #! NX/KF 4.0
-DefClass: Rail_Order (ug_base_part);
+DefClass: Rail_Order_3 (ug_base_part);
     #Parameters for the rails cross section
     (number parameter) height: 291; #Heigth of web
     (number parameter) flange: 167; #Length of flange
@@ -241,7 +241,7 @@ DefClass: Rail_Order (ug_base_part);
         class, ug_cylinder;
         diameter, 100;
         height, 2686.666;
-        Origin, Point(1000,0,2313.334);
+        Origin, Point(300,0,313.334);
         Direction, Vector(0,0,1);
     };
 
@@ -249,7 +249,7 @@ DefClass: Rail_Order (ug_base_part);
         class, ug_cylinder;
         diameter, 100;
         height, 2686.666;
-        Origin, Point(10000,40000,2313.334);
+        Origin, Point(4000,39000,313.334);
         Direction, Vector(0,0,1);
     };
 
@@ -257,7 +257,7 @@ DefClass: Rail_Order (ug_base_part);
         class, ug_cylinder;
         diameter, 100;
         height, 2686.666;
-        Origin, Point(10000,2000,2313.334);
+        Origin, Point(35000,26000,313.334);
         Direction, Vector(0,0,1);
     };
 
@@ -265,7 +265,7 @@ DefClass: Rail_Order (ug_base_part);
         class, ug_cylinder;
         diameter, 100;
         height, 2686.666;
-        Origin, Point(25000,40000,2313.334);
+        Origin, Point(50000,38000,313.334);
         Direction, Vector(0,0,1);
     };
 
@@ -273,39 +273,7 @@ DefClass: Rail_Order (ug_base_part);
         class, ug_cylinder;
         diameter, 100;
         height, 2686.666;
-        Origin, Point(35000,40000,2313.334);
-        Direction, Vector(0,0,1);
-    };
-
-(child) mount_5:{
-        class, ug_cylinder;
-        diameter, 100;
-        height, 2686.666;
-        Origin, Point(35000,20000,2313.334);
-        Direction, Vector(0,0,1);
-    };
-
-(child) mount_6:{
-        class, ug_cylinder;
-        diameter, 100;
-        height, 2686.666;
-        Origin, Point(50000,40000,2313.334);
-        Direction, Vector(0,0,1);
-    };
-
-(child) mount_7:{
-        class, ug_cylinder;
-        diameter, 100;
-        height, 2686.666;
-        Origin, Point(80000,40000,2313.334);
-        Direction, Vector(0,0,1);
-    };
-
-(child) mount_8:{
-        class, ug_cylinder;
-        diameter, 100;
-        height, 2686.666;
-        Origin, Point(60000,40000,2313.334);
+        Origin, Point(60000,4000,313.334);
         Direction, Vector(0,0,1);
     };
 
