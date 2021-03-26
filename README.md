@@ -52,7 +52,7 @@ In assignment 1 Olingvo and Apache Jena Fuseki was used to communicate with the 
 ### Code Description 
 
 - `DFA_RailServer.py` - Setting up the web-page that the customer uses to place an order, making sure that the variables are set within the size of the room. Giving the lists of different variables as output. This is done by three webpages linked together, sending the customer to the next one when all the necessary values are given. 
-- `rial.py`- ... KASPER8
+- `rail.py`- ... This takes in the list of the sorted points, adds the curves and creates the dfa file that is used to create the 3d model. 
 - `pathAlgorithm.py` - Finging best possible path.... MYKLE
 - `aStarAlgorithm.py` - Finging best possible path using aStar, did not work because .... instead .... MYKLE
 - `rail_journal.py` - A journal using NX Open to take a picture of the ordered rail and saving it in the folder with the rest of the files. 
