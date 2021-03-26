@@ -2,7 +2,6 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import requests
 import pathAlgorithm
 
-from imgSaverServer import RepeatedTimer, imgSaver
 
 # Initial valies of room size
 room_height = 0
@@ -335,6 +334,7 @@ class MyHandler(BaseHTTPRequestHandler):
 
         # Review of order, and allowing the customer to go back and reset at different points
         elif path.find("/sendOrder") != -1:
+            global algo_path
             all_locations = attachement_points.copy() + visit_locations.copy()
             algo_path = pathAlgorithm.pathAlgorithm(
                 2000).preProcessData(all_locations)
@@ -374,7 +374,7 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<p>List of obstacles:</p>', "utf-8"))
             s.wfile.write(bytes('<ul>' + list_obs + '</ul>', "utf-8"))
 
-                # Giving options to go back and reset at room size or variables, or submitting the order
+            # Giving options to go back and reset at room size or variables, or submitting the order
             s.wfile.write(bytes(
                 '<br><button type="submit" formaction="/setSize">Reset room</button><p>Click "Reset room" to reset the while room size and the while rail order</p>', "utf-8"))
             s.wfile.write(bytes(
@@ -393,15 +393,18 @@ class MyHandler(BaseHTTPRequestHandler):
             # Second param - is the function
             # Third param - path of image
             # it auto-starts, no need of rt.start()
-            rt = RepeatedTimer(5, imgSaver, pathToImg)
+            #rt = RepeatedTimer(5, imgSaver, pathToImg)
+            '''
             try:
-                    sleep(25)  # your long-running job goes here...
-                finally:
-                    rt.stop()  # better in a try/finally block to make sure the program ends
-                s.wfile.write(bytes('<br> Model of your rail: ', "utf-8"))
-                s.wfile.write(bytes('<br> <img src="rail_model_image.jpg">', "utf-8"))
-                s.wfile.write(bytes(
-                    '<br><button type="submit">Submit</button><p>Click "Submit" to send the order of your rail</p>', "utf-8"))
+                sleep(25)  # your long-running job goes here...
+            finally:
+                rt.stop()  # better in a try/finally block to make sure the program ends
+                '''
+            s.wfile.write(bytes('<br> Model of your rail: ', "utf-8"))
+            s.wfile.write(
+                bytes('<br> <img src="rail_model_image.jpg">', "utf-8"))
+            s.wfile.write(bytes(
+                '<br><button type="submit">Submit</button><p>Click "Submit" to send the order of your rail</p>', "utf-8"))
             s.wfile.write(bytes('</form></body></html>', "utf-8"))
 
             return room_height, room_width, room_length, rail_height, attachement_points, visit_locations, obstacles
