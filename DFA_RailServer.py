@@ -31,8 +31,11 @@ HOST_NAME = '127.0.0.1'  # locathost - http://127.0.0.1
 # Complete address would be: http://127.0.0.1:1234
 PORT_NUMBER = 1234
 
-pathToImg = "\\Users\\eier\\Document\\sGitHub\\TMM4275-Assignment2\\rail_model_image.png"
-# pathToImg = "K:\\Biblioteker\\Dokumenter\\Skole\\Automatisering\\TMM4275-Assignment2\\rail_model_image.png"
+# Setting the local paths
+pathToImg = "C:\\Users\\Amalie\\Documents\\GitHub\\TMM4275-Assignment2\\rail_model_image.png" # Ama Windows
+pathToDFA = "C:\\Users\\Amalie\\Documents\\GitHub\\TMM4275-Assignment2\\DFAs\\Rail_Order.dfa" # Ama Windows
+
+# Initial time for changed file, uploaded image
 lastTimeFileChange = 0.0
 
 # Handler of HTTP requests / responses
