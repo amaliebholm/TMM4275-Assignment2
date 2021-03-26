@@ -1,5 +1,5 @@
 #! NX/KF 4.0
-DefClass: Rail_Order (ug_base_part);
+DefClass: Rail_Order_ny (ug_base_part);
     #Parameters for the rails cross section
     (number parameter) height: 291; #Heigth of web
     (number parameter) flange: 167; #Length of flange
@@ -8,7 +8,7 @@ DefClass: Rail_Order (ug_base_part);
 
     (number parameter) startx: 10000;
     (number parameter) starty: 10000;
-    (number parameter) startz: 20000;
+    (number parameter) startz: 0;
 
 
     #First we set up the profile for the beam, by defining its sides going clockwise
@@ -92,8 +92,8 @@ DefClass: Rail_Order (ug_base_part);
 
 (Child) element_0: {
     class, ug_line;
-    start_Point, Point(10000,10000,20000);
-    end_Point,   Point(10000,18000,20000);
+    start_Point, Point(10000,10000,0);
+    end_Point,   Point(10000,18000,0);
 };
 
 (Child) element_1: {
@@ -106,8 +106,8 @@ DefClass: Rail_Order (ug_base_part);
 
 (Child) element_2: {
     class, ug_line;
-    start_Point, Point(12000,20000,20000);
-    end_Point,   Point(28000,20000,20000);
+    start_Point, Point(12000,20000,0);
+    end_Point,   Point(28000,20000,0);
 };
 
 (Child) element_3: {
@@ -120,8 +120,8 @@ DefClass: Rail_Order (ug_base_part);
 
 (Child) element_4: {
     class, ug_line;
-    start_Point, Point(30000,22000,20000);
-    end_Point,   Point(30000,58000,20000);
+    start_Point, Point(30000,22000,0);
+    end_Point,   Point(30000,58000,0);
 };
 
 (Child) element_5: {
@@ -134,8 +134,8 @@ DefClass: Rail_Order (ug_base_part);
 
 (Child) element_6: {
     class, ug_line;
-    start_Point, Point(28000,60000,20000);
-    end_Point,   Point(3000,60000,20000);
+    start_Point, Point(28000,60000,0);
+    end_Point,   Point(3000,60000,0);
 };
 
 (Child) element_7: {
@@ -148,8 +148,8 @@ DefClass: Rail_Order (ug_base_part);
 
 (Child) element_8: {
     class, ug_line;
-    start_Point, Point(1000,58000,20000);
-    end_Point,   Point(1000,40000,20000);
+    start_Point, Point(1000,58000,0);
+    end_Point,   Point(1000,40000,0);
 };
 
 
@@ -165,7 +165,7 @@ DefClass: Rail_Order (ug_base_part);
         class, ug_cylinder;
         diameter, 100;
         height, 2686.666;
-        Origin, Point(10000,20000,2313.334);
+        Origin, Point(10000,20000,313.334);
         Direction, Vector(0,0,1);
     };
 
@@ -173,7 +173,7 @@ DefClass: Rail_Order (ug_base_part);
         class, ug_cylinder;
         diameter, 100;
         height, 2686.666;
-        Origin, Point(30000,20000,2313.334);
+        Origin, Point(30000,20000,313.334);
         Direction, Vector(0,0,1);
     };
 
@@ -181,7 +181,7 @@ DefClass: Rail_Order (ug_base_part);
         class, ug_cylinder;
         diameter, 100;
         height, 2686.666;
-        Origin, Point(30000,60000,2313.334);
+        Origin, Point(30000,60000,313.334);
         Direction, Vector(0,0,1);
     };
 
@@ -189,7 +189,7 @@ DefClass: Rail_Order (ug_base_part);
         class, ug_cylinder;
         diameter, 100;
         height, 2686.666;
-        Origin, Point(1000,60000,2313.334);
+        Origin, Point(1000,60000,313.334);
         Direction, Vector(0,0,1);
     };
 
@@ -197,7 +197,7 @@ DefClass: Rail_Order (ug_base_part);
         class, ug_cylinder;
         diameter, 100;
         height, 2686.666;
-        Origin, Point(1000,40000,2313.334);
+        Origin, Point(1000,40000,313.334);
         Direction, Vector(0,0,1);
     };
 
