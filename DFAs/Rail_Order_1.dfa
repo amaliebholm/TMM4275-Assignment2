@@ -1,0 +1,217 @@
+#! NX/KF 4.0
+DefClass: Rail_Order_| (ug_base_part);
+    #Parameters for the rails cross section
+    (number parameter) height: 291; #Heigth of web
+    (number parameter) flange: 167; #Length of flange
+    (number parameter) web_thick: 6.604; #Thickness of web
+    (number parameter) f_thick: 11.167; #Thickness of flange
+
+    (number parameter) startx: 10000;
+    (number parameter) starty: 10000;
+    (number parameter) startz: 0;
+
+
+    #First we set up the profile for the beam, by defining its sides going clockwise
+
+(Child) profile1: {
+    class, ug_line; 
+    start_Point, Point(startx:,starty:,startz:);
+    end_Point,   Point(startx:,starty:,startz: + f_thick:);
+    }; 
+
+(Child) profile2: {
+    class, ug_line; 
+    start_Point, Point(startx:,starty:,startz: + f_thick:);
+    end_Point,   Point(startx: + flange:/2 - web_thick:/2 ,starty:,startz: + f_thick:);
+    }; 
+
+(Child) profile3: {
+    class, ug_line; 
+    start_Point, Point(startx: + flange:/2 - web_thick:/2 ,starty:,startz: + f_thick:);
+    end_Point,   Point(startx: + flange:/2 - web_thick:/2 ,starty:,startz: + f_thick: + height:);
+    }; 
+    
+(Child) profile4: {
+    class, ug_line; 
+    start_Point, Point(startx: + flange:/2 - web_thick:/2 ,starty:,startz: + f_thick: + height:);
+    end_Point,   Point(startx:,starty:,startz: + f_thick: + height:);
+    }; 
+
+(Child) profile5: {
+    class, ug_line; 
+    start_Point, Point(startx:,starty:,startz: + f_thick: + height:);
+    end_Point,   Point(startx:,starty:,startz: + 2*f_thick: + height:);
+    }; 
+
+(Child) profile6: {
+    class, ug_line; 
+    start_Point, Point(startx:,starty:,startz: + 2*f_thick: + height:);
+    end_Point,   Point(startx: + flange:,starty:,startz: + 2*f_thick: + height:);
+    }; 
+
+(Child) profile7: {
+    class, ug_line; 
+    start_Point, Point(startx: + flange:,starty:,startz: + 2*f_thick: + height:);
+    end_Point,   Point(startx: + flange:,starty:,startz: + f_thick: + height:);
+    }; 
+
+(Child) profile8: {
+    class, ug_line; 
+    start_Point, Point(startx: + flange:,starty:,startz: + f_thick: + height:);
+    end_Point,   Point(startx: + flange:/2 + web_thick:/2,starty:,startz: + f_thick: + height:);
+    }; 
+
+(Child) profile9: {
+    class, ug_line; 
+    start_Point, Point(startx: + flange:/2 + web_thick:/2,starty:,startz: + f_thick: + height:);
+    end_Point,   Point(startx: + flange:/2 + web_thick:/2,starty:,startz: + f_thick:);
+    }; 
+
+(Child) profile10: {
+    class, ug_line; 
+    start_Point, Point(startx: + flange:/2 + web_thick:/2,starty:,startz: + f_thick:);
+    end_Point,   Point(startx: + flange:,starty:,startz: + f_thick:);
+    }; 
+
+(Child) profile11: {
+    class, ug_line; 
+    start_Point, Point(startx: + flange:,starty:,startz: + f_thick:);
+    end_Point,   Point(startx: + flange:,starty:,startz:);
+    }; 
+
+(Child) profile12: {
+    class, ug_line; 
+    start_Point, Point(startx: + flange:,starty:,startz:);
+    end_Point,   Point(startx:,starty:,startz:);
+    }; 
+
+(Child) the_profile: {
+    class, ug_curve_join;
+    profile, {profile1:,profile2:,profile3:,profile4:,profile5:,profile6:,profile7:,profile8:,profile9:,profile10:,profile11:,profile12:};
+    };
+
+(Child) element_0: {
+    class, ug_line;
+    start_Point, Point(10000,10000,0);
+    end_Point,   Point(10000,18000,0);
+};
+
+(Child) element_1: {
+    class, ug_arc;
+    radius, 2000;
+    start_angle, 90.0;
+    end_angle, 180.0;
+    center, point(12000.0,18000.0,0);
+};
+
+(Child) element_2: {
+    class, ug_line;
+    start_Point, Point(12000,20000,0);
+    end_Point,   Point(28000,20000,0);
+};
+
+(Child) element_3: {
+    class, ug_arc;
+    radius, 2000;
+    start_angle, 270.0;
+    end_angle, 360.0;
+    center, point(28000.0,22000.0,0);
+};
+
+(Child) element_4: {
+    class, ug_line;
+    start_Point, Point(30000,22000,0);
+    end_Point,   Point(30000,58000,0);
+};
+
+(Child) element_5: {
+    class, ug_arc;
+    radius, 2000;
+    start_angle, 0.0;
+    end_angle, 90.0;
+    center, point(28000.0,58000.0,0);
+};
+
+(Child) element_6: {
+    class, ug_line;
+    start_Point, Point(28000,60000,0);
+    end_Point,   Point(3000,60000,0);
+};
+
+(Child) element_7: {
+    class, ug_arc;
+    radius, 2000;
+    start_angle, 90.0;
+    end_angle, 180.0;
+    center, point(3000.0,58000.0,0);
+};
+
+(Child) element_8: {
+    class, ug_line;
+    start_Point, Point(1000,58000,0);
+    end_Point,   Point(1000,40000,0);
+};
+
+
+(child) mount_0:{
+        class, ug_cylinder;
+        diameter, 100;
+        height, 2686.666;
+        Origin, Point(10000,10000,313.334);
+        Direction, Vector(0,0,1);
+    };
+
+(child) mount_1:{
+        class, ug_cylinder;
+        diameter, 100;
+        height, 2686.666;
+        Origin, Point(10000,20000,313.334);
+        Direction, Vector(0,0,1);
+    };
+
+(child) mount_2:{
+        class, ug_cylinder;
+        diameter, 100;
+        height, 2686.666;
+        Origin, Point(30000,20000,313.334);
+        Direction, Vector(0,0,1);
+    };
+
+(child) mount_3:{
+        class, ug_cylinder;
+        diameter, 100;
+        height, 2686.666;
+        Origin, Point(30000,60000,313.334);
+        Direction, Vector(0,0,1);
+    };
+
+(child) mount_4:{
+        class, ug_cylinder;
+        diameter, 100;
+        height, 2686.666;
+        Origin, Point(1000,60000,313.334);
+        Direction, Vector(0,0,1);
+    };
+
+(child) mount_5:{
+        class, ug_cylinder;
+        diameter, 100;
+        height, 2686.666;
+        Origin, Point(1000,40000,313.334);
+        Direction, Vector(0,0,1);
+    };
+
+(Child) the_path: {
+    Class, ug_curve_join;
+    profile, { element_0:, element_1:, element_2:, element_3:, element_4:, element_5:, element_6:, element_7:, element_8:};
+};
+
+(Child) the_full_rail: {
+    class, ug_swept;
+    guide, {{forward, the_path:}};
+    section, {{forward, the_profile:}};
+    scaling, {scale_constant, 1};
+    alignment_init, parameter;
+    orientation, {orientation_fixed};
+    tolerances, {0, 0, 0};
+};
