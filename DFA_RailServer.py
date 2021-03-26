@@ -41,7 +41,7 @@ class MyHandler(BaseHTTPRequestHandler):
         s.send_response(200)
         s.send_header("Content-type", "text/html")
         s.end_headers()
-
+        
     def do_GET(s):
         global room_height, room_width, room_length, matrix_room, matrix_height, rail_height, x, y, obs_string, spes_height, var_type
         """Respond to a GET request."""
@@ -78,6 +78,18 @@ class MyHandler(BaseHTTPRequestHandler):
 
             s.wfile.write(bytes('<img src="https://raw.githubusercontent.com/amaliebholm/TMM4275-Assignment2/main/sketch_room.jpeg" alt="Image illustrating 3D and 2D perspective" width="650" height="400">', "utf-8"))
             s.wfile.write(bytes('</body></html>', "utf-8"))
+
+        elif path.find("/rail_model_image.png") != -1: 
+            #Make right headers
+            s.send_response(200)
+            s.send_header("Content-type", "image/png")
+            s.end_headers()
+            #Read the file
+            #Write file.
+            bReader = open(pathToImg, "rb")
+            theImg = bReader.read()
+            print(theImg)
+            s.wfile.write(theImg)
 
         else:
             s.wfile.write(bytes('<html><head><title>Cool interface.</title></head>', 'utf-8'))
@@ -277,7 +289,7 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<label for="Thanks">Thank you for your order!</label><br>', 'utf-8'))
 
             # The room size
-            s.wfile.write(bytes('<br><p>You have order a rail for the room size (m): room height: ' + str(room_height)+ ', room width: '+ str(room_width) + ', room length: '+ str(room_length)+ ', rail hight: '+ str(rail_height) + '.</p>', 'utf-8'))
+            s.wfile.write(bytes('<br><p>You have order a rail for the room size (m): room height: ' + str(room_height/1000)+ ', room width: '+ str(room_width/1000) + ', room length: '+ str(room_length/1000)+ ', rail hight: '+ str(rail_height/1000) + '.</p>', 'utf-8'))
 
             s.wfile.write(bytes('<br><p>With the following varialbes: </p>', "utf-8"))
             
