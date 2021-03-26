@@ -87,5 +87,10 @@ If the customer tries to add a variable that is located outside the room then th
 
 ### Example 3
 
+![room_size.png](https://github.com/amaliebholm/TMM4275-Assignment2/blob/main/Images/room_size.png)
+
+![list_of_points.png](https://github.com/amaliebholm/TMM4275-Assignment2/blob/main/Images/list_of_points.png)
+
+
 ### Common Colclusion on Building KBE System based on A1 and A2
 Before this course none of us had any experience with building KBE Systems, but through these two assignments we have learned a lot. We have learned that there are alot of complex structures and architecture surrounding what can seem as a simple web page for a customer. We have also learned how important it is that all these components are able to comunicate in a proper way. It was a timeconsuming but rewarding process to develop these KBE Systems.
