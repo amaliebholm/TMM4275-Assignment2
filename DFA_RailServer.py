@@ -2,6 +2,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import requests
 import pathAlgorithm
 
+from imgSaverServer import RepeatedTimer, imgSaver
 
 # Initial valies of room size
 room_height = 0
@@ -30,6 +31,10 @@ var_type = ""
 HOST_NAME = '127.0.0.1'  # locathost - http://127.0.0.1
 # Complete address would be: http://127.0.0.1:1234
 PORT_NUMBER = 1234
+
+pathToImg = "\\Users\\eier\\Document\\sGitHub\\TMM4275-Assignment2\\rail_model_image.png"
+# pathToImg = "K:\\Biblioteker\\Dokumenter\\Skole\\Automatisering\\TMM4275-Assignment2\\rail_model_image.png"
+lastTimeFileChange = 0.0
 
 # Handler of HTTP requests / responses
 
@@ -369,13 +374,34 @@ class MyHandler(BaseHTTPRequestHandler):
             s.wfile.write(bytes('<p>List of obstacles:</p>', "utf-8"))
             s.wfile.write(bytes('<ul>' + list_obs + '</ul>', "utf-8"))
 
-            # Giving options to go back and reset at room size or variables, or submitting the order
+                # Giving options to go back and reset at room size or variables, or submitting the order
             s.wfile.write(bytes(
                 '<br><button type="submit" formaction="/setSize">Reset room</button><p>Click "Reset room" to reset the while room size and the while rail order</p>', "utf-8"))
             s.wfile.write(bytes(
                 '<br><button type="submit" formaction="/setVariables">Reset variables</button><p>Click "Reset variables" to reset the variables in the room</p>', "utf-8"))
             s.wfile.write(bytes(
                 '<br><button type="submit">Submit</button><p>Click "Submit" to send the order of your rail</p>', "utf-8"))
+
+            # Giving options to go back and reset at room size or variables, of submitting the order
+            s.wfile.write(bytes(
+                '<br><button type="submit" formaction="/setSize">Reset room</button><p>Click "Reset room" to reset the while room size and the while rail order</p>', "utf-8"))
+            s.wfile.write(bytes(
+                '<br><button type="submit" formaction="/setVariables">Reset variables</button><p>Click "Reset variables" to reset the variables in the room</p>', "utf-8"))
+
+            print("starting...")
+            # First param - is the frequency
+            # Second param - is the function
+            # Third param - path of image
+            # it auto-starts, no need of rt.start()
+            rt = RepeatedTimer(5, imgSaver, pathToImg)
+            try:
+                    sleep(25)  # your long-running job goes here...
+                finally:
+                    rt.stop()  # better in a try/finally block to make sure the program ends
+                s.wfile.write(bytes('<br> Model of your rail: ', "utf-8"))
+                s.wfile.write(bytes('<br> <img src="rail_model_image.jpg">', "utf-8"))
+                s.wfile.write(bytes(
+                    '<br><button type="submit">Submit</button><p>Click "Submit" to send the order of your rail</p>', "utf-8"))
             s.wfile.write(bytes('</form></body></html>', "utf-8"))
 
             return room_height, room_width, room_length, rail_height, attachement_points, visit_locations, obstacles
