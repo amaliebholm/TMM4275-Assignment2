@@ -1,3 +1,4 @@
+import NXOpen
 import math
 import clr
 from time import sleep
@@ -5,11 +6,11 @@ from threading import Timer
 import os
 
 import sys
-sys.path.append(os.path.dirname(os.path.expanduser("C:\\Program Files\\Siemens\\NX1953\\NXBIN\\python\\")))
+sys.path.append(os.path.dirname(os.path.expanduser(
+    "C:\\Program Files\\Siemens\\NX1953\\NXBIN\\python\\")))
 #sys.path.append("C:\\Program Files\\Siemens\\NX1953\\NXBIN")
 
 clr.AddReference('NXOpen')
-import NXOpen
 #import NXOpen.Gateway
 
 
@@ -17,42 +18,41 @@ pathToDFA = "K:\\Biblioteker\\Dokumenter\\Skole\\Automatisering\\TMM4275-Assignm
 pathToImg = "K:\\Biblioteker\\Dokumenter\\Skole\\Automatisering\\TMM4275-Assignment2\\rail_model_image.png"
 lastTimeFileChange = 0.0
 
+
 class RepeatedTimer(object):
-	def __init__(self, interval, function, *args, **kwargs):
-		self._timer	 = None
-		self.interval   = interval
-		self.function   = function
-		self.args	   = args
-		self.kwargs	 = kwargs
-		self.is_running = False
-		self.start()
+    def __init__(self, interval, function, *args, **kwargs):
+        self._timer = None
+        self.interval = interval
+        self.function = function
+        self.args = args
+        self.kwargs = kwargs
+        self.is_running = False
+        self.start()
 
-	def _run(self):
-		self.is_running = False
-		self.start()
-		self.function(*self.args, **self.kwargs)
+    def _run(self):
+        self.is_running = False
+        self.start()
+        self.function(*self.args, **self.kwargs)
 
-	def start(self):
-		if not self.is_running:
-			self._timer = Timer(self.interval, self._run)
-			self._timer.start()
-			self.is_running = True
+    def start(self):
+        if not self.is_running:
+            self._timer = Timer(self.interval, self._run)
+            self._timer.start()
+            self.is_running = True
 
-	def stop(self):
-		self._timer.cancel()
-		self.is_running = False
-		
-
+    def stop(self):
+        self._timer.cancel()
+        self.is_running = False
 
 
-def main() : 
+def main():
 
-	theSession  = NXOpen.Session.GetSession()
-	workPart = theSession.Parts.Work
-	displayPart = theSession.Parts.Display
-	workPart.RuleManager.Reload(True)
-	
-	"""
+    theSession = NXOpen.Session.GetSession()
+    workPart = theSession.Parts.Work
+    displayPart = theSession.Parts.Display
+    workPart.RuleManager.Reload(True)
+
+    """
 	sleep(2)
 	# ----------------------------------------------
 	#   Menu: File->Export->Image...
@@ -95,30 +95,33 @@ def main() :
 	
 	"""
 
+
 """	
 if __name__ == '__main__':
 	main()
-"""	
+"""
+
 
 def imgSaver(path):
-	#Read the change of the DFA file
-	global lastTimeFileChange
-	fileLastChanged = os.path.getmtime(pathToDFA)
-	#Check if it is > lastTimeFileChange
-	if (fileLastChanged > lastTimeFileChange):
-		lastTimeFileChange = fileLastChanged
-		#If yes, generate new image
-		main()
-		print("Image file has been saved")
-	#else, skip.
-   
+    # Read the change of the DFA file
+    global lastTimeFileChange
+    fileLastChanged = os.path.getmtime(pathToDFA)
+    # Check if it is > lastTimeFileChange
+    if (fileLastChanged > lastTimeFileChange):
+        lastTimeFileChange = fileLastChanged
+        # If yes, generate new image
+        main()
+        print("Image file has been saved")
+    # else, skip.
+
 
 print("starting...")
 # First param - is the frequency
 # Second param - is the function
 # Third param - path of image
-rt = RepeatedTimer(5, imgSaver, pathToImg) # it auto-starts, no need of rt.start()
+# it auto-starts, no need of rt.start()
+rt = RepeatedTimer(5, imgSaver, pathToImg)
 try:
-	sleep(25) # your long-running job goes here...
+    sleep(25)  # your long-running job goes here...
 finally:
-	rt.stop() # better in a try/finally block to make sure the program ends
+    rt.stop()  # better in a try/finally block to make sure the program ends
