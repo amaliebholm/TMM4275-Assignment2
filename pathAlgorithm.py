@@ -152,7 +152,7 @@ class pathAlgorithm:
         # Finding the slope
         delta_x = next_position[0] - current_position[0]  # x_1 - x_2
         delta_y = next_position[1] - current_position[1]  # y_1 - y_2
-        slope = delta_y/delta_x
+        #slope = delta_y/delta_x
         # Checking if a point is on the line.
 
         # From our current point the center lays a distance, of the given radius, away from the center.
@@ -297,6 +297,7 @@ class pathAlgorithm:
 
     def intersectionChecker(self, vector, obsticle):
         # Obsticles are on the form (corner1 , corner2 , corner3 , corner4)
+        # This is assuming that the customer has inputed an rectangular obsticle which as parallel with the x-axis.
         # best path algorithm to find linesegments?
         cross_check = False
         segments = []
@@ -379,15 +380,62 @@ class pathAlgorithm:
 
         # Need to find if the incoming line is in a spesific quadrant
         # Defining the quadrants
+        # We are looking for B', see Geometrics.jpeg
         quadrant = int()
 
-        distance_NePo_cent = self.getDistance(center, next_position)
+        dist_NextPos_currPos = self.findDistance(
+            current_position, next_position)
+
+        dist_cent_NextPos = self.findDistance(center, next_position)
 
         # Finding the angle between the next position, the center and the intercepiton point
-        angle_NePo_cent_InterPo = math.acos(
-            self.turn_radius/distance_NePo_cent)
+        sigma = math.acos(
+            self.turn_radius/dist_cent_NextPos)
+        print("Sigma: ", sigma)
 
-        return
+        # finding Zstar
+        alpha = 2*math.pi - sigma
+
+        z_delta_x = next_position[0] - center[0]
+        z_delta_y = next_position[1] - center[1]
+
+        # Zstar, point on the circle, see Trig.jpeg, source: https://gamedev.stackexchange.com/questions/80277/how-to-find-point-on-a-circle-thats-opposite-another-point
+        Z_star = [z_delta_x/dist_cent_NextPos*self.turn_radius + center[0],
+                  z_delta_y/dist_cent_NextPos*self.turn_radius + center[1]]
+        print("Z* POSITION: ", Z_star)
+        # Need to know which quadrant Z_star is in order to find out which way to find B'
+        quadrant = self.identifyingQuadrant(center, next_position)
+        # direction is either -1 (right) or 1 (left)
+        if quadrant == 1:
+            if direction > 0:
+                rotation = -math.radians(sigma)
+            else:
+                rotation = math.radians(sigma)
+
+        if quadrant == 2:
+            if direction > 0:
+                rotation = - math.radians(sigma)
+            else:
+                rotation = math.radians(sigma)
+
+        if quadrant == 3:
+            if direction > 0:
+                rotation = math.radians(sigma)
+            else:
+                rotation = -math.radians(sigma)
+
+        if quadrant == 4:
+            if direction > 0:
+                rotation = math.radians(sigma)
+            else:
+                rotation = -math.radians(sigma)
+
+        B_prime_x = math.cos(rotation)*self.turn_radius + center[0]
+        B_prime_y = math.sin(rotation)*self.turn_radius + center[1]
+
+        Bprime = [B_prime_x, B_prime_y]
+
+        return Bprime
 
     '''
     ---------------------------------------------------------
@@ -398,106 +446,122 @@ class pathAlgorithm:
     def railAlgorithm(self, data, obsticles):
 
         # initialize
-        '''
-        vector = [best_path[0], best_path[1]]
-        curved_path.append(vector)
-        '''
         all_obsticles = obsticles
         best_path = self.bestPath(data)
         print("THE BEST PATH: ", best_path)
-
-        '''
-        current_position = curved_path[index][0]
-        next_position = curved_path[index][1]
-        '''
-        # Finding the curves on the path, need to identify the turns
         index = 0
         curved_path = []
+        # Making a mock path to keep progression through removing paths evaluated
+        tracker_path = best_path
+        current_position = tracker_path[0]
+        next_position = tracker_path[1]
+        vector = [current_position, next_position]
+        curved_path.append(vector)
+        tracker = 0
 
-        while index < len(best_path)-1:
-            index += 1
-            '''
-            current_position = curved_path[index][0]
-            next_position = curved_path[index][1]
-            '''
-            print("ITERATION: ", index)
-            print(best_path[index-1])
-            print(best_path[index])
+        # Will run as long  as there are elements in the tracker_path list
+        # Checking for turns in the path.
+        while tracker_path:
+            # index += 1
+            # print("ITERATION: ", index)
+            # print(best_path[index])
+            # print(best_path[index + 1])
             # print(best_path[index+1])
-
-            if index == 1:
-                vector = [best_path[index-1], best_path[index+1]]
-                curved_path.append(vector)
-
+            # Adding the first path between the start position and next position.
+            if len(tracker_path) != 1:
+                current_position = tracker_path[index]
+                next_position = tracker_path[index + 1]
             else:
+                # curved_path.append(current_position)
+                break
+            '''
+            if index == 0:
+                vector = [current_position, next_position]
+                curved_path.append(vector)
+                # tracker_path.remove(current_position)
+            '''
+
+            # Finding where the next point is located in reference to the current path
+            print("CURVED PATH: ", curved_path)
+            direction = self.InLineOfSight(
+                curved_path[-1][0], curved_path[-1][1], tracker_path[index+1])
+            print("DIRECTION: ", direction)
+
+            # Check for turn
+            # no turn --> Straight line
+            if direction == 0 and tracker != 0:
+                vector = [tracker_path[index], tracker_path[index + 1]]
+                curved_path.append(vector)
+                tracker_path.remove(current_position)
+
+            else:  # Turn
+
+                # if len(curved_path[-1]) == 2:
+                print("CURVED PATH: ", curved_path)
                 direction = self.InLineOfSight(
-                    curved_path[-1][0], curved_path[-1][1], best_path[index])
-                print("DIRECTION: ", direction)
-                # Check for turn
-                # no turn --> Straight line
-                if (len(curved_path[-1]) == 2) and direction == 0:
-                    vector = [best_path[index-1], best_path[index]]
-                    curved_path.append(vector)
+                    curved_path[-1][0], curved_path[-1][1], tracker_path[index+1])
 
-                else:  # Turn
-                    '''
-                    vector = [best_path[index], best_path[index+1]]
-                    curved_path.append(vector)
-                    '''
+                # Finding the center of the circle which will become the turn arc.
+                center = self.findCenterOfCircle(
+                    curved_path[-1][0], curved_path[-1][1], direction)
 
-                    '''
-                    print(curved_path[-1][0])
-                    print(curved_path[-1][1])
-                    print(best_path[index-1])
-                    '''
+                # Finding Bprime on the turn arc. (The exiting point of the arc)
+                Bprime = self.findTangentPoint(
+                    direction, current_position, next_position, center)
 
-                    if len(curved_path[-1]) == 2:
+                next_vector = [Bprime, next_position]
 
-                        direction = self.InLineOfSight(
-                            curved_path[-1][0], curved_path[-1][1], best_path[index - 1])
+                curved_path.append(next_vector)
+                # best_path.insert(index + 1, Bprime)
 
-                        center = self.findCenter(
-                            curved_path[-1][0], curved_path[-1][1], direction)
+                tracker_path.remove(current_position)
 
-                        psi = self.angleBetweenVectors(
-                            curved_path[-1][1], best_path[index-1])
+                # ====================================================
+                '''
+                psi = self.angleBetweenVectors(
+                    curved_path[-1][1], tracker_path[index])
 
-                        # The angle between the center and  the  two endpoints of the arc
-                        arcInteriorAngle = self.arcInclusiveAngle(psi)
+                # The angle between the center and  the  two endpoints of the arc
+                arcInteriorAngle = self.arcInclusiveAngle(psi)
 
-                        directionVector = self.directonalVector(
-                            best_path[index], best_path[index-1])
+                directionVector = self.directonalVector(
+                    best_path[index], best_path[index-1])
+                '''
+                # ====================================================
 
-                        # Calculating distance along one of the vectors to the interception point on the arc. (End of arc)
+                # Calculating distance along one of the vectors to the interception point on the arc. (End of arc)
 
-                        distance_to_point_end_of_arc = self.turn_radius * \
-                            sympy.cot(psi/2)
+                # distance_to_point_end_of_arc = self.turn_radius * \
+                #    sympy.cot(psi/2)
 
-                        print("Distance to end: ", distance_to_point_end_of_arc)
+                # print("Distance to end: ", distance_to_point_end_of_arc)
 
-                        my_new_list = [
-                            i * distance_to_point_end_of_arc for i in directionVector]
+                # my_new_list = [
+                #    i * distance_to_point_end_of_arc for i in directionVector]
 
-                        end_point_of_arc = [sum(x) for x in zip(
-                            best_path[index-1], my_new_list)]
+                # end_point_of_arc = [sum(x) for x in zip(
+                #    best_path[index-1], my_new_list)]
 
-                        end_point_of_arc = [x/1000 for x in end_point_of_arc]
+                # end_point_of_arc = [x/1000 for x in end_point_of_arc]
 
-                        curved_path.append(end_point_of_arc)
+                # curved_path.append(end_point_of_arc)
 
-                        print("END POINT ON CURVE: ", end_point_of_arc)
+                # print("END POINT ON CURVE: ", end_point_of_arc)
 
-                        print("CURVED PATH: ", curved_path)
+                # print("CURVED PATH: ", curved_path)
 
-                    else:
-                        pass
-                index += 1
+            # index += 1
 
-                # Getting optimised path (Taking obsticles into account)
-                optimsied_path = self.optimalPath(curved_path, all_obsticles)
-                print("OPTIMIZED PATH: ", optimsied_path)
-                # curved_path
-        return optimsied_path
+            # Getting optimised path (Taking obsticles into account)
+            # optimsied_path = self.optimalPath(curved_path, all_obsticles)
+            # print("OPTIMIZED PATH: ", optimsied_path)
+            # optimsied_path = self.listTransformer(optimsied_path)
+            # curved_path, optimsied_path, best_path
+            print("BEST PATH AFTER RUN: ", best_path)
+
+            tracker += 1
+        print("CURVED PATH AFTER RUN: ", curved_path)
+        return curved_path
 
 
 """
@@ -528,6 +592,7 @@ ninty_degrees_path = [[0, 0], [0, 10000], [2000, 10000], [2000, 4000]]
 path = [[[0, 0, 0], [0, 1700, 0]], [[2500, 4000, 0], [
     3500, -4000, 0]], [[10000, 6000, 0], [1000, 5900]]]
 
+obsticles = []
 
 # desired_locations = [(500, 500), (2000, 3000), (2700, 4000)]
 
@@ -535,17 +600,20 @@ path = [[[0, 0, 0], [0, 1700, 0]], [[2500, 4000, 0], [
 # path = PathAlgorithm.bestPath(dataPRe)
 all_locations = [[[7000, 8000], 10000], [[7000, 29000], 10000],
                  [[16000, 29000], 10000], [[16000, 7000], 10000]]
-
+'''
 if len(Newpointlist2) > 0:
     ninty_path = PathAlgorithm.preProcessData(Newpointlist2)
     print(ninty_path)
+'''
+
+best_path_run = PathAlgorithm.railAlgorithm(data, obsticles)
 
 x = []
 y = []
 
 # Function for plotting the rail on a 2d grid.
 
-for i in ninty_path:
+for i in best_path_run:
     x.append(i[0])
     y.append(i[1])
 
