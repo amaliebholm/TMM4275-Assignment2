@@ -10,13 +10,12 @@ import sympy
 
 # The path algorithm takes in a list of attatchment points where the first point is the location of the feeder.
 # It then creates a path between each attatchment point and turns with a radius of 2m.
-# Using A* proved to be inefficent as we are not looking for the shortest path.
-
-
+# Using A* proved to be inefficent as we are not looking for the shortest path between points, but
+# shortest path through ALL points.
 # taking in three lists: Attatchment points, desired locations, and obsticles
 
 # Input-format = [[[x,y],h],[[x,y],h],[[x,y],h],[[x,y],h],....,[[x,y],h],]
-# Output-format: List = [[[x,y],h],[[x,y]],[[x,y]],[[x,y],h],....]
+# Output-format: List = [[x,y,h],[x,y,h],[x,y,h],[x,y,h],....]
 
 
 class pathAlgorithm:
@@ -24,9 +23,11 @@ class pathAlgorithm:
     def __init__(self, turn_radius):
         self.turn_radius = turn_radius  # 2m (2000) is the fixed radius
 
+    # Calculating the closest point using eucledian distance from cdist.
     def closest_node(self, node, nodes):
         return nodes[cdist([node], nodes).argmin()]
 
+    # List transformer, used to transform one input to a ouput
     def listTransformer(self, data):
         mock_data = data
         try:
@@ -72,8 +73,8 @@ class pathAlgorithm:
             except:
                 IndexError
 
-        #print("NEW LIST : ", dummy_list)
-        #print("LIST: ", list_of_points)
+        # print("NEW LIST : ", dummy_list)
+        # print("LIST: ", list_of_points)
 
         return new_list
 
@@ -86,7 +87,7 @@ class pathAlgorithm:
     def bestPath(self, data):
         '''
         The function takes a list of points as input. It then finds the shortest
-        euclidean path between the the current point and all the other points. It then
+        euclidean path between the current point and all the other points in the list. It then
         selects the point which is closest to the current point, adds it to the list and
         moves to that point. Then it repeats until the list is empty
         '''
@@ -113,14 +114,14 @@ class pathAlgorithm:
             # Updates the current point to the last added element in the list
             if data_point is not None:
                 current_point = best_path[-1]
-                #print("CURRENT INDEX:  ", current_point)
-                #print("BEFORE REMOVING: ", updated_data)
+                # print("CURRENT INDEX:  ", current_point)
+                # print("BEFORE REMOVING: ", updated_data)
 
                 # Checks if the current point is in the upgraded data list, removes it from the
                 # dummy list if it is.
                 if current_point in updated_data:
                     dummy_list.remove(current_point)
-                    #print("AFTER REMOVING: ", dummy_list)
+                    # print("AFTER REMOVING: ", dummy_list)
 
                 if len(dummy_list) != 0:
                     # Calculating the distance from the current point to all other points in the dummy list.
@@ -139,28 +140,42 @@ class pathAlgorithm:
         # returns the shortest path
         return best_path
 
-    def findCenter(self, current_position, next_position, direction):
+    def findCenterOfCircle(self, current_position, next_position, direction):
         '''
         Function for finding the center of the fictive circle given the current position,
-        the next and the direction.
+        the next and the direction. We know that the point we have (current position) must be on the circles circumference.
+        Deriving the center will be. NB Not checking if there obsticles in the way of the turn. See gemoeterics.jpeg for reference.
         '''
-        # Link:
+
+        # Finding out which quadrant we are on.
+
+        # Finding the slope
         delta_x = next_position[0] - current_position[0]  # x_1 - x_2
         delta_y = next_position[1] - current_position[1]  # y_1 - y_2
-        psi = math.atan2(delta_y, delta_x)  # arctanget
-        psi += direction * (math.pi / 2)
+        slope = delta_y/delta_x
+        # Checking if a point is on the line.
+
+        # From our current point the center lays a distance, of the given radius, away from the center.
+
+        # link: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/atan2
+        psi = math.atan2(delta_y, delta_x)  #
+
+        # We need to know which side of the line the center is located. We use the side of where the next point is.
+        psi += (math.pi / 2) * direction
+
         x_shifted = self.turn_radius * math.cos(psi)
         y_shifted = self.turn_radius * math.sin(psi)
 
-        center = (next_position[0] + x_shifted, next_position[1] + y_shifted)
+        center = [next_position[0] + x_shifted, next_position[1] + y_shifted]
 
         return center
 
     # Function for getting the distance between two points (vector)
-    def getDistance(self, point1, point2):
+    def findDistance(self, point1, point2):
         delta_x = point2[0] - point1[0]
         delta_y = point2[1] - point1[1]
 
+        # Vectorial distance function
         distance = math.sqrt(delta_x ** 2 + delta_y ** 2)
         return distance
 
@@ -206,6 +221,7 @@ class pathAlgorithm:
         print("ALPHA: ", alpha)
         return alpha
 
+    # Function to check if a point lays on what side of a line.
     def InLineOfSight(self, point1, point2, point3):
         # Link: https://stackoverflow.com/questions/1560492/how-to-tell-whether-a-point-is-to-the-right-or-left-side-of-a-line?fbclid=IwAR1C4J0-pFEgesJUtpIS4xY3jSdjKB8HUovqKBuCTo0QtfQ3DPGx4ya2nPk
         LOF = (point1[1] - point2[1]) * point3[0] + \
@@ -223,22 +239,33 @@ class pathAlgorithm:
         else:
             return direction
 
-        # Function for changing the path so it does not collide with obsticles in the room
+    # Function for changing the path so it does not collide with obsticles in the room
     def optimalPath(self, best_path, obsticles):
         # We want to check if the path runs in to obsticles
 
         optimal_path = []
 
-        # We have to check if there any obsticle at all:
-        if not obsticles:
-            print("No obsticles exists in the room")
-            return best_path
-        else:
+        # We have to check if there any obsticles at all:
+        if obsticles:
+            print("="*80)
             print("Obsticles detected")
+            print("Checking if path is compromised ")
+            print("="*80)
+            for path in best_path:
+                for obsticle in obsticles:
+                    check = self.intersectionChecker(path, obsticle)
+                    if check == True:
+                        updated_path = self.obsticleAvoider(path, obsticle)
+
+        else:
+            print("No obsticles exists in the room, returning best path")
+            return best_path
 
         return optimal_path
 
+    # Function for determining which quadrant the intersiction point( our known point) is located in.
     def identifyingQuadrant(self, center, next_position):
+        # source: https://www.geeksforgeeks.org/finding-quadrant-coordinate-respect-circle/
 
         qaudrant = 0
 
@@ -268,9 +295,72 @@ class pathAlgorithm:
             print("No quadrant could be found")
             pass
 
-    def obsticleAvoider(self, vector, obsticles):
+    def intersectionChecker(self, vector, obsticle):
+        # Obsticles are on the form (corner1 , corner2 , corner3 , corner4)
+        # best path algorithm to find linesegments?
+        cross_check = False
+        segments = []
+        sorted_corners = self.bestPath(obsticle)
+        # initializing the obsticle and the vector:
+        first_corner = sorted_corners[0]
+        second_corner = sorted_corners[1]
+        third_corner = sorted_corners[2]
+        fourth_corner = sorted_corners[3]
 
-        return
+        segment1 = [first_corner, second_corner]
+        segment2 = [second_corner, third_corner]
+        segment3 = [third_corner, fourth_corner]
+        segment4 = [fourth_corner, first_corner]
+
+        segments.append(segment1).append(
+            segment2).append(segment3).append(segment4)
+
+        start_point, end_point = vector[0], vector[1]
+
+        vseg = [start_point, end_point]
+
+        # Defining intervals for intersection:
+
+        interval1 = [min(first_corner), max(second_corner)]
+
+        vector_interval = [min(start_point), max(end_point)]
+        # The lines intersect if they share a points.
+        # f1(x) = A1*x + b1 = y
+        # f2(x) = A2*x + b2 = y
+
+        for segment in segments:
+
+            A1 = (segment[0][1]-segment[1][1])/(segment[0][0]-segment[1][0])
+            A2 = (vseg[0][1]-vseg[1][1]) / (vseg[0][0]-vseg[1][0])
+            b1 = segment[0][1] - A1*segment[0][0]
+            b2 = vseg[0][1]-A2*vseg[0][0]
+            Xa = (b2 - b1) / (A1 - A2)
+            Y1 = A1 * Xa + b1
+            Y2 = A2 * Xa + b2
+            check = Y1 == Y2
+
+            if ((Xa < max(min(segment[0][0], segment[1][0]), min(vseg[0][0], vseg[1][0]))) or
+                    (Xa > min(max(segment[0][0], segment[1][0]), max(vseg[0][0], vseg[1][0])))):
+                return cross_check  # there is no intersection
+            else:
+                cross_check = True
+                return cross_check
+        '''
+        # avoiding the obsticle
+        if cross_check == True:
+
+        else:
+            print("No avoidance necessary")
+            return cross_check
+
+            # If not, no avoidens needed
+        return cross_check
+        '''
+
+    def obsticleAvoider(self, vector, obsticle):
+        new_path = []
+
+        return new_path
 
     def angleFinder(self, center, point1, point2):
         # https://stackoverflow.com/questions/1211212/how-to-calculate-an-angle-from-three-points
@@ -278,6 +368,7 @@ class pathAlgorithm:
         vector_1 = (point1[0] - center[0], point1[1] - center[1])
         vector_2 = (point2[0] - center[0], point2[1] - center[1])
         v1v2scalar = vector_1[0] * vector_2[0] + vector_1[1] * vector_2[1]
+        # Vectorial distance formula
         lenght_vec1 = math.sqrt(vector_1[0] ** 2 + vector_1[1] ** 2)
         length_vec2 = math.sqrt(vector_2[0] ** 2 + vector_2[1] ** 2)
         angle = math.acos(v1v2scalar / (lenght_vec1 * length_vec2))
@@ -293,7 +384,8 @@ class pathAlgorithm:
         distance_NePo_cent = self.getDistance(center, next_position)
 
         # Finding the angle between the next position, the center and the intercepiton point
-        angle_NePo_cent_IntPo = math.acos(self.turn_radius/distance_NePo_cent)
+        angle_NePo_cent_InterPo = math.acos(
+            self.turn_radius/distance_NePo_cent)
 
         return
 
@@ -303,14 +395,15 @@ class pathAlgorithm:
     --------------------------------------------------------
     '''
 
-    def railAlgorithm(self, best_path):
+    def railAlgorithm(self, data, obsticles):
 
         # initialize
         '''
         vector = [best_path[0], best_path[1]]
         curved_path.append(vector)
         '''
-
+        all_obsticles = obsticles
+        best_path = self.bestPath(data)
         print("THE BEST PATH: ", best_path)
 
         '''
@@ -375,7 +468,7 @@ class pathAlgorithm:
                         directionVector = self.directonalVector(
                             best_path[index], best_path[index-1])
 
-                # Calculating distance along one of the vectors to the interception point on the arc. (End of arc)
+                        # Calculating distance along one of the vectors to the interception point on the arc. (End of arc)
 
                         distance_to_point_end_of_arc = self.turn_radius * \
                             sympy.cot(psi/2)
@@ -399,7 +492,12 @@ class pathAlgorithm:
                     else:
                         pass
                 index += 1
-        return curved_path
+
+                # Getting optimised path (Taking obsticles into account)
+                optimsied_path = self.optimalPath(curved_path, all_obsticles)
+                print("OPTIMIZED PATH: ", optimsied_path)
+                # curved_path
+        return optimsied_path
 
 
 """
@@ -407,7 +505,6 @@ class pathAlgorithm:
 TESTING AND VARIABLE INITIATION
 --------------------------------------------------
 """
-
 
 PathAlgorithm = pathAlgorithm(2000)
 
