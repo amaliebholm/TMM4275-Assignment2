@@ -52,10 +52,10 @@ In assignment 1 Olingvo and Apache Jena Fuseki was used to communicate with the 
 ### Code Description 
 
 - `DFA_RailServer.py` - Setting up the web-page that the customer uses to place an order, making sure that the variables are set within the size of the room. Giving the lists of different variables as output. This is done by three webpages linked together, sending the customer to the next one when all the necessary values are given. 
-- `rail.py`- This takes in the list of the sorted points, adds the curves and creates the dfa file that is used to create the 3d model. 
 - `pathAlgorithm.py` - Has the purpose of finding the optimal path through the points given by the user in the webserver client. It uses euclidean distance between a point and the rest to find the shortest paths.
 - `aStarAlgorithm.py` - We first tried to implement the shortest path through the points given from the webserver using the A* algorithm, but this proved to be very difficult. The solution we tried was to update the start point and end point to the current and next points in the list, but the heuristic became increasingly worse through each iteration.
 - `rail_journal.py` - A journal using NX Open to take a picture of the ordered rail and saving it in the folder with the rest of the files. 
+- `rail.py`- This takes in the list of the sorted points, adds the curves and creates the dfa file that is used to create the 3d model. This is currently dircectly implemented into the DFA server, but we think having an example of it by it self illustrates better how it operates.
 
 ### DFAs
 - `Rail_Order.dfa` - Containing the NX file whith the parameters given by the customer
@@ -65,9 +65,18 @@ In assignment 1 Olingvo and Apache Jena Fuseki was used to communicate with the 
 - `Roof_mount_template.dfa` - Containing the template for how roof mounts
 - `path_and_combine.dfa`- Containing the template for combining the whole rile according to the path 
 
-## Video of working KBE system
 
 ## Examples of Three Different Product Orders  
+
+### The Layout of the Web Page the Customer Uses
+First page: /setSize
+![:setSize.png](https://github.com/amaliebholm/TMM4275-Assignment2/blob/main/Images/:setSize.png)
+
+The next page, after the room size have been set: /setVariables 
+![:setVariables.png](https://github.com/amaliebholm/TMM4275-Assignment2/blob/main/Images/:setVariables.png)
+
+The last page, confirming the order: /sendOrder
+![:sendOrder.png](https://github.com/amaliebholm/TMM4275-Assignment2/blob/main/Images/:sendOrder.png)
 
 ### A Customer Trying to Order Outside the Constraints
 Befor submitting variables for both the size of the room and before being able to add a variable to the room, the values are verified. If a customer tries to set values outside of these verifications they will recieve a notification. If the room size is below or equal to zero of ir the rail height is higher than the ceiling height the customer will recieve this alert: 
@@ -77,11 +86,27 @@ If the customer tries to add a variable that is located outside the room then th
 ![constraint.PNG](https://github.com/amaliebholm/TMM4275-Assignment2/blob/main/Images/constraint.PNG)
 
 ### Example 1 
+![example1_size.png](https://github.com/amaliebholm/TMM4275-Assignment2/blob/main/Images/example1_size.png)
 
+![example1_list.png](https://github.com/amaliebholm/TMM4275-Assignment2/blob/main/Images/example1_list.png)
+
+
+![nx_order1.PNG](https://github.com/amaliebholm/TMM4275-Assignment2/blob/main/Images/nx_order1.PNG)
 
 ### Example 2
+![room_size.png](https://github.com/amaliebholm/TMM4275-Assignment2/blob/main/Images/room_size.png)
 
+![list_of_points.png](https://github.com/amaliebholm/TMM4275-Assignment2/blob/main/Images/list_of_points.png)
+
+
+![nx_order2.PNG](https://github.com/amaliebholm/TMM4275-Assignment2/blob/main/Images/nx_order2.PNG)
 ### Example 3
 
+![example3_size.png](https://github.com/amaliebholm/TMM4275-Assignment2/blob/main/Images/example3_size.png)
+
+![example3_list.png](https://github.com/amaliebholm/TMM4275-Assignment2/blob/main/Images/example3_list.png)
+
+
+![nx_order3.PNG](https://github.com/amaliebholm/TMM4275-Assignment2/blob/main/Images/nx_order3.PNG)
 ### Common Colclusion on Building KBE System based on A1 and A2
 Before this course none of us had any experience with building KBE Systems, but through these two assignments we have learned a lot. We have learned that there are alot of complex structures and architecture surrounding what can seem as a simple web page for a customer. We have also learned how important it is that all these components are able to comunicate in a proper way. It was a timeconsuming but rewarding process to develop these KBE Systems.
