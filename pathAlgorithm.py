@@ -147,31 +147,28 @@ class pathAlgorithm:
         Deriving the center will be. NB Not checking if there obsticles in the way of the turn. See gemoeterics.jpeg for reference.
         '''
 
-        # Finding out which quadrant we are on.
-
-        # Finding the slope
+        # Finding the difference in x and y values between the current and next point, and slope
         delta_x = next_position[0] - current_position[0]  # x_1 - x_2
         delta_y = next_position[1] - current_position[1]  # y_1 - y_2
         #slope = delta_y/delta_x
-        # Checking if a point is on the line.
 
         # From our current point the center lays a distance, of the given radius, away from the center.
-
-        # link: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/atan2
-        psi = math.atan2(delta_y, delta_x)  #
-
         # We need to know which side of the line the center is located. We use the side of where the next point is.
-        psi += (math.pi / 2) * direction
+        # link: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/atan2
+        psi = math.atan2(delta_y, delta_x) + (math.pi / 2) * direction
 
         x_shifted = self.turn_radius * math.cos(psi)
         y_shifted = self.turn_radius * math.sin(psi)
 
-        center = [next_position[0] + x_shifted, next_position[1] + y_shifted]
+        Ox, Oy = next_position[0] + x_shifted, next_position[1] + y_shifted
+
+        center = [Ox, Oy]
 
         return center
 
-    # Function for getting the distance between two points (vector)
+    # Function for getting the distance between two points (vector distance)
     def findDistance(self, point1, point2):
+        # Link: https://www.goeduhub.com/2071/write-python-program-calculate-distance-between-points-taking
         delta_x = point2[0] - point1[0]
         delta_y = point2[1] - point1[1]
 
@@ -182,6 +179,8 @@ class pathAlgorithm:
     # Function for checking where the next point lies in reference to the current position.
     def normalizedVector(self, point, distance):
 
+        # link: https://mathworld.wolfram.com/NormalizedVector.html
+
         normalizedVector = [point[0]/distance, point[1]/distance]
 
         print("Normalized Vector: ", normalizedVector)
@@ -190,6 +189,8 @@ class pathAlgorithm:
 
     # Function for finding the  direction of a vector
     def directonalVector(self, point1, point2):
+
+        # link: https://stackoverflow.com/questions/17332759/finding-vectors-with-2-points
 
         dirVec = [point1[0]-point2[0], point1[1] - point2[1]]
 
@@ -200,7 +201,7 @@ class pathAlgorithm:
     # Fucntion for getting the angle between two vectors
 
     def angleBetweenVectors(self, vector1, vector2):
-
+        # Calculating the unit vectors
         unit_vector1 = np.divide(vector1, np.linalg.norm(vector1))
         unit_vector2 = np.divide(vector2, np.linalg.norm(vector2))
 
@@ -225,8 +226,8 @@ class pathAlgorithm:
     def InLineOfSight(self, point1, point2, point3):
         # Link: https://stackoverflow.com/questions/1560492/how-to-tell-whether-a-point-is-to-the-right-or-left-side-of-a-line?fbclid=IwAR1C4J0-pFEgesJUtpIS4xY3jSdjKB8HUovqKBuCTo0QtfQ3DPGx4ya2nPk
         direction = 0
-        # Evaluating the determinant of a vector cross product:
 
+        # Evaluating the determinant of a vector cross product:
         LOF = (point3[0] - point1[1])*(point2[1] - point1[1]) - \
             (point3[1]-point1[1])*(point2[0]-point1[0])
 
@@ -297,7 +298,7 @@ class pathAlgorithm:
 
     def intersectionChecker(self, vector, obstacle):
         # Obsticles are on the form (corner1 , corner2 , corner3 , corner4)
-        # This is assuming that the customer has inputed an rectangular obsticle which as parallel with the x-axis.
+        # This is assuming that the customer has inputed an rectangular obsticle which is parallel with the x-axis.
         # best path algorithm to find linesegments?
         cross_check = False
         segments = []
@@ -367,13 +368,12 @@ class pathAlgorithm:
 
         # Need to find if the incoming line is in a spesific quadrant
         # Defining the quadrants
-        # We are looking for B', see Geometrics.jpeg
+        # We are looking for B', see Geometrics.jpeg and Trig.jpeg in the repository
         quadrant = int()
 
         dist_NextPos_currPos = self.findDistance(
             current_position, next_position)
         print("CENTER", center)
-        print("NEXT PoSITION: ", next_position)
         dist_cent_NextPos = self.findDistance(center, next_position)
         print("DISTANCE FROM CENTER TO NEXT POSITION: ", dist_cent_NextPos)
 
@@ -586,38 +586,10 @@ PathAlgorithm = pathAlgorithm(2000)
 data = [[0, 0], [0, 1700], [2500, 4000], [3500, -4000],
         [10000, 6000], [-1000, 5900], [-2000, -2000]]
 
-dataPRe = [[0, 0], [0, 1700], [2500, 1700], [2500, -4000],
-           [10000, -4000], [10000, 5900], [-2000, 5900]]
-
-Newpointlist = [[[1000, 2700], 10], [[3700, 10000], 0], [[-2000, 12000], 6], [[3000, 12000], 15],
-                [[-10000, 5000], 0], [[5900, 29876], 7], [[7000, 3000], 0], [[4000, - 5700], 20], [[2456, 17000], 1]]
-
-Newpointlist2 = [[[1500, 2700], 10], [[7700, 10000], 0], [[-5000, 16000], 6], [[1000, 4000], 15],
-                 [[-10000, 5000], 0], [[5900, 29876], 7], [[7000, 3000], 0], [[4000, - 5700], 20], [[2456, 17000], 1]]
-
-pointlist = [[[0, 0], 10], [[0, 10000], 0], [[-2000, 12000], 6], [[-10000, 12000], 15],
-             [[-11414.21356, 11414.21356], 0], [[-13414.21356, 9414.21356], 7]]
-
-ninty_degrees_path = [[0, 0], [0, 10000], [2000, 10000], [2000, 4000]]
-
-path = [[[0, 0, 0], [0, 1700, 0]], [[2500, 4000, 0], [
-    3500, -4000, 0]], [[10000, 6000, 0], [1000, 5900]]]
-
 obsticles = []
 
-# desired_locations = [(500, 500), (2000, 3000), (2700, 4000)]
-
-
-# path = PathAlgorithm.bestPath(dataPRe)
-all_locations = [[[7000, 8000], 10000], [[7000, 29000], 10000],
-                 [[16000, 29000], 10000], [[16000, 7000], 10000]]
-'''
-if len(Newpointlist2) > 0:
-    ninty_path = PathAlgorithm.preProcessData(Newpointlist2)
-    print(ninty_path)
-'''
 #the_path = PathAlgorithm.bestPath(data)
-#print("tHE PATH", the_path)
+#print("THE PATH", the_path)
 best_path_run = PathAlgorithm.railAlgorithm(data, obsticles)
 
 x = []
@@ -633,5 +605,3 @@ plt.scatter(x, y)
 # plt.plot(best_path_run[:])
 plt.plot(x, y)
 plt.show()
-
-# path = [[0, 0, 0], [100, 0, 0], [100, 400, 0], [100, 400, 0], [0, 400, 0]]
