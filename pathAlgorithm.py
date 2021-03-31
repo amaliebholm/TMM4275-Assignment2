@@ -475,9 +475,11 @@ class pathAlgorithm:
             # Keeping track of the last position evaluated
             position = tracker_path[index - 1]
 
-            # Setting the current and next position unit there is one element left in the list
+            # Setting the current and next position untill there is one element left in the list
             if len(tracker_path) != 1:
+                # Last element in the list, current position
                 current_position = curved_path[-1][0]
+                # Last element in the list, next position
                 next_position = curved_path[-1][1]
                 print("ITERATION: ", index)  # Keeping track of iteration
                 print("="*80)
@@ -489,6 +491,7 @@ class pathAlgorithm:
 
             # Finding where the next point is located in reference to the current path
             print("CURVED PATH: ", curved_path)
+
             direction = self.InLineOfSight(
                 curved_path[-1][0], curved_path[-1][1], best_path[index])
             print("DIRECTION: ", direction)
@@ -580,11 +583,6 @@ class pathAlgorithm:
 TESTING AND VARIABLE INITIATION
 --------------------------------------------------
 """
-
-PathAlgorithm = pathAlgorithm(2000)
-
-data = [[0, 0], [0, 1700], [2500, 4000], [3500, -4000],
-        [10000, 6000], [-1000, 5900], [-2000, -2000]]
 
 obsticles = []
 
