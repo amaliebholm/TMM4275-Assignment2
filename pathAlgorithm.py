@@ -129,13 +129,13 @@ class pathAlgorithm:
                     if point not in best_path:
                         best_path.append(point)
                         # best_path.append(point)
-                        print("CLOSEST AND ADDED POINT: ", point)
+                        #print("CLOSEST AND ADDED POINT: ", point)
                 else:
                     pass
             else:
                 pass
 
-            print("PATH: ", best_path)
+            #print("PATH: ", best_path)
         # self.railAlgorithm(best_path)
         # returns the shortest path
         return best_path
@@ -221,14 +221,14 @@ class pathAlgorithm:
         print("ALPHA: ", alpha)
         return alpha
 
-    # Function to check if a point lays on what side of a line.
+    # Function to check what direction the next point lays on in accordance to the line.
     def InLineOfSight(self, point1, point2, point3):
         # Link: https://stackoverflow.com/questions/1560492/how-to-tell-whether-a-point-is-to-the-right-or-left-side-of-a-line?fbclid=IwAR1C4J0-pFEgesJUtpIS4xY3jSdjKB8HUovqKBuCTo0QtfQ3DPGx4ya2nPk
-        LOF = (point1[1] - point2[1]) * point3[0] + \
-            (point2[0] - point1[0]) * point3[1] + \
-            (point1[0] * point2[1] - point2[0] * point1[1])
-
         direction = 0
+        # Evaluating the determinant of a vector cross product:
+
+        LOF = (point3[0] - point1[1])*(point2[1] - point1[1]) - \
+            (point3[1]-point1[1])*(point2[0]-point1[0])
 
         if LOF > 0:
             direction = 1
@@ -240,7 +240,7 @@ class pathAlgorithm:
             return direction
 
     # Function for changing the path so it does not collide with obsticles in the room
-    def optimalPath(self, best_path, obsticles):
+    def optimalPath(self, best_path, obstacles):
         # We want to check if the path runs in to obsticles
 
         optimal_path = []
@@ -252,10 +252,10 @@ class pathAlgorithm:
             print("Checking if path is compromised ")
             print("="*80)
             for path in best_path:
-                for obsticle in obsticles:
-                    check = self.intersectionChecker(path, obsticle)
+                for obstacle in obstacles:
+                    check = self.intersectionChecker(path, obstacle)
                     if check == True:
-                        updated_path = self.obsticleAvoider(path, obsticle)
+                        updated_path = self.obsticleAvoider(path, obstacle)
 
         else:
             print("No obsticles exists in the room, returning best path")
@@ -295,13 +295,13 @@ class pathAlgorithm:
             print("No quadrant could be found")
             pass
 
-    def intersectionChecker(self, vector, obsticle):
+    def intersectionChecker(self, vector, obstacle):
         # Obsticles are on the form (corner1 , corner2 , corner3 , corner4)
         # This is assuming that the customer has inputed an rectangular obsticle which as parallel with the x-axis.
         # best path algorithm to find linesegments?
         cross_check = False
         segments = []
-        sorted_corners = self.bestPath(obsticle)
+        sorted_corners = self.bestPath(obstacle)
         # initializing the obsticle and the vector:
         first_corner = sorted_corners[0]
         second_corner = sorted_corners[1]
@@ -363,19 +363,6 @@ class pathAlgorithm:
 
         return new_path
 
-    def angleFinder(self, center, point1, point2):
-        # https://stackoverflow.com/questions/1211212/how-to-calculate-an-angle-from-three-points
-        # We need to determine the angle between the circle center and the two point
-        vector_1 = (point1[0] - center[0], point1[1] - center[1])
-        vector_2 = (point2[0] - center[0], point2[1] - center[1])
-        v1v2scalar = vector_1[0] * vector_2[0] + vector_1[1] * vector_2[1]
-        # Vectorial distance formula
-        lenght_vec1 = math.sqrt(vector_1[0] ** 2 + vector_1[1] ** 2)
-        length_vec2 = math.sqrt(vector_2[0] ** 2 + vector_2[1] ** 2)
-        angle = math.acos(v1v2scalar / (lenght_vec1 * length_vec2))
-
-        return angle
-
     def findTangentPoint(self, direction, current_position, next_position, center):
 
         # Need to find if the incoming line is in a spesific quadrant
@@ -385,8 +372,10 @@ class pathAlgorithm:
 
         dist_NextPos_currPos = self.findDistance(
             current_position, next_position)
-
+        print("CENTER", center)
+        print("NEXT PoSITION: ", next_position)
         dist_cent_NextPos = self.findDistance(center, next_position)
+        print("DISTANCE FROM CENTER TO NEXT POSITION: ", dist_cent_NextPos)
 
         # Finding the angle between the next position, the center and the intercepiton point
         sigma = math.acos(
@@ -443,78 +432,103 @@ class pathAlgorithm:
     --------------------------------------------------------
     '''
 
-    def railAlgorithm(self, data, obsticles):
+    def railAlgorithm(self, data, obstacles):
+        print("="*80)
+        print("STARTING RAIL ALGORITHM")
+        print("="*80)
 
-        # initialize
-        all_obsticles = obsticles
+        # initialize all variables:
+        all_obstacles = obstacles
+        list_path = []
+        tracker_path = []  # Used for keeping track of progress
+        curved_path = []
+        index = 0
+        tracker = 0
+
+        # Creating the best path through the list of points
         best_path = self.bestPath(data)
         print("THE BEST PATH: ", best_path)
-        index = 0
-        curved_path = []
-        # Making a mock path to keep progression through removing paths evaluated
+
+        # Getting optimized path (Taking obsticles into account)
+        # optimsied_path = self.optimalPath(curved_path, all_obsticles)
+        # print("OPTIMIZED PATH: ", optimsied_path)
+
+        # Transforming the path into the right format: [[x,y,z],...]
+        # optimsied_path = self.listTransformer(optimsied_path)
+
+        # Making a mock path to keep progression through removing paths that have been evaluated
         tracker_path = best_path
+
+        # initializing start path
         current_position = tracker_path[0]
         next_position = tracker_path[1]
         vector = [current_position, next_position]
         curved_path.append(vector)
-        tracker = 0
 
-        # Will run as long  as there are elements in the tracker_path list
+        list_path.append(current_position)
+        list_path.append(next_position)
+
+        # MAIN LOOP: Will run as long  as there are elements in the tracker_path list
         # Checking for turns in the path.
         while tracker_path:
-            # index += 1
-            # print("ITERATION: ", index)
-            # print(best_path[index])
-            # print(best_path[index + 1])
-            # print(best_path[index+1])
-            # Adding the first path between the start position and next position.
+            index += 1
+            # Keeping track of the last position evaluated
+            position = tracker_path[index - 1]
+
+            # Setting the current and next position unit there is one element left in the list
             if len(tracker_path) != 1:
-                current_position = tracker_path[index]
-                next_position = tracker_path[index + 1]
+                current_position = curved_path[-1][0]
+                next_position = curved_path[-1][1]
+                print("ITERATION: ", index)  # Keeping track of iteration
+                print("="*80)
+                print("CURRENT POSITION: ", current_position)
+                print("NEXT POSITION: ", next_position)
             else:
-                # curved_path.append(current_position)
+                print("Process complete")
                 break
-            '''
-            if index == 0:
-                vector = [current_position, next_position]
-                curved_path.append(vector)
-                # tracker_path.remove(current_position)
-            '''
 
             # Finding where the next point is located in reference to the current path
             print("CURVED PATH: ", curved_path)
             direction = self.InLineOfSight(
-                curved_path[-1][0], curved_path[-1][1], tracker_path[index+1])
+                curved_path[-1][0], curved_path[-1][1], best_path[index])
             print("DIRECTION: ", direction)
 
             # Check for turn
             # no turn --> Straight line
-            if direction == 0 and tracker != 0:
-                vector = [tracker_path[index], tracker_path[index + 1]]
+            if direction == 0:
+
+                vector = [best_path[index], best_path[index + 1]]
                 curved_path.append(vector)
-                tracker_path.remove(current_position)
+                tracker_path.remove(position)
 
             else:  # Turn
-
+                print("TURN DETECTED")
                 # if len(curved_path[-1]) == 2:
-                print("CURVED PATH: ", curved_path)
                 direction = self.InLineOfSight(
-                    curved_path[-1][0], curved_path[-1][1], tracker_path[index+1])
+                    curved_path[-1][0], curved_path[-1][1], best_path[index])
 
                 # Finding the center of the circle which will become the turn arc.
+                print("POSITIONS: ", curved_path[-1][0], curved_path[-1][1])
                 center = self.findCenterOfCircle(
                     curved_path[-1][0], curved_path[-1][1], direction)
 
                 # Finding Bprime on the turn arc. (The exiting point of the arc)
                 Bprime = self.findTangentPoint(
-                    direction, current_position, next_position, center)
+                    direction, curved_path[-1][0], curved_path[-1][1], center)
 
-                next_vector = [Bprime, next_position]
-
+                next_vector = [next_position, Bprime]
                 curved_path.append(next_vector)
+
+                inital_vector = [Bprime, next_position]
+
+                list_path.append(Bprime)
+                list_path.append(best_path[index+1])
+                print("LIST PATH: ", list_path)
+
+                curved_path.append(inital_vector)
                 # best_path.insert(index + 1, Bprime)
 
-                tracker_path.remove(current_position)
+                tracker_path.remove(position)
 
                 # ====================================================
                 '''
@@ -552,14 +566,11 @@ class pathAlgorithm:
 
             # index += 1
 
-            # Getting optimised path (Taking obsticles into account)
-            # optimsied_path = self.optimalPath(curved_path, all_obsticles)
-            # print("OPTIMIZED PATH: ", optimsied_path)
-            # optimsied_path = self.listTransformer(optimsied_path)
             # curved_path, optimsied_path, best_path
             print("BEST PATH AFTER RUN: ", best_path)
 
             tracker += 1
+            print("="*80)
         print("CURVED PATH AFTER RUN: ", curved_path)
         return curved_path
 
@@ -605,7 +616,8 @@ if len(Newpointlist2) > 0:
     ninty_path = PathAlgorithm.preProcessData(Newpointlist2)
     print(ninty_path)
 '''
-
+#the_path = PathAlgorithm.bestPath(data)
+#print("tHE PATH", the_path)
 best_path_run = PathAlgorithm.railAlgorithm(data, obsticles)
 
 x = []
@@ -618,6 +630,7 @@ for i in best_path_run:
     y.append(i[1])
 
 plt.scatter(x, y)
+# plt.plot(best_path_run[:])
 plt.plot(x, y)
 plt.show()
 
